@@ -70,6 +70,13 @@ const UserMenu = () => {
           <div className="h-px bg-black/10" />
           <nav className="p-1 text-sm text-black">
             <Link
+              to="/meals"
+              className="block rounded-lg px-3 py-2 hover:bg-black/5"
+              onClick={() => setOpen(false)}
+            >
+              Meals
+            </Link>
+            <Link
               to="/settings"
               className="block rounded-lg px-3 py-2 hover:bg-black/5"
               onClick={() => setOpen(false)}
@@ -99,7 +106,7 @@ const UserMenu = () => {
 
             <div className="my-1 h-px bg-black/10" />
             <button
-              className="w-full rounded-lg px-3 py-2 text-left text-red-600 hover:bg-red-50 text-right"
+              className="w-full rounded-lg px-3 py-2  text-red-600 hover:bg-red-50 text-right"
               onClick={() => {
                 setOpen(false);
                 logout();

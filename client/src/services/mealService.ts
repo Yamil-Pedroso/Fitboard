@@ -1,0 +1,86 @@
+import axiosInstance from "@/api/axiosConfig";
+
+export type MealSlot = "breakfast" | "lunch" | "dinner" | "snack";
+export type QtyUnit = "g" | "ml" | "unit";
+
+export interface IMeal {
+  _id: string;
+  userId: string;
+  date: string; // YYYY-MM-DD
+  slot: MealSlot;
+  recipeId?: string;
+  servings?: number;
+  customItem?: {
+    name: string;
+    amount: number;
+    unit: QtyUnit;
+    nutritionBasis: {
+      amount: number;
+      unit: QtyUnit;
+    };
+    macrosPerBasis: {
+      kcal: number;
+      protein: number;
+      carbohydrate: number;
+      fat: number;
+    };
+    gramsPerUnit?: number;
+    densityGPerMl?: number;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IListMealsParams {
+  page?: number;
+  limit?: number;
+  q?: string;
+  from?: string; // YYYY-MM-DD
+  to?: string; // YYYY-MM-DD
+  slot?: MealSlot;
+  sort?: "date" | "-date" | "createdAt" | "-createdAt";
+}
+
+export type ListMealsResponse = {
+  page: number;
+  limit: number;
+  total: number;
+  items: IMeal[];
+};
+
+/* ——— List all (paginated) ——— */
+export async function listAllMeals(
+  params: IListMealsParams = {}
+): Promise<ListMealsResponse> {
+  const { data } = await axiosInstance.get<ListMealsResponse>("/meals", {
+    params: {
+      page: params.page ?? 1,
+      limit: params.limit ?? 20,
+      sort: params.sort ?? "-date",
+      q: params.q,
+      from: params.from,
+      to: params.to,
+      slot: params.slot,
+    },
+  });
+  return data;
+}
+
+// GET /meals/day?date=YYYY-MM-DD
+export async function listMealsByDay(date: string) {
+  const { data } = await axiosInstance.get<{ date: string; items: IMeal[] }>(
+    "/meals/day",
+    { params: { date } }
+  );
+  return data;
+}
+
+// GET /meals/range?from=YYYY-MM-DD&to=YYYY-MM-DD
+export async function listMealsByRange(from: string, to: string) {
+  const { data } = await axiosInstance.get<{
+    from: string;
+    to: string;
+    items: IMeal[];
+  }>("/meals/range", { params: { from, to } });
+  return data;
+}

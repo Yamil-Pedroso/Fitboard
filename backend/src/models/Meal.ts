@@ -87,9 +87,9 @@ const CustomItemDto = z.object({
   }),
   macrosPerBasis: z.object({
     kcal: z.number().nonnegative(),
-    p: z.number().nonnegative(),
-    c: z.number().nonnegative(),
-    f: z.number().nonnegative(),
+    protein: z.number().nonnegative(),
+    carbohydrate: z.number().nonnegative(),
+    fat: z.number().nonnegative(),
   }),
   gramsPerUnit: z.number().positive().optional(),
   densityGPerMl: z.number().positive().optional(),

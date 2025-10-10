@@ -4,7 +4,7 @@ import { SetAdminDto } from "../dto/dtos";
 import { User } from "../models/User";
 import type { AuthRequest } from "../middlewares/requireAdmin";
 import mongoose from "mongoose";
-import { Meal } from "../models/Meals";
+import { Meal } from "../models/Meal";
 import { Recipe } from "../models/Recipe";
 import { Routine } from "../models/Routine";
 import { Progress } from "../models/Progress";

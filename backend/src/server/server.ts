@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import userRoutes from "../routes/user";
+import mealsRoutes from "../routes/meals";
 import devRoutes from "../routes/dev";
 import adminRoutes from "../routes/admin";
 import { v2 as cloudinary } from "cloudinary";
@@ -65,6 +66,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1", devRoutes);
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", mealsRoutes);
 
 // Error handlers
 app.use(multerErrorHandler);
