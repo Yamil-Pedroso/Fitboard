@@ -70,6 +70,13 @@ const UserMenu = () => {
           <div className="h-px bg-black/10" />
           <nav className="p-1 text-sm text-black">
             <Link
+              to="/user-profile"
+              className="block rounded-lg px-3 py-2 hover:bg-black/5"
+              onClick={() => setOpen(false)}
+            >
+              Profile
+            </Link>
+            <Link
               to="/meals"
               className="block rounded-lg px-3 py-2 hover:bg-black/5"
               onClick={() => setOpen(false)}

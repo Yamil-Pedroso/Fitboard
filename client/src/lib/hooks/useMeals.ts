@@ -1,9 +1,20 @@
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  useQuery,
+  type UseQueryResult,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   listAllMeals,
+  createMeal,
+  deleteMeal,
+  type CreateMealInput,
   type IListMealsParams,
   type ListMealsResponse,
 } from "@/services/mealService";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 type MealsKey = readonly ["meals", IListMealsParams];
 
@@ -38,4 +49,39 @@ export function useMeals(
     error,
     refetch,
   };
+}
+
+export function useCreateMeal() {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (input: CreateMealInput) => createMeal(input),
+    onSuccess: (created) => {
+      qc.invalidateQueries({ queryKey: ["meals"] });
+      qc.invalidateQueries({ queryKey: ["meals", "day", created.date] });
+      toast.success("Meal created successfully");
+      navigate({ to: "/meals", replace: true });
+    },
+    onError: (err: any) => {
+      const msg =
+        err?.response?.data?.error || err?.message || "Could not create meal";
+      toast.error(msg);
+    },
+  });
+}
+
+export function useDeleteMeal() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteMeal(id),
+    onSuccess: () => {
+      toast.success("Meal deleted");
+      qc.invalidateQueries({ queryKey: ["meals"] });
+    },
+    onError: (e: any) => {
+      toast.error(e?.response?.data?.error ?? "Could not delete meal");
+    },
+  });
 }

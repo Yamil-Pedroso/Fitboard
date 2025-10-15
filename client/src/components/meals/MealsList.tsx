@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useMeals } from "@/lib/hooks/useMeals";
-//import { listAllMeals } from "@/services/mealService";
+import { useState, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
+import { useMeals, useDeleteMeal } from "@/lib/hooks/useMeals";
 
 const MealsList = () => {
   const [params, setParams] = useState({
@@ -9,24 +9,40 @@ const MealsList = () => {
     sort: "-date" as const,
   });
   const { meals, page, total, isLoading } = useMeals(params);
+  const { mutate: deleteMeal, isPending } = useDeleteMeal();
+
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!confirmId) return;
+      const el = e.target as Node;
+
+      if (!(el as HTMLElement).closest(`[data-confirm-for="${confirmId}"]`)) {
+        setConfirmId(null);
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setConfirmId(null);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [confirmId]);
 
   return (
     <div className="p-6 space-y-4">
-      {/* Filtros */}
-      <div className="flex flex-wrap gap-2">
-        {/* inputs from/to, slot select, search… y botón Apply */}
-        <button
-          className="rounded bg-black px-3 py-2 text-white"
-          onClick={() => {
-            /* abrir modal create */
-          }}
-        >
-          New meal
-        </button>
-      </div>
+      <Link
+        to="/meals/create"
+        className="flex justify-center cursor-pointer bg-black w-[8rem] rounded-[.6rem] p-4"
+      >
+        New meal
+      </Link>
 
-      {/* Tabla */}
-      <div className="overflow-x-auto rounded border">
+      <div className=" rounded border">
         <table className="min-w-[720px] w-full text-sm">
           <thead className="bg-gray-50">
             <tr className="border-b text-black">
@@ -53,7 +69,7 @@ const MealsList = () => {
               </tr>
             ) : (
               meals.map((m) => (
-                <tr key={m._id} className="border-t text-black">
+                <tr key={m._id} className="relative border-t text-black">
                   <td className="p-2">{m.date}</td>
                   <td className="p-2">{m.slot}</td>
                   <td className="p-2">
@@ -67,6 +83,7 @@ const MealsList = () => {
                   <td className="p-2">
                     {m.customItem?.macrosPerBasis.kcal ?? "-"}
                   </td>
+
                   <td className="p-2 text-right">
                     <button
                       className="px-2 underline"
@@ -76,14 +93,42 @@ const MealsList = () => {
                     >
                       Edit
                     </button>
+
                     <button
                       className="px-2 underline text-red-600"
-                      onClick={() => {
-                        /* delete */
-                      }}
+                      onClick={() => setConfirmId(m._id)}
+                      disabled={isPending && confirmId === m._id}
                     >
-                      Delete
+                      {isPending ? "Deleting…" : "Delete"}
                     </button>
+
+                    {confirmId === m._id && (
+                      <div
+                        data-confirm-for={m._id}
+                        className="absolute right-3 top-[5rem] -translate-y-1/2  w-40 rounded-2xl border bg-white p-4 shadow-2xl "
+                      >
+                        <p className="mb-3 font-semibold">Are you sure?</p>
+                        <div className="flex items-center justify-end gap-4">
+                          <button
+                            className="text-red-600 hover:font-bold"
+                            disabled={isPending}
+                            onClick={() => {
+                              deleteMeal(m._id, {
+                                onSettled: () => setConfirmId(null),
+                              });
+                            }}
+                          >
+                            Yes
+                          </button>
+                          <button
+                            className="hover:font-bold"
+                            onClick={() => setConfirmId(null)}
+                          >
+                            No
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))

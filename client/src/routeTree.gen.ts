@@ -9,16 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UserProfileRouteImport } from './routes/user-profile'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as MealsIndexRouteImport } from './routes/meals/index'
 import { Route as SettingsSecurityRouteImport } from './routes/settings/security'
+import { Route as MealsCreateRouteImport } from './routes/meals/create'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 
+const UserProfileRoute = UserProfileRouteImport.update({
+  id: '/user-profile',
+  path: '/user-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,6 +44,11 @@ const MealsIndexRoute = MealsIndexRouteImport.update({
 const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
   id: '/settings/security',
   path: '/settings/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MealsCreateRoute = MealsCreateRouteImport.update({
+  id: '/meals/create',
+  path: '/meals/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
@@ -67,22 +79,26 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/user-profile': typeof UserProfileRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/meals/create': typeof MealsCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
   '/meals': typeof MealsIndexRoute
   '/settings': typeof SettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/user-profile': typeof UserProfileRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/meals/create': typeof MealsCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
   '/meals': typeof MealsIndexRoute
   '/settings': typeof SettingsIndexRoute
@@ -90,11 +106,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/user-profile': typeof UserProfileRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/meals/create': typeof MealsCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
   '/meals/': typeof MealsIndexRoute
   '/settings/': typeof SettingsIndexRoute
@@ -103,33 +121,39 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/user-profile'
     | '/admin/dashboard'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/meals/create'
     | '/settings/security'
     | '/meals'
     | '/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/user-profile'
     | '/admin/dashboard'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/meals/create'
     | '/settings/security'
     | '/meals'
     | '/settings'
   id:
     | '__root__'
     | '/'
+    | '/user-profile'
     | '/admin/dashboard'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/meals/create'
     | '/settings/security'
     | '/meals/'
     | '/settings/'
@@ -137,11 +161,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UserProfileRoute: typeof UserProfileRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  MealsCreateRoute: typeof MealsCreateRoute
   SettingsSecurityRoute: typeof SettingsSecurityRoute
   MealsIndexRoute: typeof MealsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
@@ -149,6 +175,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/user-profile': {
+      id: '/user-profile'
+      path: '/user-profile'
+      fullPath: '/user-profile'
+      preLoaderRoute: typeof UserProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -175,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/security'
       fullPath: '/settings/security'
       preLoaderRoute: typeof SettingsSecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meals/create': {
+      id: '/meals/create'
+      path: '/meals/create'
+      fullPath: '/meals/create'
+      preLoaderRoute: typeof MealsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/reset-password': {
@@ -217,11 +257,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UserProfileRoute: UserProfileRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
+  MealsCreateRoute: MealsCreateRoute,
   SettingsSecurityRoute: SettingsSecurityRoute,
   MealsIndexRoute: MealsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,

@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import { Toaster } from "sonner";
 
 interface MainLayoutProps {
   children?: React.ReactNode;
@@ -8,6 +9,7 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div className="min-h-dvh flex flex-col">
+      <Toaster position="top-right" />
       <nav className="sticky top-0 z-50 w-full border-b bg-bg2-color backdrop-blur">
         <Navbar />
       </nav>

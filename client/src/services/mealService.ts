@@ -31,6 +31,32 @@ export interface IMeal {
   updatedAt: string;
 }
 
+export type CreateMealInput =
+  | {
+      date: string; // "YYYY-MM-DD"
+      slot: MealSlot; // "breakfast" | "lunch" | "dinner" | "snack"
+      recipeId: string;
+      servings: number;
+    }
+  | {
+      date: string;
+      slot: MealSlot;
+      customItem: {
+        name: string;
+        amount: number;
+        unit: QtyUnit; // "g" | "ml" | "unit"
+        nutritionBasis: { amount: number; unit: QtyUnit };
+        macrosPerBasis: {
+          kcal: number;
+          protein: number;
+          carbohydrate: number;
+          fat: number;
+        };
+        gramsPerUnit?: number;
+        densityGPerMl?: number;
+      };
+    };
+
 export interface IListMealsParams {
   page?: number;
   limit?: number;
@@ -83,4 +109,15 @@ export async function listMealsByRange(from: string, to: string) {
     items: IMeal[];
   }>("/meals/range", { params: { from, to } });
   return data;
+}
+
+// POST /meal Create a meal
+export async function createMeal(input: CreateMealInput): Promise<IMeal> {
+  const { data } = await axiosInstance.post<IMeal>("/meals", input);
+  return data;
+}
+
+// DELETE /meals/:id Delete a meal
+export async function deleteMeal(mealId: string): Promise<void> {
+  await axiosInstance.delete(`/meals/${mealId}`);
 }
