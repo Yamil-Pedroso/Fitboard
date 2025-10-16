@@ -8,8 +8,11 @@ import {
 import {
   listAllMeals,
   createMeal,
+  getMealById,
+  updateMeal,
   deleteMeal,
   type CreateMealInput,
+  type UpdateMealInput,
   type IListMealsParams,
   type ListMealsResponse,
 } from "@/services/mealService";
@@ -36,7 +39,7 @@ export function useMeals(
     queryKey: ["meals", params] as const,
     queryFn: (): Promise<ListMealsResponse> => listAllMeals(params),
     staleTime: 30_000,
-    keepPreviousData: true,
+    placeholderData: (prev) => prev,
   });
 
   return {
@@ -68,6 +71,35 @@ export function useCreateMeal() {
         err?.response?.data?.error || err?.message || "Could not create meal";
       toast.error(msg);
     },
+  });
+}
+
+export function useUpdateMeal() {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (vars: { mealId: string; input: UpdateMealInput }) =>
+      updateMeal(vars.mealId, vars.input),
+    onSuccess: (updated) => {
+      qc.invalidateQueries({ queryKey: ["meals"] });
+      qc.invalidateQueries({ queryKey: ["meals", "day", updated.date] });
+      toast.success("Meal updated successfully");
+      navigate({ to: "/meals", replace: true });
+    },
+    onError: (err: any) => {
+      const msg =
+        err?.response?.data?.error || err?.message || "Could not update meal";
+      toast.error(msg);
+    },
+  });
+}
+
+export function useMeal(mealId: string) {
+  return useQuery({
+    queryKey: ["meal", mealId] as const,
+    queryFn: () => getMealById(mealId),
+    enabled: !!mealId,
   });
 }
 

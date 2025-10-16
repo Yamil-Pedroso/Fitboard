@@ -109,4 +109,36 @@ export const CreateMealDto = z
       (!d.recipeId && !!d.customItem),
     { message: "Must be recipe + servings or customItem (mutually exclusive)." }
   );
-export const UpdateMealDto = CreateMealDto.partial();
+
+const CustomItemPatchDto = z.object({
+  name: z.string().min(1).optional(),
+  amount: z.number().positive().optional(),
+  unit: z.enum(["g", "ml", "unit"]).optional(),
+  nutritionBasis: z
+    .object({
+      amount: z.number().positive().optional(),
+      unit: z.enum(["g", "ml", "unit"]).optional(),
+    })
+    .optional(),
+  macrosPerBasis: z
+    .object({
+      kcal: z.number().nonnegative().optional(),
+      protein: z.number().nonnegative().optional(),
+      carbohydrate: z.number().nonnegative().optional(),
+      fat: z.number().nonnegative().optional(),
+    })
+    .optional(),
+  gramsPerUnit: z.number().positive().optional(),
+  densityGPerMl: z.number().positive().optional(),
+});
+
+export const UpdateMealDto = z.object({
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  slot: z.enum(["breakfast", "lunch", "dinner", "snack"]).optional(),
+  recipeId: z.string().optional(),
+  servings: z.number().positive().optional(),
+  customItem: CustomItemPatchDto.optional(),
+});

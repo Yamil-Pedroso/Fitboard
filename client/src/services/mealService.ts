@@ -57,6 +57,28 @@ export type CreateMealInput =
       };
     };
 
+// Para update, todo opcional (PATCH), el backend ya valida exclusividad:
+export type UpdateMealInput = Partial<{
+  date: string;
+  slot: MealSlot;
+  recipeId: string;
+  servings: number;
+  customItem: {
+    name?: string;
+    amount?: number;
+    unit?: QtyUnit;
+    nutritionBasis?: { amount?: number; unit?: QtyUnit };
+    macrosPerBasis?: {
+      kcal?: number;
+      protein?: number;
+      carbohydrate?: number;
+      fat?: number;
+    };
+    gramsPerUnit?: number;
+    densityGPerMl?: number;
+  };
+}>;
+
 export interface IListMealsParams {
   page?: number;
   limit?: number;
@@ -114,6 +136,20 @@ export async function listMealsByRange(from: string, to: string) {
 // POST /meal Create a meal
 export async function createMeal(input: CreateMealInput): Promise<IMeal> {
   const { data } = await axiosInstance.post<IMeal>("/meals", input);
+  return data;
+}
+
+export async function getMealById(id: string) {
+  const { data } = await axiosInstance.get<IMeal>(`/meals/${id}`);
+  return data;
+}
+
+// Update meal /meals/:id
+export async function updateMeal(
+  mealId: string,
+  input: UpdateMealInput
+): Promise<IMeal> {
+  const { data } = await axiosInstance.patch<IMeal>(`/meals/${mealId}`, input);
   return data;
 }
 

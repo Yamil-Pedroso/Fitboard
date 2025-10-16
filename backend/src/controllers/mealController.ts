@@ -122,15 +122,41 @@ export const getMeal = asyncHandler(async (req: AuthReq, res: Response) => {
 });
 
 // PATCH /meals/:id
+function dotify(obj: any, prefix = ""): Record<string, any> {
+  const out: Record<string, any> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === undefined) continue; // no escribir undefined
+    const path = prefix ? `${prefix}.${k}` : k;
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      Object.assign(out, dotify(v, path));
+    } else {
+      out[path] = v;
+    }
+  }
+  return out;
+}
+
 export const updateMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
 
   const patch = UpdateMealDto.parse(req.body);
 
+  // opcional: asegurar exclusión mutua
+  if (patch.customItem) {
+    patch.recipeId = undefined;
+    patch.servings = undefined;
+  }
+  if (patch.recipeId || patch.servings) {
+    patch.customItem = undefined;
+  }
+
+  // aplanar a rutas con punto para no machacar subdocs completos
+  const $set = dotify(patch);
+
   try {
     const updated = await Meal.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
-      { $set: patch },
+      { $set },
       { new: true, runValidators: true }
     );
     if (!updated) return res.status(404).json({ error: "Not found" });

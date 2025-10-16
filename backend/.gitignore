@@ -30,3 +30,6 @@ logs/
 # Misc
 *.tgz
 *.gz
+
+# .txt files
+*.txt

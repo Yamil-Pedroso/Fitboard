@@ -19,6 +19,6 @@ export function useUsers(
     queryFn: () => getUsers(params),
     enabled: !!user?.isAdmin,
     staleTime: 30_000,
-    keepPreviousData: true,
+    placeholderData: (prev) => prev,
   });
 }

@@ -20,6 +20,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as MealsUpdateMealIdRouteImport } from './routes/meals/update/$mealId'
 
 const UserProfileRoute = UserProfileRouteImport.update({
   id: '/user-profile',
@@ -76,6 +77,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/admin/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MealsUpdateMealIdRoute = MealsUpdateMealIdRouteImport.update({
+  id: '/meals/update/$mealId',
+  path: '/meals/update/$mealId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/settings/security': typeof SettingsSecurityRoute
   '/meals': typeof MealsIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/settings/security': typeof SettingsSecurityRoute
   '/meals': typeof MealsIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/settings/security': typeof SettingsSecurityRoute
   '/meals/': typeof MealsIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/meals'
     | '/settings'
+    | '/meals/update/$mealId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/meals'
     | '/settings'
+    | '/meals/update/$mealId'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/meals/'
     | '/settings/'
+    | '/meals/update/$mealId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   SettingsSecurityRoute: typeof SettingsSecurityRoute
   MealsIndexRoute: typeof MealsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
+  MealsUpdateMealIdRoute: typeof MealsUpdateMealIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/meals/update/$mealId': {
+      id: '/meals/update/$mealId'
+      path: '/meals/update/$mealId'
+      fullPath: '/meals/update/$mealId'
+      preLoaderRoute: typeof MealsUpdateMealIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsSecurityRoute: SettingsSecurityRoute,
   MealsIndexRoute: MealsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
+  MealsUpdateMealIdRoute: MealsUpdateMealIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

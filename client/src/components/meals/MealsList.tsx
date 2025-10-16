@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
+import { Route as UpdateMealRoute } from "@/routes/meals/update/$mealId";
 import { useMeals, useDeleteMeal } from "@/lib/hooks/useMeals";
 
 const MealsList = () => {
@@ -12,6 +14,7 @@ const MealsList = () => {
   const { mutate: deleteMeal, isPending } = useDeleteMeal();
 
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -33,6 +36,13 @@ const MealsList = () => {
     };
   }, [confirmId]);
 
+  const handleUpdateMealClick = (mealId: string) => {
+    navigate({
+      to: UpdateMealRoute.to,
+      params: { mealId: mealId },
+    });
+  };
+
   return (
     <div className="p-6 space-y-4">
       <Link
@@ -51,6 +61,9 @@ const MealsList = () => {
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">Amount</th>
               <th className="p-2 text-left">kcal/100</th>
+              <th className="p-2 text-left">Protein/100</th>
+              <th className="p-2 text-left">Carbs/100</th>
+              <th className="p-2 text-left">Fat/100</th>
               <th className="p-2 text-right">Actions</th>
             </tr>
           </thead>
@@ -83,13 +96,20 @@ const MealsList = () => {
                   <td className="p-2">
                     {m.customItem?.macrosPerBasis.kcal ?? "-"}
                   </td>
+                  <td className="p-2">
+                    {m.customItem?.macrosPerBasis.protein ?? "-"}
+                  </td>
+                  <td className="p-2">
+                    {m.customItem?.macrosPerBasis.carbohydrate ?? "-"}
+                  </td>
+                  <td className="p-2">
+                    {m.customItem?.macrosPerBasis.fat ?? "-"}
+                  </td>
 
                   <td className="p-2 text-right">
                     <button
                       className="px-2 underline"
-                      onClick={() => {
-                        /* edit */
-                      }}
+                      onClick={() => handleUpdateMealClick(m._id)}
                     >
                       Edit
                     </button>
@@ -105,7 +125,7 @@ const MealsList = () => {
                     {confirmId === m._id && (
                       <div
                         data-confirm-for={m._id}
-                        className="absolute right-3 top-[5rem] -translate-y-1/2  w-40 rounded-2xl border bg-white p-4 shadow-2xl "
+                        className="absolute right-3 top-[5rem] -translate-y-1/2  w-40 rounded-2xl border bg-white p-4 shadow-2xl z-10"
                       >
                         <p className="mb-3 font-semibold">Are you sure?</p>
                         <div className="flex items-center justify-end gap-4">

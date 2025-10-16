@@ -25,7 +25,7 @@ export default function CreateMeal() {
     customItem: {
       name: "",
       amount: 0,
-      unit: "g" as QtyUnit,
+      unit: "unit" as QtyUnit,
       nutritionBasis: { amount: 100, unit: "g" as QtyUnit },
       macrosPerBasis: { kcal: 0, protein: 0, carbohydrate: 0, fat: 0 },
       gramsPerUnit: undefined as number | undefined,
@@ -36,12 +36,14 @@ export default function CreateMeal() {
   function set<K extends keyof typeof form>(key: K, val: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: val }));
   }
+
   function setCI<K extends keyof typeof form.customItem>(
     key: K,
     val: (typeof form.customItem)[K]
   ) {
     setForm((p) => ({ ...p, customItem: { ...p.customItem, [key]: val } }));
   }
+
   function setCINB<K extends keyof typeof form.customItem.nutritionBasis>(
     key: K,
     val: (typeof form.customItem.nutritionBasis)[K]
@@ -54,6 +56,7 @@ export default function CreateMeal() {
       },
     }));
   }
+
   function setCIMP<K extends keyof typeof form.customItem.macrosPerBasis>(
     key: K,
     val: (typeof form.customItem.macrosPerBasis)[K]
@@ -253,6 +256,7 @@ export default function CreateMeal() {
                 <span className="mb-1 block">kcal / basis</span>
                 <input
                   type="number"
+                  step="any"
                   min={0}
                   className="w-full rounded border px-3 py-2"
                   value={form.customItem.macrosPerBasis.kcal}
@@ -265,6 +269,7 @@ export default function CreateMeal() {
                 <span className="mb-1 block">Protein (g)</span>
                 <input
                   type="number"
+                  step="any"
                   min={0}
                   className="w-full rounded border px-3 py-2"
                   value={form.customItem.macrosPerBasis.protein}
@@ -277,6 +282,7 @@ export default function CreateMeal() {
                 <span className="mb-1 block">Carbs (g)</span>
                 <input
                   type="number"
+                  step="any"
                   min={0}
                   className="w-full rounded border px-3 py-2"
                   value={form.customItem.macrosPerBasis.carbohydrate}
@@ -289,6 +295,7 @@ export default function CreateMeal() {
                 <span className="mb-1 block">Fat (g)</span>
                 <input
                   type="number"
+                  step="any"
                   min={0}
                   className="w-full rounded border px-3 py-2"
                   value={form.customItem.macrosPerBasis.fat}
@@ -298,6 +305,36 @@ export default function CreateMeal() {
                 />
               </label>
             </div>
+
+            <label className="block text-sm">
+              <span className="mb-1 block">Grams per unit (optional)</span>
+              <input
+                type="number"
+                step="any"
+                min={0}
+                className="w-full rounded border px-3 py-2"
+                value={form.customItem.gramsPerUnit ?? ""}
+                onChange={(e) => {
+                  const v = e.currentTarget.value;
+                  setCI("gramsPerUnit", v === "" ? undefined : parseFloat(v));
+                }}
+              />
+            </label>
+
+            <label className="block text-sm">
+              <span className="mb-1 block">Density (g/ml, optional)</span>
+              <input
+                type="number"
+                step="any"
+                min={0}
+                className="w-full rounded border px-3 py-2"
+                value={form.customItem.densityGPerMl ?? ""}
+                onChange={(e) => {
+                  const v = e.currentTarget.value;
+                  setCI("densityGPerMl", v === "" ? undefined : parseFloat(v));
+                }}
+              />
+            </label>
           </div>
         )}
 
