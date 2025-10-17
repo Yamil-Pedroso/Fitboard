@@ -1,16 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import assets from "@/assets";
 import Hero from "@/components/hero/Hero";
+import DMealComp from "@/components/dummy-components/DMealComp";
+import { RiArrowRightUpFill } from "react-icons/ri";
+import SectionB from "@/components/dummy-components/SectionB";
+import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const fnImages = [assets.fn1, assets.fn2, assets.fn3, assets.fn4];
+const fnImages = [
+  {
+    category: "Meal Plans",
+    src: assets.fn1,
+    alt: "Feature 1",
+  },
+  { category: "Workout Routines", src: assets.fn2, alt: "Feature 2" },
+  { category: "Progress Tracking", src: assets.fn3, alt: "Feature 3" },
+  { category: "Community Support", src: assets.fn4, alt: "Feature 4" },
+];
 
 function Home() {
   return (
     <div className="p-4">
+      <DMealComp />
       <Hero />
       <h1 className="text-2xl font-bold">Yoga and Nutrition</h1>
       <p className="max-w-2xl text-gray-500">
@@ -20,28 +34,54 @@ function Home() {
       </p>
 
       <div className="mt-6 flex gap-4">
-        <div className="bg-bg2-color w-2xl h-3xl rounded-2xl text-center text-white">
-          Box 1
-        </div>
-        <div className="bg-bg2-color w-2xl h-3xl rounded-2xl text-center text-white">
-          Box 2
-        </div>
-      </div>
-
-      <div className="mt-6 grid grid-cols-2 gap-4">
-        {fnImages.map((src, index) => (
+        {[
+          {
+            title: "Box 1",
+            content: "Content",
+          },
+          {
+            title: "Box 2",
+            content: "Content",
+          },
+        ].map((box, index) => (
           <div
             key={index}
-            className="border rounded-lg overflow-hidden shadow-lg"
+            className="w-[10rem] flex justify-center shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] "
           >
-            <img
-              src={src}
-              alt={`Feature ${index + 1}`}
-              className="w-full h-100 object-cover"
-            />
+            <div className="bg-white w-2xl  text-center text-[#393a3c] flex flex-col justify-center items-center border-6 border-[#393a3c] p-4">
+              <h2 className="text-xl font-semibold mb-2">{box.title}</h2>
+              <p>{box.content}</p>
+            </div>
           </div>
         ))}
       </div>
+
+      <div className=" flex mt-6  border-[#393a3c] gap-4 ">
+        {fnImages.map((src, index) => (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+            key={index}
+            className="w-[25rem] border-6 border-[#393a3c] overflow-hidden shadow-lg"
+          >
+            <div className="flex justify-between items-center bg-[#bbbbbb]  text-[#393a3c] p-4 border-b-6 border-[#393a3c]">
+              <h3 className="text-lg font-semibold">{src.category}</h3>
+              <RiArrowRightUpFill className="inline-block ml-2 text-4xl cursor-pointer" />
+            </div>
+            <div className="w-[12rem] h-[12rem] overflow-hidden">
+              <img
+                src={src.src}
+                alt={src.alt}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <SectionB />
     </div>
   );
 }

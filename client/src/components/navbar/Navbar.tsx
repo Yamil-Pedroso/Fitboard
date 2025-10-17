@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/UserContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 const UserMenu = () => {
   const { user, logout } = useAuth();
@@ -27,15 +28,15 @@ const UserMenu = () => {
   if (!user) return null;
 
   return (
-    <div className="relative bg-bg2-color" ref={ref}>
+    <div className="relative" ref={ref}>
       <button
         type="button"
-        className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-black/20"
+        className="flex items-center gap-2 bg-[#393a3c] rounded-full px-2 py-1"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-black">
+        <span className="inline-block h-8 w-8 overflow-hidden rounded-full ">
           <img
             src={user.avatar}
             alt={user.username}
@@ -59,71 +60,81 @@ const UserMenu = () => {
         </svg>
       </button>
 
-      {open && (
-        <div
-          role="menu"
-          className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border bg-white shadow-lg text-right"
-        >
-          <div className="px-4 py-3 text-sm text-black">
-            <div className="truncate opacity-70">{user.email}</div>
-          </div>
-          <div className="h-px bg-black/10" />
-          <nav className="p-1 text-sm text-black">
-            <Link
-              to="/user-profile"
-              className="block rounded-lg px-3 py-2 hover:bg-black/5"
-              onClick={() => setOpen(false)}
-            >
-              Profile
-            </Link>
-            <Link
-              to="/meals"
-              className="block rounded-lg px-3 py-2 hover:bg-black/5"
-              onClick={() => setOpen(false)}
-            >
-              Meals
-            </Link>
-            <Link
-              to="/settings"
-              className="block rounded-lg px-3 py-2 hover:bg-black/5"
-              onClick={() => setOpen(false)}
-            >
-              Settings
-            </Link>
-            <Link
-              to="/settings/security"
-              className="block rounded-lg px-3 py-2 hover:bg-black/5"
-              onClick={() => setOpen(false)}
-            >
-              Change password
-            </Link>
+      <AnimatePresence mode="wait">
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+              stiffness: 120,
+            }}
+            role="menu"
+            className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border bg-white shadow-lg text-right"
+          >
+            <div className="px-4 py-3 text-sm text-black">
+              <div className="truncate opacity-70">{user.email}</div>
+            </div>
+            <div className="h-px bg-black/10" />
+            <nav className="p-1 text-sm text-black">
+              <Link
+                to="/user-profile"
+                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                onClick={() => setOpen(false)}
+              >
+                Profile
+              </Link>
+              <Link
+                to="/meals"
+                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                onClick={() => setOpen(false)}
+              >
+                Meals
+              </Link>
+              <Link
+                to="/settings"
+                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                onClick={() => setOpen(false)}
+              >
+                Settings
+              </Link>
+              <Link
+                to="/settings/security"
+                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                onClick={() => setOpen(false)}
+              >
+                Change password
+              </Link>
 
-            {user.isAdmin && (
-              <>
-                <div className="my-1 h-px bg-black/10" />
-                <Link
-                  to="/admin/dashboard"
-                  className="block rounded-lg px-3 py-2 font-medium text-black hover:bg-black/5"
-                  onClick={() => setOpen(false)}
-                >
-                  Admin Dashboard
-                </Link>
-              </>
-            )}
+              {user.isAdmin && (
+                <>
+                  <div className="my-1 h-px bg-black/10" />
+                  <Link
+                    to="/admin/dashboard"
+                    className="block rounded-lg px-3 py-2 font-medium text-black hover:bg-black/5"
+                    onClick={() => setOpen(false)}
+                  >
+                    Admin Dashboard
+                  </Link>
+                </>
+              )}
 
-            <div className="my-1 h-px bg-black/10" />
-            <button
-              className="w-full rounded-lg px-3 py-2  text-red-600 hover:bg-red-50 text-right"
-              onClick={() => {
-                setOpen(false);
-                logout();
-              }}
-            >
-              Logout
-            </button>
-          </nav>
-        </div>
-      )}
+              <div className="my-1 h-px bg-black/10" />
+              <button
+                className="w-full rounded-lg px-3 py-2  text-red-600 hover:bg-red-50 text-right"
+                onClick={() => {
+                  setOpen(false);
+                  logout();
+                }}
+              >
+                Logout
+              </button>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -132,9 +143,9 @@ const Navbar = () => {
   const { user } = useAuth();
 
   return (
-    <nav className="sticky top-0 z-20 border-b bg-bg2-color backdrop-blur">
+    <nav className="sticky top-0 z-20 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link to="/" className="text-base font-bold">
+        <Link to="/" className="text-base font-bold text-[#393a3c]">
           Fitness & Nutrition
         </Link>
 
@@ -143,11 +154,17 @@ const Navbar = () => {
             <UserMenu />
           </div>
         ) : (
-          <div className="flex items-center gap-3">
-            <Link to="/auth/login" className="hover:underline">
+          <div className="flex items-center gap-3 ">
+            <Link
+              to="/auth/login"
+              className="hover:underline font-bold text-[#393a3c]"
+            >
               Login
             </Link>
-            <Link to="/auth/register" className="hover:underline">
+            <Link
+              to="/auth/register"
+              className="hover:underline font-bold text-[#393a3c]"
+            >
               Register
             </Link>
           </div>
