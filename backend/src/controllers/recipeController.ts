@@ -2,12 +2,11 @@ import { Request, Response } from "express";
 import { z, ZodError } from "zod";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { Recipe } from "../models/Recipe";
+import { AuthReq } from "../types/domain";
 import {
   CreateRecipeDto as BaseCreateRecipeDto,
   UpdateRecipeDto as BaseUpdateRecipeDto,
 } from "../models/Recipe";
-
-type AuthReq = Request & { auth?: { userId: string } };
 
 // Reutilizamos los DTO del modelo
 const CreateRecipeDto = BaseCreateRecipeDto;

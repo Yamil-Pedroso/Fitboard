@@ -1,5 +1,8 @@
+import { Request } from "express";
 export type Unit = "g" | "ml" | "unit";
 export type MealSlot = "breakfast" | "lunch" | "dinner" | "snack";
+
+export type AuthReq = Request & { auth?: { userId: string } };
 
 export interface Macros {
   kcal: number;

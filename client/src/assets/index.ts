@@ -14,6 +14,21 @@ import icon4 from "./images/icons/icon_4.jpg";
 import icon5 from "./images/icons/icon_5.jpg";
 import icon6 from "./images/icons/icon_6.jpg";
 
+// section images
+import section1 from "./images/section/section_1.png";
+
+import prod1 from "./images/section/prod_1.png";
+import prod2 from "./images/section/prod_2.png";
+import prod3 from "./images/section/prod_3.png";
+import prod4 from "./images/section/prod_4.png";
+import prod5 from "./images/section/prod_5.png";
+import prod6 from "./images/section/prod_6.png";
+import prod7 from "./images/section/prod_7.png";
+import prod8 from "./images/section/prod_8.png";
+import prod9 from "./images/section/prod_9.png";
+
+import noteBook from "./images/notebook.png";
+
 interface IAssets {
   [key: string]: string;
 }
@@ -30,6 +45,17 @@ const assets: IAssets = {
   icon4,
   icon5,
   icon6,
+  section1,
+  noteBook,
+  prod1,
+  prod2,
+  prod3,
+  prod4,
+  prod5,
+  prod6,
+  prod7,
+  prod8,
+  prod9,
 };
 
 export default assets;

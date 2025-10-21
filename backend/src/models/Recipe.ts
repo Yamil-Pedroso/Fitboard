@@ -6,6 +6,7 @@ export interface IRecipe {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
   name: string;
+  date: string;
   servings: number;
   ingredients: Ingredient[];
   categoryIds: Types.ObjectId[];
@@ -45,6 +46,7 @@ const RecipeSchema = new Schema<IRecipe>(
       index: true,
     },
     name: { type: String, required: true },
+    date: { type: String, required: true, match: /^\d{4}-\d{2}-\d{2}$/ },
     servings: { type: Number, default: 1, min: 1 },
     ingredients: { type: [IngredientSchema], default: [] },
     categoryIds: { type: [Types.ObjectId], ref: "Category", default: [] },
@@ -59,6 +61,7 @@ export const Recipe = model<IRecipe>("Recipe", RecipeSchema);
 /* DTOs */
 const IngredientDto = z.object({
   name: z.string().min(1),
+
   amount: z.number().positive(),
   unit: z.enum(["g", "ml", "unit"]),
   nutritionBasis: z.object({
@@ -77,6 +80,10 @@ const IngredientDto = z.object({
 
 export const CreateRecipeDto = z.object({
   name: z.string().min(2),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   servings: z.number().int().positive().default(1),
   ingredients: z.array(IngredientDto).default([]),
   categoryIds: z.array(z.string()).default([]),

@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import assets from "@/assets";
 import Hero from "@/components/hero/Hero";
 import DMealComp from "@/components/dummy-components/DMealComp";
 import { RiArrowRightUpFill } from "react-icons/ri";
 import SectionB from "@/components/dummy-components/SectionB";
 import { motion } from "framer-motion";
+import Routines from "@/components/routines/Routines";
+import SectionC from "@/components/dummy-components/SectionC";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -26,12 +28,15 @@ function Home() {
     <div className="p-4">
       <DMealComp />
       <Hero />
-      <h1 className="text-2xl font-bold">Yoga and Nutrition</h1>
-      <p className="max-w-2xl text-gray-500">
-        Welcome to the Yoga and Nutrition section! Here you'll find resources
-        and tips to enhance your well-being through mindful practices and
-        healthy eating.
-      </p>
+
+      <div className="mt-12 mb-6 flex flex-col items-center text-center gap-4">
+        <h1 className="text-2xl font-bold text-black">Fitness and Nutrition</h1>
+        <p className="max-w-2xl text-black">
+          Welcome to the Yoga and Nutrition section! Here you'll find resources
+          and tips to enhance your well-being through mindful practices and
+          healthy eating.
+        </p>
+      </div>
 
       <div className="mt-6 flex gap-4">
         {[
@@ -68,7 +73,9 @@ function Home() {
           >
             <div className="flex justify-between items-center bg-[#bbbbbb]  text-[#393a3c] p-4 border-b-6 border-[#393a3c]">
               <h3 className="text-lg font-semibold">{src.category}</h3>
-              <RiArrowRightUpFill className="inline-block ml-2 text-4xl cursor-pointer" />
+              <Link to="/meals">
+                <RiArrowRightUpFill className="inline-block ml-2 text-4xl cursor-pointer" />
+              </Link>
             </div>
             <div className="w-[12rem] h-[12rem] overflow-hidden">
               <img
@@ -82,6 +89,10 @@ function Home() {
       </div>
 
       <SectionB />
+
+      <Routines />
+
+      <SectionC />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/UserContext";
@@ -94,6 +93,13 @@ const UserMenu = () => {
                 Meals
               </Link>
               <Link
+                to="/recipes"
+                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                onClick={() => setOpen(false)}
+              >
+                Recipes
+              </Link>
+              <Link
                 to="/settings"
                 className="block rounded-lg px-3 py-2 hover:bg-black/5"
                 onClick={() => setOpen(false)}
@@ -145,7 +151,7 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-20 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link to="/" className="text-base font-bold text-[#393a3c]">
+        <Link to="/" className="text-base font-bold text-black">
           Fitness & Nutrition
         </Link>
 
@@ -157,13 +163,13 @@ const Navbar = () => {
           <div className="flex items-center gap-3 ">
             <Link
               to="/auth/login"
-              className="hover:underline font-bold text-[#393a3c]"
+              className="hover:underline font-bold text-black"
             >
               Login
             </Link>
             <Link
               to="/auth/register"
-              className="hover:underline font-bold text-[#393a3c]"
+              className="hover:underline font-bold text-black"
             >
               Register
             </Link>

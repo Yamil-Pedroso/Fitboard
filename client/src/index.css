@@ -7,12 +7,13 @@ body,
   height: 100%;
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background-color: var(--main-bg-color);
+  background-color: var(--main-bg-provisional-color);
   color: white;
 }
 
 @theme {
-  --main-bg-color: #f9f9f9;
+  --main-bg-provisional-color: #f9f9f9;
+  --main-bg-color: #04764a;
   --color-bg1-color: #a3ff12;
   --color-bg2-color: #0f172a;
 }

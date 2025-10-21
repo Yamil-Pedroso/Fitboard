@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
 import { z, ZodError } from "zod";
 import { asyncHandler } from "../middlewares/asyncHandler";
+import { AuthReq } from "../types/domain";
 import { Meal } from "../models/Meal";
 import {
   CreateMealDto as BaseCreateMealDto,
   UpdateMealDto as BaseUpdateMealDto,
 } from "../models/Meal";
 import { ListAllQuery } from "../dto/meals/mealsDto";
-
-type AuthReq = Request & { auth?: { userId: string } };
 
 const CreateMealDto = BaseCreateMealDto;
 const UpdateMealDto = BaseUpdateMealDto;
