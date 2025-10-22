@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UserProfileRouteImport } from './routes/user-profile'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as RoutinesIndexRouteImport } from './routes/routines/index'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as MealsIndexRouteImport } from './routes/meals/index'
 import { Route as SettingsSecurityRouteImport } from './routes/settings/security'
@@ -39,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoutinesIndexRoute = RoutinesIndexRouteImport.update({
+  id: '/routines/',
+  path: '/routines/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecipesIndexRoute = RecipesIndexRouteImport.update({
@@ -120,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/settings/security': typeof SettingsSecurityRoute
   '/meals': typeof MealsIndexRoute
   '/recipes': typeof RecipesIndexRoute
+  '/routines': typeof RoutinesIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/meals/details/$mealId': typeof MealsDetailsMealIdRoute
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/settings/security': typeof SettingsSecurityRoute
   '/meals': typeof MealsIndexRoute
   '/recipes': typeof RecipesIndexRoute
+  '/routines': typeof RoutinesIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/meals/details/$mealId': typeof MealsDetailsMealIdRoute
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/settings/security': typeof SettingsSecurityRoute
   '/meals/': typeof MealsIndexRoute
   '/recipes/': typeof RecipesIndexRoute
+  '/routines/': typeof RoutinesIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/meals/details/$mealId': typeof MealsDetailsMealIdRoute
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/meals'
     | '/recipes'
+    | '/routines'
     | '/settings'
     | '/meals/details/$mealId'
     | '/meals/update/$mealId'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/meals'
     | '/recipes'
+    | '/routines'
     | '/settings'
     | '/meals/details/$mealId'
     | '/meals/update/$mealId'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/meals/'
     | '/recipes/'
+    | '/routines/'
     | '/settings/'
     | '/meals/details/$mealId'
     | '/meals/update/$mealId'
@@ -232,6 +244,7 @@ export interface RootRouteChildren {
   SettingsSecurityRoute: typeof SettingsSecurityRoute
   MealsIndexRoute: typeof MealsIndexRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
+  RoutinesIndexRoute: typeof RoutinesIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
   MealsDetailsMealIdRoute: typeof MealsDetailsMealIdRoute
   MealsUpdateMealIdRoute: typeof MealsUpdateMealIdRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/routines/': {
+      id: '/routines/'
+      path: '/routines'
+      fullPath: '/routines'
+      preLoaderRoute: typeof RoutinesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recipes/': {
@@ -368,6 +388,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsSecurityRoute: SettingsSecurityRoute,
   MealsIndexRoute: MealsIndexRoute,
   RecipesIndexRoute: RecipesIndexRoute,
+  RoutinesIndexRoute: RoutinesIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
   MealsDetailsMealIdRoute: MealsDetailsMealIdRoute,
   MealsUpdateMealIdRoute: MealsUpdateMealIdRoute,

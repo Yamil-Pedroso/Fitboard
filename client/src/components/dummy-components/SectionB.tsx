@@ -150,15 +150,15 @@ const SectionB = () => {
   }, [inView, current]);
 
   return (
-    <div>
+    <div className="w-full flex flex-col  justify-center ">
       <h2 className="text-black mt-10 text-4xl font-bold">Section B</h2>
       <p className="text-black">This is the content for Section B.</p>
 
-      <div className="w-full flex justify-center mt-10 gap-3.5">
+      <div className="w-full flex mt-10 gap-3.5">
         {/* Small Circles con escritura secuencial */}
         <div
           ref={smallRef}
-          className="w-[50rem] shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)]"
+          className="w-[58%] shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)]"
         >
           <div className="h-[25rem] bg-white p-6 shadow-lg border-6 border-[#393a3c] overflow-hidden relative">
             {smallCircle.map((item, i) => (
@@ -190,7 +190,7 @@ const SectionB = () => {
         </div>
 
         {/* Large Boxes (sin cambios) */}
-        <div className="w-[50rem] flex gap-4">
+        <div className="w-[40%] flex gap-4">
           {loremContent.map((box, index) => (
             <div
               key={index}

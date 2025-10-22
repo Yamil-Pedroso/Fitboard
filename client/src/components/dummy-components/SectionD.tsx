@@ -40,7 +40,7 @@ const zoomIn: Variants = {
   },
 };
 
-export default function Routines() {
+const SectionD = () => {
   const [click, setClick] = useState(false);
   const [checked, setChecked] = useState(false);
   const [box, setBox] = useState<string[]>([]);
@@ -103,13 +103,13 @@ export default function Routines() {
 
   return (
     <motion.div
-      className="mt-30"
+      className="w-full flex flex-col justify-center mt-30"
       variants={container}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="w-full flex flex-col gap-10 lg:flex-row lg:justify-between lg:gap-12">
+      <div className="w-full flex justify-center flex-col gap-10 lg:flex-row lg:justify-between lg:gap-12">
         <motion.div className="w-full lg:w-[50rem]" variants={fadeRight}>
           <h1 className="text-black text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
             Experience Reliable Fitness Services
@@ -242,4 +242,6 @@ export default function Routines() {
       </div>
     </motion.div>
   );
-}
+};
+
+export default SectionD;

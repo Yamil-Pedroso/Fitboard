@@ -31,14 +31,16 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     };
   }, []);
   return (
-    <div className="min-h-dvh flex flex-col">
+    <div
+      className="
+flex flex-col min-h-screen relative
+    "
+    >
       <Toaster position="top-right" />
 
       <Navbar />
 
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-6">
-        {children}
-      </main>
+      <main className="flex-1 mx-auto w-full  px-4 py-6">{children}</main>
 
       <Footer />
     </div>

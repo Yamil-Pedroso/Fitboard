@@ -30,7 +30,7 @@ const iconImages = [
 
 const DMealComp = () => {
   return (
-    <div className="w-full flex  justify-center items-center gap-4 mb-10 border-6 border-[#393a3c]  p-4  shadow-lg">
+    <div className="w-full flex  justify-center items-center gap-4 mb-10 border-6 border-[#393a3c] p-4 shadow-lg">
       {iconImages.map((icon, index) => (
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}

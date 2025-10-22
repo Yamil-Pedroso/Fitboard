@@ -5,8 +5,9 @@ import DMealComp from "@/components/dummy-components/DMealComp";
 import { RiArrowRightUpFill } from "react-icons/ri";
 import SectionB from "@/components/dummy-components/SectionB";
 import { motion } from "framer-motion";
-import Routines from "@/components/routines/Routines";
+
 import SectionC from "@/components/dummy-components/SectionC";
+import SectionD from "@/components/dummy-components/SectionD";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -90,7 +91,7 @@ function Home() {
 
       <SectionB />
 
-      <Routines />
+      <SectionD />
 
       <SectionC />
     </div>

@@ -3,8 +3,11 @@ import fn2 from "./images/fn_02.png";
 import fn3 from "./images/fn_03.png";
 import fn4 from "./images/fn_04.png";
 
+import fitnut from "./images/bg/fit_nut.png";
+
 // avatars
 import avatar1 from "./images/avatars/avatar1.jpg";
+import deco1 from "./images/deco/deco_1.png";
 
 // icons
 import icon1 from "./images/icons/icon_1.jpg";
@@ -38,6 +41,8 @@ const assets: IAssets = {
   fn2,
   fn3,
   fn4,
+  fitnut,
+  deco1,
   avatar1,
   icon1,
   icon2,
