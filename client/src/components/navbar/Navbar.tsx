@@ -73,51 +73,51 @@ const UserMenu = () => {
               stiffness: 120,
             }}
             role="menu"
-            className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border bg-white shadow-lg text-right"
+            className="absolute right-0 mt-1 w-56 overflow-hidden rounded-xl border border-[#393a3c] bg-[#393a3c] shadow-lg text-right"
           >
-            <div className="px-4 py-3 text-sm text-black">
+            <div className="px-4 py-3 text-sm">
               <div className="truncate opacity-70">{user.email}</div>
             </div>
             <div className="h-px bg-black/10" />
-            <nav className="p-1 text-sm text-black">
+            <nav className="p-1 text-sm ">
               <Link
                 to="/user-profile"
-                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}
               >
                 Profile
               </Link>
               <Link
                 to="/meals"
-                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}
               >
                 Meals
               </Link>
               <Link
                 to="/recipes"
-                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}
               >
                 Recipes
               </Link>
               <Link
                 to="/routines"
-                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}
               >
                 Routines
               </Link>
               <Link
                 to="/settings"
-                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}
               >
                 Settings
               </Link>
               <Link
                 to="/settings/security"
-                className="block rounded-lg px-3 py-2 hover:bg-black/5"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}
               >
                 Change password
@@ -128,7 +128,7 @@ const UserMenu = () => {
                   <div className="my-1 h-px bg-black/10" />
                   <Link
                     to="/admin/dashboard"
-                    className="block rounded-lg px-3 py-2 font-medium text-black hover:bg-black/5"
+                    className="block rounded-lg px-3 py-2 font-medium dark:hover:bg-neutral-800"
                     onClick={() => setOpen(false)}
                   >
                     Admin Dashboard
@@ -136,9 +136,17 @@ const UserMenu = () => {
                 </>
               )}
 
+              <Link
+                to="/faqs"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
+                onClick={() => setOpen(false)}
+              >
+                FAQs
+              </Link>
+
               <div className="my-1 h-px bg-black/10" />
               <button
-                className="w-full rounded-lg px-3 py-2  text-red-600 hover:bg-red-50 text-right"
+                className="w-full rounded-lg px-3 py-2  text-emerald-300 dark:hover:bg-neutral-800 text-right"
                 onClick={() => {
                   setOpen(false);
                   logout();

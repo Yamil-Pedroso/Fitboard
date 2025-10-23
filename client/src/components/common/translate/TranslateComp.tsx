@@ -82,8 +82,8 @@ const TranslateComp = ({
   // keyboard: Ctrl/Cmd+L to cycle, Esc to close
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const isMac = navigator?.platform?.toLowerCase().includes("mac");
-      if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === "l") {
+      const isMod = e.metaKey || e.ctrlKey;
+      if (isMod && e.key.toLowerCase() === "l") {
         e.preventDefault();
         cycle();
       }

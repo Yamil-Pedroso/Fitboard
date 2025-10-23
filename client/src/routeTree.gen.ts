@@ -15,6 +15,7 @@ import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as RoutinesIndexRouteImport } from './routes/routines/index'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as MealsIndexRouteImport } from './routes/meals/index'
+import { Route as FaqsIndexRouteImport } from './routes/faqs/index'
 import { Route as SettingsSecurityRouteImport } from './routes/settings/security'
 import { Route as RecipesCreateRouteImport } from './routes/recipes/create'
 import { Route as MealsCreateRouteImport } from './routes/meals/create'
@@ -55,6 +56,11 @@ const RecipesIndexRoute = RecipesIndexRouteImport.update({
 const MealsIndexRoute = MealsIndexRouteImport.update({
   id: '/meals/',
   path: '/meals/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsIndexRoute = FaqsIndexRouteImport.update({
+  id: '/faqs/',
+  path: '/faqs/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
+  '/faqs': typeof FaqsIndexRoute
   '/meals': typeof MealsIndexRoute
   '/recipes': typeof RecipesIndexRoute
   '/routines': typeof RoutinesIndexRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
+  '/faqs': typeof FaqsIndexRoute
   '/meals': typeof MealsIndexRoute
   '/recipes': typeof RecipesIndexRoute
   '/routines': typeof RoutinesIndexRoute
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
+  '/faqs/': typeof FaqsIndexRoute
   '/meals/': typeof MealsIndexRoute
   '/recipes/': typeof RecipesIndexRoute
   '/routines/': typeof RoutinesIndexRoute
@@ -184,6 +193,7 @@ export interface FileRouteTypes {
     | '/meals/create'
     | '/recipes/create'
     | '/settings/security'
+    | '/faqs'
     | '/meals'
     | '/recipes'
     | '/routines'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/meals/create'
     | '/recipes/create'
     | '/settings/security'
+    | '/faqs'
     | '/meals'
     | '/recipes'
     | '/routines'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/meals/create'
     | '/recipes/create'
     | '/settings/security'
+    | '/faqs/'
     | '/meals/'
     | '/recipes/'
     | '/routines/'
@@ -242,6 +254,7 @@ export interface RootRouteChildren {
   MealsCreateRoute: typeof MealsCreateRoute
   RecipesCreateRoute: typeof RecipesCreateRoute
   SettingsSecurityRoute: typeof SettingsSecurityRoute
+  FaqsIndexRoute: typeof FaqsIndexRoute
   MealsIndexRoute: typeof MealsIndexRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
   RoutinesIndexRoute: typeof RoutinesIndexRoute
@@ -293,6 +306,13 @@ declare module '@tanstack/react-router' {
       path: '/meals'
       fullPath: '/meals'
       preLoaderRoute: typeof MealsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs/': {
+      id: '/faqs/'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/security': {
@@ -386,6 +406,7 @@ const rootRouteChildren: RootRouteChildren = {
   MealsCreateRoute: MealsCreateRoute,
   RecipesCreateRoute: RecipesCreateRoute,
   SettingsSecurityRoute: SettingsSecurityRoute,
+  FaqsIndexRoute: FaqsIndexRoute,
   MealsIndexRoute: MealsIndexRoute,
   RecipesIndexRoute: RecipesIndexRoute,
   RoutinesIndexRoute: RoutinesIndexRoute,
