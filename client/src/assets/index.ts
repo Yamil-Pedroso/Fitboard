@@ -5,6 +5,13 @@ import fn4 from "./images/fn_04.png";
 
 import fitnut from "./images/bg/fit_nut.png";
 
+// section images
+import meal from "./images/sections/meals/meal.png";
+import recipe1 from "./images/sections/recipes/recipe_1.png";
+import recipe2 from "./images/sections/recipes/recipe_2.png";
+import recipe3 from "./images/sections/recipes/recipe_3.png";
+import routines from "./images/sections/routines/routines.png";
+
 // avatars
 import avatar1 from "./images/avatars/avatar1.jpg";
 import deco1 from "./images/deco/deco_1.png";
@@ -18,17 +25,17 @@ import icon5 from "./images/icons/icon_5.jpg";
 import icon6 from "./images/icons/icon_6.jpg";
 
 // section images
-import section1 from "./images/section/section_1.png";
+import section1 from "./images/sections/section_1.png";
 
-import prod1 from "./images/section/prod_1.png";
-import prod2 from "./images/section/prod_2.png";
-import prod3 from "./images/section/prod_3.png";
-import prod4 from "./images/section/prod_4.png";
-import prod5 from "./images/section/prod_5.png";
-import prod6 from "./images/section/prod_6.png";
-import prod7 from "./images/section/prod_7.png";
-import prod8 from "./images/section/prod_8.png";
-import prod9 from "./images/section/prod_9.png";
+import prod1 from "./images/sections/prod_1.png";
+import prod2 from "./images/sections/prod_2.png";
+import prod3 from "./images/sections/prod_3.png";
+import prod4 from "./images/sections/prod_4.png";
+import prod5 from "./images/sections/prod_5.png";
+import prod6 from "./images/sections/prod_6.png";
+import prod7 from "./images/sections/prod_7.png";
+import prod8 from "./images/sections/prod_8.png";
+import prod9 from "./images/sections/prod_9.png";
 
 import noteBook from "./images/notebook.png";
 
@@ -44,6 +51,11 @@ const assets: IAssets = {
   fitnut,
   deco1,
   avatar1,
+  meal,
+  recipe1,
+  recipe2,
+  recipe3,
+  routines,
   icon1,
   icon2,
   icon3,

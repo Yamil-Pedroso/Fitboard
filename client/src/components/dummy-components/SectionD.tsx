@@ -103,14 +103,14 @@ const SectionD = () => {
 
   return (
     <motion.div
-      className="w-full flex flex-col justify-center mt-30"
+      className="min-h-screen w-full flex flex-col items-center justify-center px-4"
       variants={container}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="w-full flex justify-center flex-col gap-10 lg:flex-row lg:justify-between lg:gap-12">
-        <motion.div className="w-full lg:w-[50rem]" variants={fadeRight}>
+      <div className="w-[82rem] flex  flex-col  lg:flex-row lg:justify-between lg:gap-12">
+        <motion.div className="w-full" variants={fadeRight}>
           <h1 className="text-black text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
             Experience Reliable Fitness Services
           </h1>
@@ -137,14 +137,14 @@ const SectionD = () => {
             <motion.button
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="text-black px-4 py-2 rounded border-4 bg-amber-400"
+              className=" px-4 py-2  bg-emerald-600 rounded-2xl"
             >
               Get Started
             </motion.button>
             <motion.button
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-gray-300 text-black px-4 py-2 rounded border-4"
+              className="bg-gray-300 text-black px-4 py-2 rounded-2xl"
             >
               Learn More
             </motion.button>
@@ -155,12 +155,12 @@ const SectionD = () => {
       {/* Imagen con zoom-in */}
       <div className="flex gap-20">
         <div className="relative">
-          <div className="flex justify-center items-center w-[5rem] h-[5rem] shadow-2xl absolute bg-amber-400 z-50">
+          <div className="flex justify-center items-center w-[5rem] h-[5rem] shadow-2xl absolute bg-amber-400 z-50 rounded-[1rem]">
             <FaEye className="text-3xl text-black" />
           </div>
 
           <motion.div
-            className="w-[39rem] h-[30rem] overflow-hidden border-6 border-[#393a3c] mt-12"
+            className="w-[39rem] h-[30rem] overflow-hidden border-6 border-[#393a3c] mt-12 rounded-[2rem]"
             variants={zoomIn}
           >
             <img
@@ -189,7 +189,7 @@ const SectionD = () => {
               <div className="flex items-center mb-6">
                 <div
                   onClick={handleCheck}
-                  className={`flex justify-center items-center w-[4rem] h-[2rem] border border-[#393a3c] ${
+                  className={`flex justify-center items-center w-[2rem] h-[2rem] border border-[#393a3c] ${
                     isUnlocked
                       ? "cursor-not-allowed opacity-80"
                       : "cursor-pointer"

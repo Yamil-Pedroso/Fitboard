@@ -138,7 +138,6 @@ const smallCircle = [
   },
 ];
 
-/* ================= Componente principal ================= */
 const SectionB = () => {
   const { ref: smallRef, inView } = useInViewOnce<HTMLDivElement>();
   // Controla qué índice está escribiéndose (secuencial de arriba hacia abajo)
@@ -150,60 +149,61 @@ const SectionB = () => {
   }, [inView, current]);
 
   return (
-    <div className="w-full flex flex-col  justify-center ">
-      <h2 className="text-black mt-10 text-4xl font-bold">Section B</h2>
-      <p className="text-black">This is the content for Section B.</p>
+    <div className="w-full flex flex-col ">
+      <div className="mx-auto  flex flex-col items-center">
+        <h2 className="text-black mt-10 text-4xl font-bold">Section B</h2>
+        <p className="text-black">This is the content for Section B.</p>
 
-      <div className="w-full flex mt-10 gap-3.5">
-        {/* Small Circles con escritura secuencial */}
-        <div
-          ref={smallRef}
-          className="w-[58%] shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)]"
-        >
-          <div className="h-[25rem] bg-white p-6 shadow-lg border-6 border-[#393a3c] overflow-hidden relative">
-            {smallCircle.map((item, i) => (
-              <div
-                key={i}
-                className={`flex gap-8 mb-4 absolute mt-8`}
-                style={{ top: i * 80, left: 20 }}
-              >
-                <div className="mt-2">
-                  <div
-                    className={`w-3 h-3 ${item.color} flex rounded-full border-2 border-gray-600`}
-                  />
-                </div>
-                <div className="flex flex-col ">
-                  <h3 className="text-black font-semibold">{item.title}</h3>
-                  <p className="text-black w-[22rem]">
-                    <Typewriter
-                      text={item.content}
-                      start={current === i} // SOLO este ítem escribe
-                      speed={20} // más suave
-                      ramp={180} // pequeña rampa
-                      onDone={() => setCurrent((i) => (i === i ? i + 1 : i))}
+        <div className="w-full flex mt-10 gap-3.5 ">
+          {/* Small Circles con escritura secuencial */}
+          <div
+            ref={smallRef}
+            className="shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] rounded-[2.2rem]"
+          >
+            <div className="w-[37rem] h-[25rem] bg-white p-6 shadow-lg border-6 border-[#393a3c] rounded-[2.2rem] overflow-hidden relative ">
+              {smallCircle.map((item, i) => (
+                <div
+                  key={i}
+                  className={`flex gap-8 mb-4 absolute mt-8`}
+                  style={{ top: i * 80, left: 20 }}
+                >
+                  <div className="mt-2">
+                    <div
+                      className={`w-3 h-3 ${item.color} flex rounded-full border-2 border-gray-600`}
                     />
-                  </p>
+                  </div>
+                  <div className="flex flex-col ">
+                    <h3 className="text-black font-semibold">{item.title}</h3>
+                    <p className="text-black w-[22rem]">
+                      <Typewriter
+                        text={item.content}
+                        start={current === i} // SOLO este ítem escribe
+                        speed={20} // más suave
+                        ramp={180} // pequeña rampa
+                        onDone={() => setCurrent((i) => (i === i ? i + 1 : i))}
+                      />
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="w-[40%] flex gap-4">
+            {loremContent.map((box, index) => (
+              <div
+                key={index}
+                className="w-[10rem] flex justify-center shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] rounded-[1rem]"
+              >
+                <div
+                  className={`w-2xl text-center text-[#393a3c] flex flex-col justify-center items-center border-6 border-[#393a3c] rounded-[1rem] p-4 ${box.color}`}
+                >
+                  <h2 className="text-xl font-semibold mb-2">{box.title}</h2>
+                  <p>{box.content}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Large Boxes (sin cambios) */}
-        <div className="w-[40%] flex gap-4">
-          {loremContent.map((box, index) => (
-            <div
-              key={index}
-              className="w-[10rem] flex justify-center shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)]"
-            >
-              <div
-                className={`w-2xl text-center text-[#393a3c] flex flex-col justify-center items-center border-6 border-[#393a3c] p-4 ${box.color}`}
-              >
-                <h2 className="text-xl font-semibold mb-2">{box.title}</h2>
-                <p>{box.content}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

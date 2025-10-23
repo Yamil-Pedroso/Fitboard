@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
+import TranslateComp from "../common/translate/TranslateComp";
 
 const UserMenu = () => {
   const { user, logout } = useAuth();
@@ -166,10 +167,14 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <div>
             {user ? (
-              <IoIosNotifications className="size-7 ml-4 text-black cursor-pointer" />
+              <IoIosNotifications className="size-7 ml-4 text-[#393a3c]  cursor-pointer" />
             ) : (
-              <IoIosNotificationsOff className="size-7 ml-4 text-black cursor-pointer" />
+              <IoIosNotificationsOff className="size-7 ml-4 text-[#393a3c] cursor-pointer" />
             )}
+          </div>
+
+          <div>
+            <TranslateComp />
           </div>
           {user ? (
             <div className="flex items-center gap-3">

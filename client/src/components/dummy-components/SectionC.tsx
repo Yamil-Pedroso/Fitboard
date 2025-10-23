@@ -71,8 +71,19 @@ export default function SectionC() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
     >
+      <div className="flex flex-col justify-center items-center">
+        <h1>
+          <span className="text-4xl font-bold text-black">Section C</span>
+        </h1>
+
+        <h2>
+          <span className="ml-4 text-lg text-black">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+        </h2>
+      </div>
       <motion.div
-        className="mx-auto border-4 border-[#393a3c] bg-[#ebeae2] p-8 shadow-sm"
+        className="mx-auto border-4 border-[#393a3c] bg-[#ebeae2] p-8 shadow-sm rounded-[2.2rem] mt-10"
         variants={zoomIn}
       >
         {/* Header */}

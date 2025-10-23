@@ -18,14 +18,12 @@ const RecipesList = () => {
     limit: 12,
     sort: "-name" as const,
     q: "" as string | undefined,
-    // category: "" as string | undefined, // cuando tengas categorías
   });
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
       if (!confirmId) return;
       const el = e.target as Node;
-
       if (!(el as HTMLElement).closest(`[data-confirm-for="${confirmId}"]`)) {
         setConfirmId(null);
       }
@@ -42,14 +40,13 @@ const RecipesList = () => {
   }, [confirmId]);
 
   const { recipes, page, total, isLoading, error } = useRecipes(params);
-
   const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 12)));
 
   useEffect(() => {
     const id = setTimeout(() => {
       setParams((p) => ({
         ...p,
-        page: 1, // resetea a la primera página cuando cambias la búsqueda
+        page: 1,
         q: search.trim() ? search.trim() : undefined,
       }));
     }, 300);
@@ -70,10 +67,7 @@ const RecipesList = () => {
   }, [recipes, search]);
 
   const handleUpdateRecipeClick = (recipeId: string) => {
-    navigate({
-      to: UpdateRecipeRoute.to,
-      params: { recipeId },
-    });
+    navigate({ to: UpdateRecipeRoute.to, params: { recipeId } });
   };
 
   return (
@@ -91,7 +85,6 @@ const RecipesList = () => {
 
       {/* Toolbar de filtros */}
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {/* Búsqueda */}
         <input
           type="text"
           className="w-full rounded border px-3 py-2 text-black"
@@ -99,8 +92,6 @@ const RecipesList = () => {
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
-
-        {/* Categoría (placeholder hasta que tengas data real) */}
         <select
           className="w-full rounded border px-3 py-2 text-black"
           disabled
@@ -108,8 +99,6 @@ const RecipesList = () => {
         >
           <option>All categories</option>
         </select>
-
-        {/* Orden */}
         <select
           className="w-full rounded border px-3 py-2 text-black"
           value={params.sort}
@@ -148,7 +137,6 @@ const RecipesList = () => {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((recipe) => {
-            // Ajusta estos campos a tu shape real (image, ingredients array, categoryIds…)
             const image =
               // @ts-expect-error optional if you add it later
               recipe.imageUrl || FALLBACK_IMG;
@@ -161,69 +149,86 @@ const RecipesList = () => {
             return (
               <article
                 key={recipe._id}
-                className="overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md"
+                className="
+                  group relative overflow-hidden rounded-2xl border border-neutral-200
+                  bg-white/90 backdrop-blur-sm shadow-sm transition-all
+                  hover:-translate-y-0.5 hover:shadow-lg
+                "
               >
-                <div className="aspect-[16/10] w-full overflow-hidden bg-gray-100">
+                {/* cover */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                  {/* subtle texture/glow overlay */}
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.06),transparent_45%)]" />
                   <img
                     src={image}
                     alt={recipe.name}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
                     }}
                   />
                 </div>
 
-                <div className="flex flex-col space-y-3 p-4 text-black ">
+                {/* body */}
+                <div className="flex flex-col space-y-3 p-4 text-black">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="line-clamp-1 text-lg font-semibold">
+                    <h3 className="line-clamp-1 text-base md:text-lg font-semibold text-neutral-900">
                       {recipe.name}
                     </h3>
-                    <span className="shrink-0 rounded-full border px-2 py-0.5 text-xs">
+                    <span
+                      className="
+                        shrink-0 rounded-full bg-white/90 px-2 py-0.5 text-xs text-neutral-700
+                        ring-1 ring-inset ring-neutral-200 shadow-sm
+                      "
+                    >
                       {servings} servings
                     </span>
                   </div>
 
-                  <p className="text-sm opacity-70">
+                  <p className="text-sm text-neutral-600">
                     {ingCount} ingredient{ingCount === 1 ? "" : "s"}
                   </p>
 
-                  <ul>
+                  <ul className="space-y-1 text-sm text-neutral-800">
                     {recipe.ingredients.map((ingredient, i) => (
-                      <li key={i}>- {ingredient.name}</li>
+                      <li
+                        key={i}
+                        className="truncate before:mr-2 before:content-['•'] before:text-neutral-300"
+                      >
+                        {ingredient.name}
+                      </li>
                     ))}
                   </ul>
 
-                  {/* Badges de categorías (placeholder) */}
+                  {/* category chips */}
                   {cats.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 pt-1">
                       {cats.slice(0, 3).map((c: string) => (
                         <span
                           key={c}
-                          className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-black"
+                          className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 ring-1 ring-inset ring-neutral-200"
                         >
-                          {/* reemplaza con el nombre de la categoría */}
                           {c}
                         </span>
                       ))}
                       {cats.length > 3 && (
-                        <span className="text-xs opacity-70 tex-black">
+                        <span className="text-xs text-neutral-500">
                           +{cats.length - 3} more
                         </span>
                       )}
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between pt-2 relative">
+                  <div className="relative flex items-center justify-between pt-2">
                     <button
                       onClick={() => handleUpdateRecipeClick(recipe._id)}
-                      className="text-sm underline"
+                      className="inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-sm hover:bg-neutral-50"
                     >
                       Edit
                     </button>
 
                     <button
-                      className="px-2 underline "
+                      className="inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-sm text-red-600 hover:bg-red-50"
                       onClick={() => setConfirmId(recipe._id)}
                       disabled={isPending && confirmId === recipe._id}
                     >
@@ -233,7 +238,7 @@ const RecipesList = () => {
                     {confirmId === recipe._id && (
                       <div
                         data-confirm-for={recipe._id}
-                        className="absolute right-3 top-[-3rem] -translate-y-1/2  w-40 rounded-2xl border bg-white p-4 shadow-2xl z-10"
+                        className="absolute right-3 top-[-3rem] -translate-y-1/2 w-40 rounded-2xl border bg-white p-4 text-neutral-900 shadow-2xl z-10"
                       >
                         <p className="mb-3 font-semibold">Are you sure?</p>
                         <div className="flex items-center justify-end gap-4">

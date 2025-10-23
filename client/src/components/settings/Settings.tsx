@@ -85,7 +85,7 @@ const Settings = () => {
                   Change photo
                 </button>
                 <button
-                  className="rounded-lg border px-3 py-1.5 hover:bg-black/5"
+                  className="rounded-lg border px-3 py-1.5 hover:bg-black/5 mt-1"
                   onClick={() =>
                     setAvatar(
                       "https://images.unsplash.com/photo-1545996124-0501ebae84d0?q=80&w=600&auto=format&fit=crop"
@@ -356,7 +356,7 @@ function ToggleRow({
         }`}
       >
         <span
-          className={`block h-5 w-5 translate-y-0.5 rounded-full bg-white transition ${
+          className={`block h-5 w-5 translate-y-0.4 mx-[-1px] rounded-full bg-white transition ${
             checked ? "translate-x-6" : "translate-x-0.5"
           }`}
         />

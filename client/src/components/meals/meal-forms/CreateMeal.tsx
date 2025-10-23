@@ -100,10 +100,10 @@ export default function CreateMeal() {
   }
 
   return (
-    <div className="flex gap-2">
+    <div className="w-full   gap-2">
       <form
         onSubmit={onSubmit}
-        className="max-w-xl space-y-4 rounded-2xl border p-6 text-black"
+        className="w-full mx-auto max-w-xl space-y-4 rounded-2xl border p-6 text-black"
       >
         <h2 className="text-lg font-semibold">Create meal</h2>
 

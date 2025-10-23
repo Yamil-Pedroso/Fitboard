@@ -9,6 +9,7 @@ import cookieSession from "cookie-session";
 import userRoutes from "../routes/user";
 import mealsRoutes from "../routes/meals";
 import recipeRoutes from "../routes/recipe";
+import routineRoutes from "../routes/routine";
 import devRoutes from "../routes/dev";
 import adminRoutes from "../routes/admin";
 import { v2 as cloudinary } from "cloudinary";
@@ -69,6 +70,7 @@ app.use("/api/v1", devRoutes);
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", mealsRoutes);
 app.use("/api/v1", recipeRoutes);
+app.use("/api/v1", routineRoutes);
 
 // Error handlers
 app.use(multerErrorHandler);
