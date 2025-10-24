@@ -5,6 +5,10 @@ import fn4 from "./images/fn_04.png";
 
 import fitnut from "./images/bg/fit_nut.png";
 
+// Routines page
+import routine1 from "./images/pages/routines/routine_1.png";
+import routine2 from "./images/pages/routines/routine_2.png";
+
 // section images
 import meal from "./images/sections/meals/meal.png";
 import recipe1 from "./images/sections/recipes/recipe_1.png";
@@ -48,6 +52,8 @@ const assets: IAssets = {
   fn2,
   fn3,
   fn4,
+  routine1,
+  routine2,
   fitnut,
   deco1,
   avatar1,

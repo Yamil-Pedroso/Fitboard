@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Route as RountineDetailsRoute } from "@/routes/routines/routine-details/$routineId";
 import { useRoutines } from "@/lib/hooks/useRoutines"; // <- no-params version
 import type { IRoutine } from "@/services/routineService";
+import assets from "@/assets";
 
 type SortOption =
   | "-updatedAt"
@@ -24,7 +26,6 @@ const SORT_LABEL: Record<SortOption, string> = {
 const PAGE_SIZE = 20;
 
 const RoutinesList = () => {
-  // UI state
   const [search, setSearch] = React.useState("");
   const [templatesOnly, setTemplatesOnly] = React.useState(false);
   const [includeArchived, setIncludeArchived] = React.useState(false);
@@ -33,6 +34,8 @@ const RoutinesList = () => {
 
   // Fetch all routines once (no query params)
   const { routines, isLoading, isFetching } = useRoutines();
+
+  const navigate = useNavigate();
 
   // Debounce search
   const [debouncedSearch, setDebouncedSearch] = React.useState(search);
@@ -68,6 +71,13 @@ const RoutinesList = () => {
   const visible = filtered.slice(start, start + PAGE_SIZE);
   const total = filtered.length;
   const hasMore = start + PAGE_SIZE < total;
+
+  const handleClickRoutine = (routineId: string) => {
+    navigate({
+      to: RountineDetailsRoute.to,
+      params: { routineId },
+    });
+  };
 
   return (
     <div className="p-6 space-y-5 text-black">
@@ -178,13 +188,12 @@ const RoutinesList = () => {
                     </div>
                   </div>
 
-                  <Link
-                    to="/"
-                    params={{ id: r._id }}
+                  <button
+                    onClick={() => handleClickRoutine(r._id)}
                     className="shrink-0 px-3 py-2 rounded-xl bg-neutral-900 text-white hover:opacity-90"
                   >
                     Open
-                  </Link>
+                  </button>
                 </div>
               </li>
             ))}
@@ -213,6 +222,10 @@ const RoutinesList = () => {
           </div>
         </>
       )}
+
+      <div>
+        <img src={assets.routine2} alt="routine one" className="w-[40rem]" />
+      </div>
     </div>
   );
 };

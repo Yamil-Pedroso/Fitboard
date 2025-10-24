@@ -12,7 +12,7 @@ router.patch("/routines/:id", ctrl.updateRoutine);
 router.put("/routines/:id", ctrl.replaceRoutine);
 router.delete("/routines/:id", ctrl.deleteRoutine);
 
-// acciones extra
+// extra actions
 router.post("/routines/:id/duplicate", ctrl.duplicateRoutine);
 router.post("/routines/:id/archive", ctrl.archiveRoutine);
 router.post("/routines/:id/unarchive", ctrl.unarchiveRoutine);

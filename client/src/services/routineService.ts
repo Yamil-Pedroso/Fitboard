@@ -48,6 +48,21 @@ export interface IRoutine {
   updatedAt: string; // ISO string
 }
 
+export type CreateRoutineInput = {
+  name: string;
+  blocks: IRoutineBlock[];
+  tags?: string[];
+  isTemplate?: boolean;
+  isArchived?: boolean;
+  estimatedDurationMin?: number;
+};
+
+// PATCH parcial (solo campos editables)
+export type UpdateRoutineInput = Partial<Omit<CreateRoutineInput, never>>;
+
+// PUT reemplazo completo (mismo shape que crear)
+export type ReplaceRoutineInput = CreateRoutineInput;
+
 /** ----- List params & response ----- */
 export interface IListRoutinesParams {
   page?: number;
@@ -61,20 +76,103 @@ export interface IListRoutinesParams {
     | "-name"
     | "createdAt"
     | "-createdAt"
-    | "updatedAt"
-    | "-updatedAt";
+    | "lastPerformedAt"
+    | "-lastPerformedAt"
+    | "timesPerformed"
+    | "-timesPerformed";
 }
 
-export type ListRoutinesResponse = {
+export type ListRoutinesPayload = {
   page: number;
   limit: number;
   total: number;
-  hasMore: boolean;
   items: IRoutine[];
 };
 
+export type ListRoutinesResponse = ListRoutinesPayload & { hasMore: boolean };
+
 /** ----- Service: list all routines (paginated) ----- */
 export async function listAllRoutines(): Promise<ListRoutinesResponse> {
-  const { data } = await axiosInstance.get<ListRoutinesResponse>("/routines");
+  const { data } = await axiosInstance.get<ListRoutinesPayload>("/routines");
+  const hasMore = data.page * data.limit < data.total;
+  return { ...data, hasMore };
+}
+/** ----- Service: fetch a routine ----- */
+export async function getRoutineById(routineId: string): Promise<IRoutine> {
+  const { data } = await axiosInstance.get(`/routines/${routineId}`);
+  return data;
+}
+
+/** ----- Service: create a rountine ----- */
+export async function createRoutine(
+  input: CreateRoutineInput
+): Promise<IRoutine> {
+  const { data } = await axiosInstance.post<IRoutine>("/routines", input);
+  return data;
+}
+
+/** ----- Service: update a rountine ----- */
+export async function updateRoutine(
+  routineId: string,
+  input: UpdateRoutineInput
+): Promise<IRoutine> {
+  const { data } = await axiosInstance.patch<IRoutine>(
+    `/routines/${routineId}`,
+    input
+  );
+  return data;
+}
+/** ----- Service: replace a rountine ----- */
+export async function replaceRoutine(
+  routineId: string,
+  input: ReplaceRoutineInput
+): Promise<IRoutine> {
+  const { data } = await axiosInstance.put<IRoutine>(
+    `/routines/${routineId}`,
+    input
+  );
+  return data;
+}
+
+/** ----- Service: delete a rountine ----- */
+export async function deleteRoutine(routineId: string): Promise<void> {
+  await axiosInstance.delete(`/routines/${routineId}`);
+}
+
+/** ----- Extra actions ----- */
+export async function duplicateRoutine(
+  routineId: string,
+  name: string
+): Promise<IRoutine> {
+  const { data } = await axiosInstance.post<IRoutine>(
+    `/routines/${routineId}/duplicate`,
+    null,
+    { params: name ? { name } : undefined }
+  );
+  return data;
+}
+
+export async function archiveRoutine(routineId: string): Promise<IRoutine> {
+  const { data } = await axiosInstance.post<IRoutine>(
+    `/routines/${routineId}/archive`
+  );
+  return data;
+}
+
+export async function unarchiveRoutine(routineId: string): Promise<IRoutine> {
+  const { data } = await axiosInstance.post<IRoutine>(
+    `/routines/${routineId}/unarchive`
+  );
+  return data;
+}
+
+export async function markRoutinePerformed(
+  routineId: string,
+  date?: string
+): Promise<IRoutine> {
+  const { data } = await axiosInstance.post<IRoutine>(
+    `/routines/${routineId}/mark-performed`,
+    { date }
+  );
   return data;
 }

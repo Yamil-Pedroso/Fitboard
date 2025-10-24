@@ -17,7 +17,7 @@ export interface ExerciseItem {
 
 export interface RoutineBlock {
   title?: string; // "Lower", "Push", "Core", ...
-  position: number; // order of the block inside the routine
+  position: number;
   exercises: ExerciseItem[];
   exerciseType?: "strength" | "hypertrophy" | "conditioning" | "mobility";
   rounds?: number;
@@ -115,7 +115,7 @@ const ExerciseItemDto = z.object({
   rir: z.number().min(0).max(10).optional(),
   tempo: z.string().optional(),
   notes: z.string().optional(),
-  videoUrl: z.string().url().optional(),
+  videoUrl: z.url().optional(),
   cues: z.array(z.string()).default([]),
 });
 

@@ -46,6 +46,8 @@ export const listRoutines = asyncHandler(
       ListQuery.parse(req.query);
     const skip = (page - 1) * limit;
 
+    console.log("page" + page);
+
     const filter: any = { userId: req.auth.userId };
 
     if (!includeArchived) filter.isArchived = false;
@@ -169,6 +171,7 @@ export const deleteRoutine = asyncHandler(
 );
 
 const DuplicateQuery = z.object({ name: z.string().trim().optional() });
+
 export const duplicateRoutine = asyncHandler(
   async (req: AuthReq, res: Response) => {
     if (!req.auth?.userId)
