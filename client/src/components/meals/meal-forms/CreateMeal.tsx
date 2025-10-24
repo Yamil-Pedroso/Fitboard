@@ -13,7 +13,7 @@ const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 // setCIMP(...) → Custom Item Macros Per-basis
 // Actualiza form.customItem.macrosPerBasis (p.ej. kcal, protein, carbohydrate, fat).
 
-export default function CreateMeal() {
+const CreateMeal = () => {
   const { mutate, isPending, error } = useCreateMeal();
 
   const [form, setForm] = useState({
@@ -354,4 +354,6 @@ export default function CreateMeal() {
       </Link>
     </div>
   );
-}
+};
+
+export default CreateMeal;

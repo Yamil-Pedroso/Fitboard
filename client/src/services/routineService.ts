@@ -92,8 +92,14 @@ export type ListRoutinesPayload = {
 export type ListRoutinesResponse = ListRoutinesPayload & { hasMore: boolean };
 
 /** ----- Service: list all routines (paginated) ----- */
-export async function listAllRoutines(): Promise<ListRoutinesResponse> {
-  const { data } = await axiosInstance.get<ListRoutinesPayload>("/routines");
+export async function listAllRoutines(opts?: {
+  includeArchived?: boolean;
+}): Promise<ListRoutinesResponse> {
+  const { data } = await axiosInstance.get<ListRoutinesPayload>("/routines", {
+    params: {
+      includeArchived: opts?.includeArchived ? true : undefined,
+    },
+  });
   const hasMore = data.page * data.limit < data.total;
   return { ...data, hasMore };
 }

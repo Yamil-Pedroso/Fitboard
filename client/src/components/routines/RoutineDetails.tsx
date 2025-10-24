@@ -10,8 +10,9 @@ import {
   useUnarchiveRoutine,
   useMarkPerformedRoutine,
 } from "@/lib/hooks/useRoutines";
-import type { IRoutine } from "@/services/routineService";
+import type { IRoutineBlock } from "@/services/routineService";
 
+// Icons (lucide). Si no usas lucide, cambia por SVG/emoji.
 import {
   Dumbbell,
   Clock,
@@ -27,6 +28,9 @@ import {
   ExternalLink,
   Film,
   X,
+  Flame,
+  Activity,
+  Move,
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,7 +52,7 @@ const fmtDuration = (min?: number) => {
 // Botón simple Tailwind
 const btn = {
   base: "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
-  primary: "bg-black text-white hover:bg-black/90",
+  primary: "bg-zinc-900 text-white hover:bg-zinc-800",
   secondary: "bg-zinc-100 text-zinc-900 hover:bg-zinc-200",
   outline: "border border-zinc-300 text-zinc-900 hover:bg-zinc-50",
   danger: "bg-red-600 text-white hover:bg-red-500",
@@ -57,7 +61,7 @@ const btn = {
 };
 
 const Chip: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2.5 py-1 text-xs text-zinc-700">
+  <span className="inline-flex items-center gap-1 rounded-full bg-zinc-900/90 px-2.5 py-1 text-xs text-white">
     {children}
   </span>
 );
@@ -81,14 +85,14 @@ const Card: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
   children,
 }) => (
   <div
-    className={`rounded-xl border border-zinc-200 bg-white shadow-sm ${className}`}
+    className={`rounded-xl border border-zinc-200 bg-white shadow-sm text-black ${className}`}
   >
     {children}
   </div>
 );
 
 const Skeleton: React.FC = () => (
-  <div className="mx-auto w-full max-w-5xl p-6">
+  <div className="mx-auto w-full max-w-5xl p-6 text-black">
     <div className="mb-4 h-7 w-64 animate-pulse rounded bg-zinc-200" />
     <div className="mb-6 h-4 w-40 animate-pulse rounded bg-zinc-200" />
     <div className="grid gap-4 md:grid-cols-3">
@@ -96,7 +100,7 @@ const Skeleton: React.FC = () => (
       <div className="h-28 animate-pulse rounded-xl bg-zinc-200" />
       <div className="h-28 animate-pulse rounded-xl bg-zinc-200" />
     </div>
-    <div className="mt-6 h-72 animate-pulse rounded-2xl bg-zinc-200" />
+    <div className="mt-6 h-72 animate-pulse rounded-2xl bg-zinc-200 text-black" />
   </div>
 );
 
@@ -129,7 +133,7 @@ const Menu: React.FC<{
   return (
     <div
       ref={ref}
-      className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-lg"
+      className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-lg text-black"
     >
       {items.map((it, i) => (
         <button
@@ -170,7 +174,7 @@ const Modal: React.FC<{
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="absolute left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5 shadow-xl"
+          className="absolute left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5 shadow-xl text-black"
         >
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-lg font-semibold">{title}</h3>
@@ -183,12 +187,51 @@ const Modal: React.FC<{
             </button>
           </div>
           <div className="text-sm text-zinc-700">{children}</div>
-          <div className="mt-4 flex justify-end gap-2">{footer}</div>
+          <div className="mt-4 flex justify-end gap-2 text-black">{footer}</div>
         </motion.div>
       </motion.div>
     )}
   </AnimatePresence>
 );
+
+// --- Temas de bloque: gradientes de alto contraste + icono grande ---
+const BLOCK_THEMES = [
+  {
+    header: "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white",
+    iconBg: "bg-white/15",
+    chip: "bg-white/15 text-white border-white/10",
+  },
+  {
+    header: "bg-gradient-to-r from-sky-600 to-cyan-500 text-white",
+    iconBg: "bg-white/15",
+    chip: "bg-white/15 text-white border-white/10",
+  },
+  {
+    header: "bg-gradient-to-r from-emerald-600 to-teal-500 text-white",
+    iconBg: "bg-white/15",
+    chip: "bg-white/15 text-white border-white/10",
+  },
+  {
+    header: "bg-gradient-to-r from-rose-600 to-orange-500 text-white",
+    iconBg: "bg-white/15",
+    chip: "bg-white/15 text-white border-white/10",
+  },
+] as const;
+
+const getBlockIcon = (block: IRoutineBlock) => {
+  switch (block.exerciseType) {
+    case "strength":
+      return Dumbbell;
+    case "hypertrophy":
+      return Activity;
+    case "conditioning":
+      return Flame;
+    case "mobility":
+      return Move;
+    default:
+      return Dumbbell;
+  }
+};
 
 const RoutineDetails: React.FC = () => {
   const { routineId } = Route.useParams();
@@ -196,9 +239,9 @@ const RoutineDetails: React.FC = () => {
 
   const { data: routine, isLoading, error } = useRoutine(routineId);
   const { mutate: delRoutine, isPending: deleting } = useDeleteRoutine();
-  const { mutate: duplicate, isPending: duplicating } = useDuplicateRoutine();
-  const { mutate: archive, isPending: archiving } = useArchiveRoutine();
-  const { mutate: unarchive, isPending: unarchiving } = useUnarchiveRoutine();
+  const { mutate: duplicate } = useDuplicateRoutine();
+  const { mutate: archive } = useArchiveRoutine();
+  const { mutate: unarchive } = useUnarchiveRoutine();
   const { mutate: markPerformed, isPending: marking } =
     useMarkPerformedRoutine();
 
@@ -224,7 +267,10 @@ const RoutineDetails: React.FC = () => {
     duplicate({ routineId: routine._id, name: `${routine.name} (copy)` });
   const onArchiveToggle = () =>
     routine.isArchived ? unarchive(routine._id) : archive(routine._id);
-  const onMarkPerformed = () => markPerformed({ routineId: routine._id });
+  const onMarkPerformed = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    markPerformed({ routineId: routine._id, date: today });
+  };
 
   return (
     <div className="mx-auto w-full max-w-5xl p-4 md:p-6">
@@ -236,14 +282,14 @@ const RoutineDetails: React.FC = () => {
         className="mb-5 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
       >
         <div className="flex items-start gap-3">
-          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-b from-zinc-900 to-zinc-700 text-white shadow">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-900 text-white shadow">
             <Dumbbell className="h-6 w-6" />
           </div>
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-black">
               {routine.name}
             </h1>
-            <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-zinc-600">
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-black">
               <Chip>
                 <Clock className="h-4 w-4" />{" "}
                 {fmtDuration(routine.estimatedDurationMin)}
@@ -318,7 +364,7 @@ const RoutineDetails: React.FC = () => {
           {routine.tags.map((t) => (
             <span
               key={t}
-              className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs text-zinc-700"
+              className="rounded-full bg-zinc-900/90 px-2.5 py-1 text-xs text-white"
             >
               {t}
             </span>
@@ -330,7 +376,7 @@ const RoutineDetails: React.FC = () => {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <div className="p-4">
-            <p className="text-xs uppercase tracking-wide text-black">
+            <p className="text-xs uppercase tracking-wide text-zinc-600">
               Estimated Duration
             </p>
             <p className="mt-1 text-2xl font-semibold">
@@ -340,7 +386,7 @@ const RoutineDetails: React.FC = () => {
         </Card>
         <Card>
           <div className="p-4">
-            <p className="text-xs uppercase tracking-wide text-zinc-500">
+            <p className="text-xs uppercase tracking-wide text-zinc-600">
               Last Performed
             </p>
             <p className="mt-1 text-2xl font-semibold">
@@ -350,7 +396,7 @@ const RoutineDetails: React.FC = () => {
         </Card>
         <Card>
           <div className="p-4">
-            <p className="text-xs uppercase tracking-wide text-zinc-500">
+            <p className="text-xs uppercase tracking-wide text-zinc-600">
               Times Performed
             </p>
             <p className="mt-1 text-2xl font-semibold">
@@ -360,134 +406,157 @@ const RoutineDetails: React.FC = () => {
         </Card>
       </div>
 
-      {/* Blocks */}
-      <div className="mt-6 space-y-4">
+      {/* Blocks con alto contraste e icono grande */}
+      <div className="mt-6 space-y-5">
         {routine.blocks?.length ? (
           routine.blocks
             .slice()
             .sort((a, b) => a.position - b.position)
-            .map((block) => (
-              <Card key={block.position}>
-                <div className="flex items-center justify-between border-b border-zinc-100 bg-zinc-50 px-4 py-3">
-                  <h3 className="text-sm font-semibold">
-                    {block.title || `Block ${block.position}`}
-                  </h3>
-                  <div className="flex items-center gap-3 text-xs text-zinc-600">
-                    {block.rounds ? (
-                      <span className="inline-flex items-center gap-1">
-                        <RefreshCcw className="h-3.5 w-3.5" /> {block.rounds}{" "}
-                        rounds
-                      </span>
-                    ) : null}
-                    {typeof block.restBetweenExercisesSec === "number" ? (
-                      <span className="inline-flex items-center gap-1">
-                        <Timer className="h-3.5 w-3.5" /> Rest{" "}
-                        {block.restBetweenExercisesSec}s
-                      </span>
-                    ) : null}
-                    {block.timer ? (
-                      <span className="inline-flex items-center gap-1">
-                        <Timer className="h-3.5 w-3.5" /> {block.timer.mode} ·{" "}
-                        {block.timer.seconds}s
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="max-h-[420px] divide-y overflow-y-auto">
-                  {block.exercises
-                    .slice()
-                    .sort((a, b) => a.position - b.position)
-                    .map((ex) => (
-                      <motion.div
-                        key={`${block.position}-${ex.position}-${ex.name}`}
-                        initial={{ opacity: 0, y: 8 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-20%" }}
-                        transition={{ duration: 0.2 }}
-                        className="grid grid-cols-1 gap-2 px-4 py-3 sm:grid-cols-12 sm:gap-3"
+            .map((block, i) => {
+              const theme = BLOCK_THEMES[i % BLOCK_THEMES.length];
+              const Icon = getBlockIcon(block);
+              return (
+                <Card key={block.position} className="overflow-hidden">
+                  <div
+                    className={`relative flex items-center justify-between px-4 py-4 ${theme.header} `}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-14 w-14 items-center justify-center rounded-xl ${theme.iconBg} ring-1 ring-white/20`}
                       >
-                        {/* main */}
-                        <div className="sm:col-span-4">
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline">{ex.position}</Badge>
-                            <p className="font-medium leading-tight">
-                              {ex.name}
-                            </p>
-                          </div>
-                          {ex.notes ? (
-                            <p className="mt-1 text-xs text-zinc-600">
-                              {ex.notes}
-                            </p>
+                        <Icon className="h-8 w-8 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold tracking-tight text-white drop-shadow">
+                          {block.title || `Block ${block.position}`}
+                        </h3>
+                        <div className="mt-1 flex flex-wrap items-center gap-3 text-xs">
+                          {block.rounds ? (
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${theme.chip}`}
+                            >
+                              <RefreshCcw className="h-3.5 w-3.5" />{" "}
+                              {block.rounds} rounds
+                            </span>
+                          ) : null}
+                          {typeof block.restBetweenExercisesSec === "number" ? (
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5  ${theme.chip}`}
+                            >
+                              <Timer className="h-3.5 w-3.5" /> Rest{" "}
+                              {block.restBetweenExercisesSec}s
+                            </span>
+                          ) : null}
+                          {block.timer ? (
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${theme.chip}`}
+                            >
+                              <Timer className="h-3.5 w-3.5" />{" "}
+                              {block.timer.mode} · {block.timer.seconds}s
+                            </span>
                           ) : null}
                         </div>
+                      </div>
+                    </div>
+                    {/* Icono enorme en fondo para carácter */}
+                    <Icon className="pointer-events-none absolute -right-3 -top-3 h-24 w-24 opacity-10" />
+                  </div>
 
-                        {/* prescription */}
-                        <div className="sm:col-span-5">
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-                            <span className="inline-flex items-center gap-1">
-                              <Dumbbell className="h-4 w-4" /> {ex.sets} sets
-                            </span>
-                            <span className="inline-flex items-center gap-1">
-                              <Play className="h-4 w-4" /> {ex.reps} reps
-                            </span>
-                            <span className="inline-flex items-center gap-1">
-                              <Timer className="h-4 w-4" /> Rest {ex.restSec}s
-                            </span>
-                            {typeof ex.loadKg === "number" ? (
-                              <span className="inline-flex items-center gap-1">
-                                <Dumbbell className="h-4 w-4" /> {ex.loadKg} kg
-                              </span>
-                            ) : null}
-                            {typeof ex.rir === "number" ? (
-                              <span className="inline-flex items-center gap-1">
-                                <RefreshCcw className="h-4 w-4" /> RIR {ex.rir}
-                              </span>
-                            ) : null}
-                            {ex.tempo ? (
-                              <span className="inline-flex items-center gap-1">
-                                <Clock className="h-4 w-4" /> Tempo {ex.tempo}
-                              </span>
+                  <div className="divide-y ">
+                    {block.exercises
+                      .slice()
+                      .sort((a, b) => a.position - b.position)
+                      .map((ex) => (
+                        <motion.div
+                          key={`${block.position}-${ex.position}-${ex.name}`}
+                          initial={{ opacity: 0, y: 8 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: "-20%" }}
+                          transition={{ duration: 0.2 }}
+                          className="grid grid-cols-1 gap-2 px-4 py-3 sm:grid-cols-12 sm:gap-3"
+                        >
+                          {/* main */}
+                          <div className="sm:col-span-4">
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline">{ex.position}</Badge>
+                              <p className="font-medium leading-tight text-zinc-900">
+                                {ex.name}
+                              </p>
+                            </div>
+                            {ex.notes ? (
+                              <p className="mt-1 text-xs ">{ex.notes}</p>
                             ) : null}
                           </div>
-                        </div>
 
-                        {/* extras */}
-                        <div className="sm:col-span-3 flex items-center gap-2">
-                          {ex.cues?.length ? (
-                            <div className="flex flex-wrap gap-1">
-                              {ex.cues.slice(0, 3).map((c) => (
-                                <Badge key={c}>{c}</Badge>
-                              ))}
-                              {ex.cues.length > 3 ? (
-                                <Badge variant="outline">
-                                  +{ex.cues.length - 3}
-                                </Badge>
+                          {/* prescription */}
+                          <div className="sm:col-span-5">
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-zinc-800">
+                              <span className="inline-flex items-center gap-1 ">
+                                <Dumbbell className="h-4 w-4" /> {ex.sets} sets
+                              </span>
+                              <span className="inline-flex items-center gap-1 text-zinc-800">
+                                <Play className="h-4 w-4" /> {ex.reps} reps
+                              </span>
+                              <span className="inline-flex items-center gap-1 text-zinc-800">
+                                <Timer className="h-4 w-4" /> Rest {ex.restSec}
+                              </span>
+                              {typeof ex.loadKg === "number" ? (
+                                <span className="inline-flex items-center gap-1 text-black">
+                                  <Dumbbell className="h-4 w-4 " /> {ex.loadKg}{" "}
+                                  kg
+                                </span>
+                              ) : null}
+                              {typeof ex.rir === "number" ? (
+                                <span className="inline-flex items-center gap-1 text-zinc-800">
+                                  <RefreshCcw className="h-4 w-4" /> RIR{" "}
+                                  {ex.rir}
+                                </span>
+                              ) : null}
+                              {ex.tempo ? (
+                                <span className="inline-flex items-center gap-1 text-black">
+                                  <Clock className="h-4 w-4" /> Tempo {ex.tempo}
+                                </span>
                               ) : null}
                             </div>
-                          ) : (
-                            <span className="text-xs text-zinc-500">—</span>
-                          )}
+                          </div>
 
-                          {ex.videoUrl ? (
-                            <a
-                              className="ml-auto inline-flex items-center gap-1 rounded-md border border-zinc-300 px-2 py-1 text-xs hover:bg-zinc-50"
-                              href={ex.videoUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <Film className="h-3.5 w-3.5" /> Video{" "}
-                              <ExternalLink className="h-3.5 w-3.5" />
-                            </a>
-                          ) : null}
-                        </div>
-                      </motion.div>
-                    ))}
-                </div>
-              </Card>
-            ))
+                          {/* extras */}
+                          <div className="sm:col-span-3 flex items-center gap-2">
+                            {ex.cues?.length ? (
+                              <div className="flex flex-wrap gap-1">
+                                {ex.cues.slice(0, 3).map((c) => (
+                                  <Badge key={c}>{c}</Badge>
+                                ))}
+                                {ex.cues.length > 3 ? (
+                                  <Badge variant="outline">
+                                    +{ex.cues.length - 3}
+                                  </Badge>
+                                ) : null}
+                              </div>
+                            ) : (
+                              <span className="text-xs text-zinc-500">—</span>
+                            )}
+
+                            {ex.videoUrl ? (
+                              <a
+                                className="ml-auto inline-flex items-center gap-1 rounded-md border border-zinc-300 px-2 py-1 text-xs text-black hover:bg-zinc-50"
+                                href={ex.videoUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <Film className="h-3.5 w-3.5" /> Video{" "}
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </a>
+                            ) : null}
+                          </div>
+                        </motion.div>
+                      ))}
+                  </div>
+                </Card>
+              );
+            })
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-10 text-center text-zinc-600">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-10 text-center text-black">
             <Dumbbell className="mb-2 h-7 w-7" />
             <p className="text-sm font-medium text-zinc-800">
               No blocks in this routine

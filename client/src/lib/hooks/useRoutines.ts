@@ -24,9 +24,13 @@ import {
 } from "@/services/routineService";
 import { toast } from "sonner";
 
-type RoutinesKey = readonly ["routines", "list", "all"];
+type RoutinesKey = readonly [
+  "routines",
+  "list",
+  "all" | "with-archived" | "active",
+];
 
-export function useRoutines() {
+export function useRoutines(opts: { includeArchived?: boolean } = {}) {
   const {
     data,
     isLoading,
@@ -39,8 +43,14 @@ export function useRoutines() {
     ListRoutinesResponse,
     RoutinesKey
   >({
-    queryKey: ["routines", "list", "all"] as const,
-    queryFn: () => listAllRoutines(), // no params
+    queryKey: [
+      "routines",
+      "list",
+      opts?.includeArchived ? "with-archived" : "active",
+    ] as const,
+
+    queryFn: () =>
+      listAllRoutines({ includeArchived: !!opts?.includeArchived }),
     staleTime: 30_000,
     gcTime: 5 * 60 * 1000,
   });

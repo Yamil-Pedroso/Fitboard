@@ -17,6 +17,7 @@ import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as MealsIndexRouteImport } from './routes/meals/index'
 import { Route as FaqsIndexRouteImport } from './routes/faqs/index'
 import { Route as SettingsSecurityRouteImport } from './routes/settings/security'
+import { Route as RoutinesCreateRouteImport } from './routes/routines/create'
 import { Route as RecipesCreateRouteImport } from './routes/recipes/create'
 import { Route as MealsCreateRouteImport } from './routes/meals/create'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
@@ -24,6 +25,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as RoutinesUpdateRoutineRouteImport } from './routes/routines/update/$routine'
 import { Route as RoutinesRoutineDetailsRoutineIdRouteImport } from './routes/routines/routine-details/$routineId'
 import { Route as RecipesUpdateRecipeIdRouteImport } from './routes/recipes/update/$recipeId'
 import { Route as MealsUpdateMealIdRouteImport } from './routes/meals/update/$mealId'
@@ -69,6 +71,11 @@ const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
   path: '/settings/security',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoutinesCreateRoute = RoutinesCreateRouteImport.update({
+  id: '/routines/create',
+  path: '/routines/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecipesCreateRoute = RecipesCreateRouteImport.update({
   id: '/recipes/create',
   path: '/recipes/create',
@@ -104,6 +111,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/admin/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoutinesUpdateRoutineRoute = RoutinesUpdateRoutineRouteImport.update({
+  id: '/routines/update/$routine',
+  path: '/routines/update/$routine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutinesRoutineDetailsRoutineIdRoute =
   RoutinesRoutineDetailsRoutineIdRouteImport.update({
     id: '/routines/routine-details/$routineId',
@@ -136,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
+  '/routines/create': typeof RoutinesCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
   '/faqs': typeof FaqsIndexRoute
   '/meals': typeof MealsIndexRoute
@@ -146,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
   '/recipes/update/$recipeId': typeof RecipesUpdateRecipeIdRoute
   '/routines/routine-details/$routineId': typeof RoutinesRoutineDetailsRoutineIdRoute
+  '/routines/update/$routine': typeof RoutinesUpdateRoutineRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -157,6 +171,7 @@ export interface FileRoutesByTo {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
+  '/routines/create': typeof RoutinesCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
   '/faqs': typeof FaqsIndexRoute
   '/meals': typeof MealsIndexRoute
@@ -167,6 +182,7 @@ export interface FileRoutesByTo {
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
   '/recipes/update/$recipeId': typeof RecipesUpdateRecipeIdRoute
   '/routines/routine-details/$routineId': typeof RoutinesRoutineDetailsRoutineIdRoute
+  '/routines/update/$routine': typeof RoutinesUpdateRoutineRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -179,6 +195,7 @@ export interface FileRoutesById {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
+  '/routines/create': typeof RoutinesCreateRoute
   '/settings/security': typeof SettingsSecurityRoute
   '/faqs/': typeof FaqsIndexRoute
   '/meals/': typeof MealsIndexRoute
@@ -189,6 +206,7 @@ export interface FileRoutesById {
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
   '/recipes/update/$recipeId': typeof RecipesUpdateRecipeIdRoute
   '/routines/routine-details/$routineId': typeof RoutinesRoutineDetailsRoutineIdRoute
+  '/routines/update/$routine': typeof RoutinesUpdateRoutineRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -202,6 +220,7 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/meals/create'
     | '/recipes/create'
+    | '/routines/create'
     | '/settings/security'
     | '/faqs'
     | '/meals'
@@ -212,6 +231,7 @@ export interface FileRouteTypes {
     | '/meals/update/$mealId'
     | '/recipes/update/$recipeId'
     | '/routines/routine-details/$routineId'
+    | '/routines/update/$routine'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -223,6 +243,7 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/meals/create'
     | '/recipes/create'
+    | '/routines/create'
     | '/settings/security'
     | '/faqs'
     | '/meals'
@@ -233,6 +254,7 @@ export interface FileRouteTypes {
     | '/meals/update/$mealId'
     | '/recipes/update/$recipeId'
     | '/routines/routine-details/$routineId'
+    | '/routines/update/$routine'
   id:
     | '__root__'
     | '/'
@@ -244,6 +266,7 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/meals/create'
     | '/recipes/create'
+    | '/routines/create'
     | '/settings/security'
     | '/faqs/'
     | '/meals/'
@@ -254,6 +277,7 @@ export interface FileRouteTypes {
     | '/meals/update/$mealId'
     | '/recipes/update/$recipeId'
     | '/routines/routine-details/$routineId'
+    | '/routines/update/$routine'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -266,6 +290,7 @@ export interface RootRouteChildren {
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   MealsCreateRoute: typeof MealsCreateRoute
   RecipesCreateRoute: typeof RecipesCreateRoute
+  RoutinesCreateRoute: typeof RoutinesCreateRoute
   SettingsSecurityRoute: typeof SettingsSecurityRoute
   FaqsIndexRoute: typeof FaqsIndexRoute
   MealsIndexRoute: typeof MealsIndexRoute
@@ -276,6 +301,7 @@ export interface RootRouteChildren {
   MealsUpdateMealIdRoute: typeof MealsUpdateMealIdRoute
   RecipesUpdateRecipeIdRoute: typeof RecipesUpdateRecipeIdRoute
   RoutinesRoutineDetailsRoutineIdRoute: typeof RoutinesRoutineDetailsRoutineIdRoute
+  RoutinesUpdateRoutineRoute: typeof RoutinesUpdateRoutineRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -336,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsSecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/routines/create': {
+      id: '/routines/create'
+      path: '/routines/create'
+      fullPath: '/routines/create'
+      preLoaderRoute: typeof RoutinesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recipes/create': {
       id: '/recipes/create'
       path: '/recipes/create'
@@ -385,6 +418,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/routines/update/$routine': {
+      id: '/routines/update/$routine'
+      path: '/routines/update/$routine'
+      fullPath: '/routines/update/$routine'
+      preLoaderRoute: typeof RoutinesUpdateRoutineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routines/routine-details/$routineId': {
       id: '/routines/routine-details/$routineId'
       path: '/routines/routine-details/$routineId'
@@ -426,6 +466,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   MealsCreateRoute: MealsCreateRoute,
   RecipesCreateRoute: RecipesCreateRoute,
+  RoutinesCreateRoute: RoutinesCreateRoute,
   SettingsSecurityRoute: SettingsSecurityRoute,
   FaqsIndexRoute: FaqsIndexRoute,
   MealsIndexRoute: MealsIndexRoute,
@@ -436,6 +477,7 @@ const rootRouteChildren: RootRouteChildren = {
   MealsUpdateMealIdRoute: MealsUpdateMealIdRoute,
   RecipesUpdateRecipeIdRoute: RecipesUpdateRecipeIdRoute,
   RoutinesRoutineDetailsRoutineIdRoute: RoutinesRoutineDetailsRoutineIdRoute,
+  RoutinesUpdateRoutineRoute: RoutinesUpdateRoutineRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

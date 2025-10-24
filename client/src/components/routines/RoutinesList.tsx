@@ -25,6 +25,18 @@ const SORT_LABEL: Record<SortOption, string> = {
 
 const PAGE_SIZE = 20;
 
+/** ---- helpers de propiedades internas ---- */
+const countExercises = (r: IRoutine) =>
+  r.blocks?.reduce((acc, b) => acc + (b.exercises?.length ?? 0), 0) ?? 0;
+
+const getTimerModes = (r: IRoutine) => {
+  const s = new Set<string>();
+  r.blocks?.forEach((b) => {
+    if (b.timer?.mode) s.add(b.timer.mode.toUpperCase()); // EMOM / AMRAP / TABATA / COUNTDOWN
+  });
+  return Array.from(s);
+};
+
 const RoutinesList = () => {
   const [search, setSearch] = React.useState("");
   const [templatesOnly, setTemplatesOnly] = React.useState(false);
@@ -33,7 +45,7 @@ const RoutinesList = () => {
   const [page, setPage] = React.useState(1);
 
   // Fetch all routines once (no query params)
-  const { routines, isLoading, isFetching } = useRoutines();
+  const { routines, isLoading, isFetching } = useRoutines({ includeArchived });
 
   const navigate = useNavigate();
 
@@ -127,6 +139,24 @@ const RoutinesList = () => {
               />
               Archived
             </label>
+
+            <Link
+              to="/routines/create"
+              className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-4 py-2 text-white hover:opacity-90"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                className="shrink-0"
+              >
+                <path
+                  fill="currentColor"
+                  d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"
+                />
+              </svg>
+              New routine
+            </Link>
           </div>
         </div>
       </header>
@@ -146,57 +176,84 @@ const RoutinesList = () => {
       ) : (
         <>
           <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {visible.map((r) => (
-              <li
-                key={r._id}
-                className="border rounded-2xl p-4 hover:shadow-sm transition-shadow"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <Link
-                      to="/"
-                      params={{ id: r._id }}
-                      className="font-medium hover:underline block truncate"
-                      title={r.name}
-                    >
-                      {r.name}
-                    </Link>
-                    <div className="text-sm text-neutral-600 mt-1 flex flex-wrap gap-3">
-                      <span>{r.blocks?.length ?? 0} blocks</span>
-                      {typeof r.estimatedDurationMin === "number" && (
-                        <span>{r.estimatedDurationMin} min</span>
-                      )}
-                      <span>Done {r.timesPerformed ?? 0}×</span>
-                      <LastPerformed iso={r.lastPerformedAt} />
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {r.isTemplate && (
-                        <Badge className="bg-neutral-200 text-neutral-700">
-                          Template
-                        </Badge>
-                      )}
-                      {r.isArchived && (
-                        <Badge className="bg-amber-100 text-amber-700">
-                          Archived
-                        </Badge>
-                      )}
-                      {r.tags?.slice(0, 3).map((t) => (
-                        <Badge key={t} className="bg-sky-100 text-sky-700">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
+            {visible.map((r) => {
+              const exercisesCount = countExercises(r);
+              const timerModes = getTimerModes(r);
+              return (
+                <li
+                  key={r._id}
+                  className="border rounded-2xl p-4 hover:shadow-sm transition-shadow"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <Link
+                        to="/"
+                        params={{ id: r._id }}
+                        className="font-medium hover:underline block truncate"
+                        title={r.name}
+                      >
+                        {r.name}
+                      </Link>
 
-                  <button
-                    onClick={() => handleClickRoutine(r._id)}
-                    className="shrink-0 px-3 py-2 rounded-xl bg-neutral-900 text-white hover:opacity-90"
-                  >
-                    Open
-                  </button>
-                </div>
-              </li>
-            ))}
+                      {/* Línea informativa con props internas */}
+                      <div className="text-sm text-neutral-600 mt-1 flex flex-wrap gap-3">
+                        <span>{r.blocks?.length ?? 0} blocks</span>
+                        <span>{exercisesCount} exercises</span>
+                        {typeof r.estimatedDurationMin === "number" && (
+                          <span>{r.estimatedDurationMin} min</span>
+                        )}
+                        <span>Done {r.timesPerformed ?? 0}×</span>
+                        <LastPerformed iso={r.lastPerformedAt} />
+                      </div>
+
+                      {/* Badges: flags + tags + modos de timer + títulos de 1–2 bloques */}
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {r.isTemplate && (
+                          <Badge className="bg-neutral-200 text-neutral-700">
+                            Template
+                          </Badge>
+                        )}
+                        {r.isArchived && (
+                          <Badge className="bg-amber-100 text-amber-700">
+                            Archived
+                          </Badge>
+                        )}
+                        {r.tags?.slice(0, 3).map((t) => (
+                          <Badge key={t} className="bg-sky-100 text-sky-700">
+                            {t}
+                          </Badge>
+                        ))}
+
+                        {timerModes.map((m) => (
+                          <Badge
+                            key={`mode-${m}`}
+                            className="bg-purple-100 text-purple-700"
+                          >
+                            {m}
+                          </Badge>
+                        ))}
+
+                        {r.blocks?.slice(0, 2).map((b) => (
+                          <Badge
+                            key={`b-${b.position}`}
+                            className="bg-neutral-100 text-neutral-700"
+                          >
+                            {b.title || `Block ${b.position}`}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleClickRoutine(r._id)}
+                      className="shrink-0 px-3 py-2 rounded-xl  bg-emerald-300 text-black hover:opacity-90 cursor-pointer"
+                    >
+                      Open
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Pagination */}
