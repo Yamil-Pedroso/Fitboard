@@ -34,17 +34,51 @@ const UpdateMeal = () => {
     }
   }, [meal]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!meal) return <div className="text-red-600">Meal not found</div>;
+  if (isLoading) {
+    return (
+      <div className="mx-auto w-full max-w-2xl px-4 py-8">
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <div className="mb-4 h-6 w-40 animate-pulse rounded bg-neutral-200" />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+          </div>
+          <div className="mt-4 h-10 animate-pulse rounded bg-neutral-100" />
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+          </div>
+          <div className="mt-4 grid grid-cols-4 gap-3">
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+            <div className="h-10 animate-pulse rounded bg-neutral-100" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!meal) {
+    return (
+      <div className="mx-auto w-full max-w-2xl px-4 py-8">
+        <div className="rounded-2xl border bg-white p-6 text-red-600 shadow-sm">
+          Meal not found
+        </div>
+      </div>
+    );
+  }
 
   if (!meal.customItem) {
     return (
-      <div className="max-w-xl p-4">
-        <h1 className="mb-4 text-xl font-semibold text-black">Edit meal</h1>
-        <p className="text-black">
-          This meal was created from a recipe. Name is not editable. (Consider
-          an editor for servings/slot/date.)
-        </p>
+      <div className="mx-auto w-full max-w-2xl px-4 py-8">
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <h1 className="mb-2 text-xl font-semibold text-black">Edit meal</h1>
+          <p className="text-sm text-neutral-600">
+            This meal was created from a recipe. Name is not editable. (Consider
+            an editor for servings/slot/date.)
+          </p>
+        </div>
       </div>
     );
   }
@@ -87,131 +121,157 @@ const UpdateMeal = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} className="max-w-md space-y-4 text-black">
-      <label className="block text-sm">
-        <span className="mb-1 block">Date</span>
-        <input
-          type="date"
-          className="w-full rounded border px-3 py-2"
-          value={date}
-          onChange={(e) => setDate(e.currentTarget.value)}
-          required
-        />
-      </label>
+    <div className="mx-auto w-full max-w-2xl px-4 py-8">
+      <form
+        onSubmit={onSubmit}
+        className="rounded-2xl border bg-white p-6 shadow-sm text-black"
+      >
+        {/* Header */}
+        <div className="mb-5">
+          <h1 className="text-xl font-semibold">Update meal</h1>
+          <p className="text-sm text-neutral-500">
+            Adjust date, slot and nutrition for this entry.
+          </p>
+        </div>
 
-      <label className="block text-sm">
-        <span className="mb-1 block">Meal</span>
-        <select
-          className="w-full rounded border px-3 py-2"
-          value={slot}
-          onChange={(e) => setSlot(e.currentTarget.value as MealSlot)}
-        >
-          <option value="breakfast">Breakfast</option>
-          <option value="lunch">Lunch</option>
-          <option value="dinner">Dinner</option>
-          <option value="snack">Snack</option>
-        </select>
-      </label>
-
-      {meal.customItem && (
-        <>
-          <label className="block text-sm">
-            <span className="mb-1 block">Name</span>
+        {/* Date & Slot */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field label="Date">
             <input
-              className="w-full rounded border px-3 py-2"
+              type="date"
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
+              value={date}
+              onChange={(e) => setDate(e.currentTarget.value)}
+              required
+            />
+          </Field>
+          <Field label="Meal">
+            <select
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
+              value={slot}
+              onChange={(e) => setSlot(e.currentTarget.value as MealSlot)}
+            >
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="snack">Snack</option>
+            </select>
+          </Field>
+        </div>
+
+        {/* Name */}
+        <div className="mt-4">
+          <Field label="Name">
+            <input
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               required
             />
-          </label>
+          </Field>
+        </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <label className="block text-sm">
-              <span className="mb-1 block">Amount</span>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                className="w-full rounded border px-3 py-2"
-                value={Number.isFinite(amount) ? amount : 0}
-                onChange={(e) => setAmount(parseFloat(e.currentTarget.value))}
-              />
-            </label>
+        {/* Amount & Unit */}
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field label="Amount">
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
+              value={Number.isFinite(amount) ? amount : 0}
+              onChange={(e) => setAmount(parseFloat(e.currentTarget.value))}
+            />
+          </Field>
+          <Field label="Unit">
+            <select
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
+              value={unit}
+              onChange={(e) => setUnit(e.currentTarget.value as QtyUnit)}
+            >
+              <option value="g">g</option>
+              <option value="ml">ml</option>
+              <option value="unit">unit</option>
+            </select>
+          </Field>
+        </div>
 
-            <label className="block text-sm">
-              <span className="mb-1 block">Unit</span>
-              <select
-                className="w-full rounded border px-3 py-2"
-                value={unit}
-                onChange={(e) => setUnit(e.currentTarget.value as QtyUnit)}
-              >
-                <option value="g">g</option>
-                <option value="ml">ml</option>
-                <option value="unit">unit</option>
-              </select>
-            </label>
+        {/* Macros */}
+        <div className="mt-6">
+          <div className="mb-2 text-sm font-medium text-neutral-700">
+            Macros per basis
           </div>
-
-          <div className="grid grid-cols-4 gap-3">
-            <label className="block text-sm">
-              <span className="mb-1 block">Kcal</span>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Field label="Kcal">
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
                 value={Number.isFinite(kcal) ? kcal : 0}
                 onChange={(e) => setKcal(parseFloat(e.currentTarget.value))}
               />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block">Protein</span>
+            </Field>
+            <Field label="Protein (g)">
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
                 value={Number.isFinite(protein) ? protein : 0}
                 onChange={(e) => setProtein(parseFloat(e.currentTarget.value))}
               />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block">Carbohydrate</span>
+            </Field>
+            <Field label="Carbs (g)">
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
                 value={Number.isFinite(carbohydrate) ? carbohydrate : 0}
                 onChange={(e) =>
                   setCarbohydrate(parseFloat(e.currentTarget.value))
                 }
               />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block">Fat</span>
+            </Field>
+            <Field label="Fat (g)">
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
                 value={Number.isFinite(fat) ? fat : 0}
                 onChange={(e) => setFat(parseFloat(e.currentTarget.value))}
               />
-            </label>
+            </Field>
           </div>
-        </>
-      )}
+        </div>
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-3 py-2 text-white disabled:opacity-50"
-      >
-        {isPending ? "Updating…" : "Update meal"}
-      </button>
-    </form>
+        {/* Submit */}
+        <div className="mt-6 flex items-center justify-end">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="inline-flex items-center rounded-xl bg-neutral-900 px-4 py-2 text-white shadow-sm transition hover:opacity-90 disabled:opacity-50"
+          >
+            {isPending ? "Updating…" : "Update meal"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
+
+function Field({
+  label,
+  children,
+}: React.PropsWithChildren<{ label: string }>) {
+  return (
+    <label className="block text-sm">
+      <span className="mb-1 block text-neutral-700">{label}</span>
+      {children}
+    </label>
+  );
+}
 
 export default UpdateMeal;

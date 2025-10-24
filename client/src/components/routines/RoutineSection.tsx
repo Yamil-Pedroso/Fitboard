@@ -133,7 +133,7 @@ const RoutineSection: React.FC = () => {
                 Explore routines
               </Link>
               <Link
-                to="/"
+                to="/routines/create"
                 className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-neutral-900 shadow-sm transition hover:bg-neutral-50"
               >
                 Create a routine
