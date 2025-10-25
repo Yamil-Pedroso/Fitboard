@@ -25,7 +25,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
-import { Route as RoutinesUpdateRoutineRouteImport } from './routes/routines/update/$routine'
+import { Route as RoutinesUpdateRoutineIdRouteImport } from './routes/routines/update/$routineId'
 import { Route as RoutinesRoutineDetailsRoutineIdRouteImport } from './routes/routines/routine-details/$routineId'
 import { Route as RecipesUpdateRecipeIdRouteImport } from './routes/recipes/update/$recipeId'
 import { Route as MealsUpdateMealIdRouteImport } from './routes/meals/update/$mealId'
@@ -111,9 +111,9 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/admin/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RoutinesUpdateRoutineRoute = RoutinesUpdateRoutineRouteImport.update({
-  id: '/routines/update/$routine',
-  path: '/routines/update/$routine',
+const RoutinesUpdateRoutineIdRoute = RoutinesUpdateRoutineIdRouteImport.update({
+  id: '/routines/update/$routineId',
+  path: '/routines/update/$routineId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoutinesRoutineDetailsRoutineIdRoute =
@@ -159,7 +159,7 @@ export interface FileRoutesByFullPath {
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
   '/recipes/update/$recipeId': typeof RecipesUpdateRecipeIdRoute
   '/routines/routine-details/$routineId': typeof RoutinesRoutineDetailsRoutineIdRoute
-  '/routines/update/$routine': typeof RoutinesUpdateRoutineRoute
+  '/routines/update/$routineId': typeof RoutinesUpdateRoutineIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -182,7 +182,7 @@ export interface FileRoutesByTo {
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
   '/recipes/update/$recipeId': typeof RecipesUpdateRecipeIdRoute
   '/routines/routine-details/$routineId': typeof RoutinesRoutineDetailsRoutineIdRoute
-  '/routines/update/$routine': typeof RoutinesUpdateRoutineRoute
+  '/routines/update/$routineId': typeof RoutinesUpdateRoutineIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -206,7 +206,7 @@ export interface FileRoutesById {
   '/meals/update/$mealId': typeof MealsUpdateMealIdRoute
   '/recipes/update/$recipeId': typeof RecipesUpdateRecipeIdRoute
   '/routines/routine-details/$routineId': typeof RoutinesRoutineDetailsRoutineIdRoute
-  '/routines/update/$routine': typeof RoutinesUpdateRoutineRoute
+  '/routines/update/$routineId': typeof RoutinesUpdateRoutineIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -231,7 +231,7 @@ export interface FileRouteTypes {
     | '/meals/update/$mealId'
     | '/recipes/update/$recipeId'
     | '/routines/routine-details/$routineId'
-    | '/routines/update/$routine'
+    | '/routines/update/$routineId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -254,7 +254,7 @@ export interface FileRouteTypes {
     | '/meals/update/$mealId'
     | '/recipes/update/$recipeId'
     | '/routines/routine-details/$routineId'
-    | '/routines/update/$routine'
+    | '/routines/update/$routineId'
   id:
     | '__root__'
     | '/'
@@ -277,7 +277,7 @@ export interface FileRouteTypes {
     | '/meals/update/$mealId'
     | '/recipes/update/$recipeId'
     | '/routines/routine-details/$routineId'
-    | '/routines/update/$routine'
+    | '/routines/update/$routineId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -301,7 +301,7 @@ export interface RootRouteChildren {
   MealsUpdateMealIdRoute: typeof MealsUpdateMealIdRoute
   RecipesUpdateRecipeIdRoute: typeof RecipesUpdateRecipeIdRoute
   RoutinesRoutineDetailsRoutineIdRoute: typeof RoutinesRoutineDetailsRoutineIdRoute
-  RoutinesUpdateRoutineRoute: typeof RoutinesUpdateRoutineRoute
+  RoutinesUpdateRoutineIdRoute: typeof RoutinesUpdateRoutineIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -418,11 +418,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/routines/update/$routine': {
-      id: '/routines/update/$routine'
-      path: '/routines/update/$routine'
-      fullPath: '/routines/update/$routine'
-      preLoaderRoute: typeof RoutinesUpdateRoutineRouteImport
+    '/routines/update/$routineId': {
+      id: '/routines/update/$routineId'
+      path: '/routines/update/$routineId'
+      fullPath: '/routines/update/$routineId'
+      preLoaderRoute: typeof RoutinesUpdateRoutineIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/routines/routine-details/$routineId': {
@@ -477,7 +477,7 @@ const rootRouteChildren: RootRouteChildren = {
   MealsUpdateMealIdRoute: MealsUpdateMealIdRoute,
   RecipesUpdateRecipeIdRoute: RecipesUpdateRecipeIdRoute,
   RoutinesRoutineDetailsRoutineIdRoute: RoutinesRoutineDetailsRoutineIdRoute,
-  RoutinesUpdateRoutineRoute: RoutinesUpdateRoutineRoute,
+  RoutinesUpdateRoutineIdRoute: RoutinesUpdateRoutineIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

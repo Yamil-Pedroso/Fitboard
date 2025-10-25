@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from "@/api/axiosConfig";
 
+export type TimerMode = "countdown" | "emom" | "amrap" | "tabata";
+
 /** ----- Types that mirror your backend model ----- */
 export type ExerciseType =
   | "strength"
   | "hypertrophy"
   | "conditioning"
   | "mobility";
-export type Timer = { mode: "countdown" | "emom"; seconds: number };
+export type Timer = { mode: TimerMode; seconds: number };
 
 export interface IRoutineExercise {
   name: string;

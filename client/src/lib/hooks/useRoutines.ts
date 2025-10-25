@@ -68,7 +68,7 @@ export function useRoutines(opts: { includeArchived?: boolean } = {}) {
   };
 }
 
-export function useRoutine(routineId: string) {
+export function useRoutineById(routineId: string) {
   return useQuery({
     queryKey: ["routine", routineId] as const,
     queryFn: () => getRoutineById(routineId),

@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Route } from "@/routes/recipes/update/$recipeId";
-import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "@/api/axiosConfig";
-import { useUpdateRecipe } from "@/lib/hooks/useRecipes";
-import type { IRecipe, IIngredient, QtyUnit } from "@/services/recipeService";
+
+import { useUpdateRecipe, useGetRecipeById } from "@/lib/hooks/useRecipes";
+import type { IIngredient, QtyUnit } from "@/services/recipeService";
 
 const todayStr = new Date().toISOString().slice(0, 10);
 
@@ -32,25 +32,14 @@ const DEFAULT_ING: IngredientForm = {
   macrosPerBasis: { kcal: 0, protein: 0, carbohydrate: 0, fat: 0 },
 };
 
-async function fetchRecipe(id: string): Promise<IRecipe> {
-  const { data } = await axiosInstance.get(`/recipes/${id}`);
-  return data;
-}
-
 export default function UpdateRecipe() {
   const { recipeId } = Route.useParams();
   const { mutate: updateRecipe, isPending, error } = useUpdateRecipe();
-
-  // Cargar receta
   const {
     data: recipe,
-    isLoading,
+    isLoading: isLoadingRecipe,
     error: loadError,
-  } = useQuery({
-    queryKey: ["recipe", recipeId],
-    queryFn: () => fetchRecipe(recipeId),
-    staleTime: 30_000,
-  });
+  } = useGetRecipeById(recipeId);
 
   // Estado del form
   const [form, setForm] = useState<{
@@ -182,7 +171,8 @@ export default function UpdateRecipe() {
     });
   }
 
-  if (isLoading) return <div className="p-6 text-black">Loading recipe…</div>;
+  if (isLoadingRecipe)
+    return <div className="p-6 text-black">Loading recipe…</div>;
   if (loadError)
     return <div className="p-6 text-red-600">Failed to load recipe.</div>;
   if (!recipe) return <div className="p-6 text-red-600">Recipe not found.</div>;

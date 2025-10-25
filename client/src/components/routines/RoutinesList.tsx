@@ -2,6 +2,7 @@
 import * as React from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Route as RountineDetailsRoute } from "@/routes/routines/routine-details/$routineId";
+import { Route as RoutineUpdateRoute } from "@/routes/routines/update/$routineId";
 import { useRoutines } from "@/lib/hooks/useRoutines"; // <- no-params version
 import type { IRoutine } from "@/services/routineService";
 import assets from "@/assets";
@@ -87,6 +88,13 @@ const RoutinesList = () => {
   const handleClickRoutine = (routineId: string) => {
     navigate({
       to: RountineDetailsRoute.to,
+      params: { routineId },
+    });
+  };
+
+  const handleEditRoutine = (routineId: string) => {
+    navigate({
+      to: RoutineUpdateRoute.to,
       params: { routineId },
     });
   };
@@ -249,6 +257,13 @@ const RoutinesList = () => {
                       className="shrink-0 px-3 py-2 rounded-xl  bg-emerald-300 text-black hover:opacity-90 cursor-pointer"
                     >
                       Open
+                    </button>
+
+                    <button
+                      onClick={() => handleEditRoutine(r._id)}
+                      className="shrink-0 px-3 py-2 rounded-xl  bg-blue-300 text-black hover:opacity-90 cursor-pointer"
+                    >
+                      Edit
                     </button>
                   </div>
                 </li>

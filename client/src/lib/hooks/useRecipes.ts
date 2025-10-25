@@ -9,6 +9,7 @@ import {
   listAllRecipes,
   createRecipe,
   updateRecipe,
+  getRecipeById,
   deleteRecipe,
   type IListRecipesParams,
   type CreateRecipeInput,
@@ -51,6 +52,15 @@ export function useRecipes(
     error,
     refetch,
   };
+}
+
+export function useGetRecipeById(recipeId: string) {
+  return useQuery({
+    queryKey: ["recipes", recipeId],
+    queryFn: () => getRecipeById(recipeId),
+    enabled: !!recipeId,
+    staleTime: 5 * 60 * 1000,
+  });
 }
 
 export function useCreateRecipe() {

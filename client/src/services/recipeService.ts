@@ -71,6 +71,11 @@ export async function listAllRecipes(
   return data;
 }
 
+export async function getRecipeById(recipeId: string): Promise<IRecipe> {
+  const { data } = await axiosInstance.get(`/recipes/${recipeId}`);
+  return data;
+}
+
 export async function createRecipe(input: CreateRecipeInput): Promise<IRecipe> {
   const { data } = await axiosInstance.post(`/recipes`, input);
   return data;
