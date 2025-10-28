@@ -40,7 +40,7 @@ flex flex-col min-h-screen relative
 
       <Navbar />
 
-      <main className="flex-1 mx-auto w-full  px-4 py-6">{children}</main>
+      <main className="flex-1 mx-auto w-full">{children}</main>
 
       <Footer />
     </div>

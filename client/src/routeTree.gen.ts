@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as RoutinesIndexRouteImport } from './routes/routines/index'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
+import { Route as ProgressIndexRouteImport } from './routes/progress/index'
 import { Route as MealsIndexRouteImport } from './routes/meals/index'
 import { Route as FaqsIndexRouteImport } from './routes/faqs/index'
 import { Route as SettingsSecurityRouteImport } from './routes/settings/security'
@@ -54,6 +55,11 @@ const RoutinesIndexRoute = RoutinesIndexRouteImport.update({
 const RecipesIndexRoute = RecipesIndexRouteImport.update({
   id: '/recipes/',
   path: '/recipes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressIndexRoute = ProgressIndexRouteImport.update({
+  id: '/progress/',
+  path: '/progress/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MealsIndexRoute = MealsIndexRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/settings/security': typeof SettingsSecurityRoute
   '/faqs': typeof FaqsIndexRoute
   '/meals': typeof MealsIndexRoute
+  '/progress': typeof ProgressIndexRoute
   '/recipes': typeof RecipesIndexRoute
   '/routines': typeof RoutinesIndexRoute
   '/settings': typeof SettingsIndexRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/settings/security': typeof SettingsSecurityRoute
   '/faqs': typeof FaqsIndexRoute
   '/meals': typeof MealsIndexRoute
+  '/progress': typeof ProgressIndexRoute
   '/recipes': typeof RecipesIndexRoute
   '/routines': typeof RoutinesIndexRoute
   '/settings': typeof SettingsIndexRoute
@@ -199,6 +207,7 @@ export interface FileRoutesById {
   '/settings/security': typeof SettingsSecurityRoute
   '/faqs/': typeof FaqsIndexRoute
   '/meals/': typeof MealsIndexRoute
+  '/progress/': typeof ProgressIndexRoute
   '/recipes/': typeof RecipesIndexRoute
   '/routines/': typeof RoutinesIndexRoute
   '/settings/': typeof SettingsIndexRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/faqs'
     | '/meals'
+    | '/progress'
     | '/recipes'
     | '/routines'
     | '/settings'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/faqs'
     | '/meals'
+    | '/progress'
     | '/recipes'
     | '/routines'
     | '/settings'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/settings/security'
     | '/faqs/'
     | '/meals/'
+    | '/progress/'
     | '/recipes/'
     | '/routines/'
     | '/settings/'
@@ -294,6 +306,7 @@ export interface RootRouteChildren {
   SettingsSecurityRoute: typeof SettingsSecurityRoute
   FaqsIndexRoute: typeof FaqsIndexRoute
   MealsIndexRoute: typeof MealsIndexRoute
+  ProgressIndexRoute: typeof ProgressIndexRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
   RoutinesIndexRoute: typeof RoutinesIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
@@ -339,6 +352,13 @@ declare module '@tanstack/react-router' {
       path: '/recipes'
       fullPath: '/recipes'
       preLoaderRoute: typeof RecipesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress/': {
+      id: '/progress/'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/meals/': {
@@ -470,6 +490,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsSecurityRoute: SettingsSecurityRoute,
   FaqsIndexRoute: FaqsIndexRoute,
   MealsIndexRoute: MealsIndexRoute,
+  ProgressIndexRoute: ProgressIndexRoute,
   RecipesIndexRoute: RecipesIndexRoute,
   RoutinesIndexRoute: RoutinesIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,

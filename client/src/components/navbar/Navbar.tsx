@@ -109,6 +109,13 @@ const UserMenu = () => {
                 Routines
               </Link>
               <Link
+                to="/progress"
+                className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
+                onClick={() => setOpen(false)}
+              >
+                Progress
+              </Link>
+              <Link
                 to="/settings"
                 className="block rounded-lg px-3 py-2 dark:hover:bg-neutral-800"
                 onClick={() => setOpen(false)}

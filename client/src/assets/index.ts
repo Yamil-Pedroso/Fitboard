@@ -16,6 +16,10 @@ import recipe2 from "./images/sections/recipes/recipe_2.png";
 import recipe3 from "./images/sections/recipes/recipe_3.png";
 import routines from "./images/sections/routines/routines.png";
 
+// Progress page
+import progress1 from "./images/pages/progress/progress_1.png";
+import progress2 from "./images/pages/progress/progress_2.png";
+
 // avatars
 import avatar1 from "./images/avatars/avatar1.jpg";
 import deco1 from "./images/deco/deco_1.png";
@@ -54,6 +58,8 @@ const assets: IAssets = {
   fn4,
   routine1,
   routine2,
+  progress1,
+  progress2,
   fitnut,
   deco1,
   avatar1,
