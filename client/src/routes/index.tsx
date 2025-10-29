@@ -6,7 +6,6 @@ import { RiArrowRightUpFill } from "react-icons/ri";
 import SectionB from "@/components/dummy-components/SectionB";
 //import { motion } from "framer-motion";
 
-import SectionC from "@/components/dummy-components/SectionC";
 import SectionD from "@/components/dummy-components/SectionD";
 import MealSection from "@/components/meals/MealSection";
 import RoutineSection from "@/components/routines/RoutineSection";
@@ -98,8 +97,6 @@ function Home() {
       <SectionB />
 
       <SectionD />
-
-      <SectionC />
 
       <MealSection />
 

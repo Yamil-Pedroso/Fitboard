@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ProgressFeatures from "@/components/progress/ProgressFeatures";
+import Protected from "@/components/routing/Protected";
 
 export const Route = createFileRoute("/progress/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <ProgressFeatures />;
+  return (
+    <Protected>
+      <ProgressFeatures />
+    </Protected>
+  );
 }

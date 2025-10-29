@@ -50,7 +50,7 @@ const zoomIn = {
   },
 } satisfies Variants;
 
-export default function SectionC() {
+const SectionC = () => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
   const maxProtein = useMemo(() => Math.max(...proteins), []);
@@ -253,4 +253,6 @@ export default function SectionC() {
       </motion.div>
     </motion.section>
   );
-}
+};
+
+export default SectionC;
