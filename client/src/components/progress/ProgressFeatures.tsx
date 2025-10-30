@@ -16,7 +16,7 @@ const ProgressFeatures = () => {
         <div className="w-full flex items-center gap-6 ml-[14rem]">
           {/* Card: Progress snapshot (tu card previa, sin cambios funcionales) */}
           <div className="relative w-[45rem]">
-            <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-white/60 via-white/20 to-transparent opacity-60" />
+            <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-black/60 via-black/20 to-transparent opacity-80" />
             <div className="relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl text-white">
               <div className="pointer-events-none absolute -top-6 right-10 h-16 w-16 rounded-full bg-white/30 blur-2xl" />
 
@@ -74,7 +74,7 @@ const ProgressFeatures = () => {
                 {/* Fotos (placeholders) */}
                 <div className="mt-6 grid grid-cols-2 gap-3">
                   <PhotoPlaceholder src={assets.progress2} />
-                  <PhotoPlaceholder src={assets.progress1} />
+                  <PhotoPlaceholder src={assets.progress3} />
                 </div>
 
                 {/* Footer */}

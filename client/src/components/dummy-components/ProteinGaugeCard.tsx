@@ -105,7 +105,7 @@ const ProteinGaugeCard = () => {
 
                   <div className="flex flex-col items-center p-4">
                     <motion.div
-                      className="relative size-1.5  sm:size-24 rounded-xl ring-1 ring-inset ring-white/20 overflow-hidden"
+                      className="relative size-1.5  sm:size-24 rounded-xl ring-1 ring-inset ring-white/20 overflow-hidden transition-colors duration-300"
                       variants={zoomIn}
                     >
                       <img
@@ -116,7 +116,7 @@ const ProteinGaugeCard = () => {
                         decoding="async"
                       />
                       {/* Shine */}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                     </motion.div>
 
                     <h3 className="mt-3 line-clamp-1 text-center text-sm font-medium text-white/90">
@@ -125,7 +125,7 @@ const ProteinGaugeCard = () => {
 
                     {/* Tooltip mini */}
                     <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                      <span className="rounded-full bg-white/20 text-white text-[10px] px-2 py-1 shadow-sm backdrop-blur">
+                      <span className="rounded-full bg-neutral-700 text-white font-bold text-[10px] px-6 py-2 shadow-sm backdrop-blur">
                         View {icon.alt}
                       </span>
                     </div>

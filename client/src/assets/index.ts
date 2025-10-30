@@ -19,6 +19,7 @@ import routines from "./images/sections/routines/routines.png";
 // Progress page
 import progress1 from "./images/pages/progress/progress_1.png";
 import progress2 from "./images/pages/progress/progress_2.png";
+import progress3 from "./images/pages/progress/progress_3.png";
 
 // avatars
 import avatar1 from "./images/avatars/avatar1.jpg";
@@ -60,6 +61,7 @@ const assets: IAssets = {
   routine2,
   progress1,
   progress2,
+  progress3,
   fitnut,
   deco1,
   avatar1,
