@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Progress } from "../models/Progress";
 import { CreateProgressDto, UpdateProgressDto } from "../models/Progress";
 import { AuthReq } from "../types/domain";
+import { uploadBufferToCloudinary } from "../utils/cloudinary-upload";
 
 // --- helpers ---
 const qNum = (v: any, d: number) =>
@@ -213,7 +214,7 @@ export async function removeById(req: AuthReq, res: Response) {
       userId: req.auth.userId,
     });
     if (!deleted) return res.status(404).json({ error: "Not found" });
-    return res.status(204).send();
+    return res.json({ ok: true });
   } catch {
     return res.status(500).json({ error: "Failed to delete progress" });
   }

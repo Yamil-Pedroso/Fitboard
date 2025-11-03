@@ -1,7 +1,66 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import assets from "@/assets";
 import ProteinGaugeCard from "@/components/dummy-components/ProteinGaugeCard";
+import { useProgress } from "@/lib/hooks/useProgress";
 
 const ProgressFeatures = () => {
+  // Trae los últimos registros (pide varios para poder calcular delta si quieres luego)
+  const { items, isLoading } = useProgress({
+    page: 1,
+    limit: 7,
+    sort: "-date",
+  } as any);
+
+  const latest = items?.[0];
+  const prev = items?.[1];
+
+  // Header date
+  const dateStr = latest?.date ?? new Date().toISOString().slice(0, 10);
+
+  // Stats
+  const weightKg = latest?.weight_kg ?? null;
+  const waistCm = latest?.waist_cm ?? null;
+  const bodyFat = latest?.body?.bodyFatPct ?? null;
+
+  // Si tu backend guarda unitSystem, puedes formatear en lbs si es "imperial"
+  const unitSystem = latest?.unitSystem ?? "metric";
+  const weightVal =
+    weightKg == null
+      ? "-"
+      : unitSystem === "imperial"
+        ? (weightKg * 2.20462).toFixed(1)
+        : weightKg.toFixed(1);
+  const weightUnit = unitSystem === "imperial" ? "lb" : "kg";
+
+  // (Opcional) delta vs entrada anterior, solo texto entre paréntesis
+  const deltaKg =
+    weightKg != null && prev?.weight_kg != null
+      ? weightKg - prev.weight_kg
+      : null;
+  const weightWithDelta =
+    deltaKg == null
+      ? `${weightVal}`
+      : `${weightVal} (${deltaKg > 0 ? "+" : ""}${
+          unitSystem === "imperial"
+            ? (deltaKg * 2.20462).toFixed(1)
+            : deltaKg.toFixed(1)
+        })`;
+
+  const waistVal = waistCm == null ? "-" : waistCm.toFixed(0);
+  const bodyFatVal = bodyFat == null ? "-" : bodyFat.toFixed(1);
+
+  // Notas
+  const notes =
+    latest?.notes ??
+    "No notes yet. Add a quick reflection to track your context over time.";
+
+  // Fotos (usa las del backend; si no hay, usa fallbacks)
+  const photo1 = latest?.photos?.[0]?.url ?? assets.progress2;
+  const photo2 = latest?.photos?.[1]?.url ?? assets.progress3;
+
+  // Tags (si existen)
+  const tags = latest?.tags ?? [];
+
   return (
     <div className="relative">
       {/* Fondo fijo full viewport */}
@@ -14,7 +73,7 @@ const ProgressFeatures = () => {
       {/* Overlay centrado con grid de 2 cards (gap ~1rem) */}
       <div className="fixed inset-0 z-10 flex items-center justify-center p-4 sm:p-6 md:p-8">
         <div className="w-full flex items-center gap-6 ml-[14rem]">
-          {/* Card: Progress snapshot (tu card previa, sin cambios funcionales) */}
+          {/* Card: Progress snapshot (misma UI, datos reales) */}
           <div className="relative w-[45rem]">
             <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-black/60 via-black/20 to-transparent opacity-80" />
             <div className="relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl text-white">
@@ -44,40 +103,94 @@ const ProgressFeatures = () => {
                       Progress snapshot
                     </h2>
                     <p className="text-xs text-white/70 sm:text-sm">
-                      {new Date().toISOString().slice(0, 10)}
+                      {dateStr}
                     </p>
                   </div>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <Stat label="Weight" value="78.4" unit="kg" />
-                  <Stat label="Waist" value="82" unit="cm" />
-                  <Stat label="Body fat" value="18.2" unit="%" />
-                  <Stat label="BMI" value="24.1" />
+                  <Stat
+                    label={isLoading ? "Weight (loading…)" : "Weight"}
+                    value={weightWithDelta}
+                    unit={weightKg == null ? undefined : weightUnit}
+                  />
+                  <Stat
+                    label={isLoading ? "Waist (loading…)" : "Waist"}
+                    value={waistVal}
+                    unit={waistCm == null ? undefined : "cm"}
+                  />
+                  <Stat
+                    label="Body fat"
+                    value={bodyFatVal}
+                    unit={bodyFat == null ? undefined : "%"}
+                  />
+                  <Stat
+                    label="Steps"
+                    value={
+                      latest?.activity?.steps != null
+                        ? latest.activity.steps.toString()
+                        : "—"
+                    }
+                  />
                 </div>
 
-                {/* Barras */}
+                {/* Barras (deja tu UI original; si quieres, calcula % simple con un target fijo) */}
                 <div className="mt-6 space-y-4">
-                  <Bar title="Weight goal" hint="→ 75 kg" percent={68} />
-                  <Bar title="Waist goal" hint="→ 80 cm" percent={72} />
+                  <Bar
+                    title="Weight goal"
+                    hint="→ 75 kg"
+                    percent={
+                      weightKg != null
+                        ? Math.max(
+                            0,
+                            Math.min(100, Math.round((75 / weightKg) * 100))
+                          )
+                        : 0
+                    }
+                  />
+                  <Bar
+                    title="Waist goal"
+                    hint="→ 80 cm"
+                    percent={
+                      waistCm != null
+                        ? Math.max(
+                            0,
+                            Math.min(100, Math.round((80 / waistCm) * 100))
+                          )
+                        : 0
+                    }
+                  />
                 </div>
 
                 {/* Notas */}
                 <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
                   <p className="text-sm leading-relaxed text-white/90">
-                    Great sleep, light DOMS. Keep protein high and aim for a
-                    30–40 min walk after dinner. Hydration on point.
+                    {notes}
                   </p>
                 </div>
 
-                {/* Fotos (placeholders) */}
+                {/* Tags (si hay) */}
+                {tags.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {tags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-xs text-white/90"
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Fotos desde backend */}
                 <div className="mt-6 grid grid-cols-2 gap-3">
-                  <PhotoPlaceholder src={assets.progress2} />
-                  <PhotoPlaceholder src={assets.progress3} />
+                  <PhotoPlaceholder src={photo1} />
+                  <PhotoPlaceholder src={photo2} />
                 </div>
 
-                {/* Footer */}
+                {/* Footer (sin cambios) */}
                 <div className="mt-6 flex flex-wrap items-center gap-2">
                   <button
                     type="button"
@@ -87,18 +200,19 @@ const ProgressFeatures = () => {
                   </button>
                   <button
                     type="button"
-                    className="rounded-xl bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/15 transition border border-white/10"
+                    className="rounded-XL bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/15 transition border border-white/10"
                   >
                     Upload photo
                   </button>
                   <span className="ml-auto text-xs text-white/60">
-                    Placeholder UI
+                    {isLoading ? "Loading…" : "From your latest progress"}
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
+          {/* NO tocar este componente */}
           <div className="w-full">
             <ProteinGaugeCard />
           </div>
@@ -108,7 +222,7 @@ const ProgressFeatures = () => {
   );
 };
 
-/* ---------- Subcomponentes originales ---------- */
+/* ---------- Subcomponentes originales (sin cambios de estilo) ---------- */
 
 function Stat({
   label,

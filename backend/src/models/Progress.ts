@@ -75,7 +75,11 @@ export type ProgressDoc = HydratedDocument<IProgress>;
 /* ---------- Sub-esquemas ---------- */
 const PhotoSchema = new Schema<IProgress["photos"][number]>(
   {
-    url: { type: String, required: true },
+    url: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1762166428/Fit_progress/fit_progress_mgvdl3.jpg",
+    },
     pose: { type: String, enum: ["front", "side", "back"] },
     lighting: {
       type: String,
