@@ -7,11 +7,20 @@ export type UnitSystem = "metric" | "imperial";
 export type ProgressSource = "manual" | "device" | "import";
 export type PhotoPose = "front" | "side" | "back";
 export type PhotoLighting = "natural" | "artificial" | "unknown";
+export type ReferenceSlot = "start" | "compare";
+
+// Reusable single photo type (for "start" and "compare")
+export interface ISinglePhoto {
+  url: string;
+  publicId?: string; // Cloudinary public ID (optional)
+  notes?: string;
+  capturedAt?: string; // ISO date string if you want to store when it was taken
+}
 
 export interface IProgress {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
-
+  publicId?: string;
   date: string; // YYYY-MM-DD
   timeOfDay: TimeOfDay; // default: "other"
   timezone?: string; // e.g. "Europe/Zurich"
@@ -59,10 +68,14 @@ export interface IProgress {
 
   photos: {
     url: string;
+    publicId?: string; // optional Cloudinary public ID
     pose?: PhotoPose;
     lighting?: PhotoLighting;
     notes?: string;
   }[];
+
+  startPhoto?: ISinglePhoto;
+  comparePhoto?: ISinglePhoto;
 
   tags: string[];
 
@@ -73,20 +86,28 @@ export interface IProgress {
 export type ProgressDoc = HydratedDocument<IProgress>;
 
 /* ---------- Sub-esquemas ---------- */
-const PhotoSchema = new Schema<IProgress["photos"][number]>(
+const PhotoSchema = new Schema<IProgress["photos"][number]>({
+  url: {
+    type: String,
+    required: true,
+  },
+  publicId: { type: String }, // optional Cloudinary public ID
+  pose: { type: String, enum: ["front", "side", "back"] },
+  lighting: {
+    type: String,
+    enum: ["natural", "artificial", "unknown"],
+    default: "unknown",
+  },
+  notes: String,
+});
+
+//SinglePhotoSchema for start/compare
+const SinglePhotoSchema = new Schema<ISinglePhoto>(
   {
-    url: {
-      type: String,
-      default:
-        "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1762166428/Fit_progress/fit_progress_mgvdl3.jpg",
-    },
-    pose: { type: String, enum: ["front", "side", "back"] },
-    lighting: {
-      type: String,
-      enum: ["natural", "artificial", "unknown"],
-      default: "unknown",
-    },
-    notes: String,
+    url: { type: String, required: true },
+    publicId: { type: String },
+    notes: { type: String },
+    capturedAt: { type: String }, // optional ISO date
   },
   { _id: false }
 );
@@ -179,6 +200,11 @@ const ProgressSchema = new Schema<IProgress>(
     notes: String,
 
     photos: { type: [PhotoSchema], default: [] },
+
+    //reference photos (single each)
+    startPhoto: { type: SinglePhotoSchema, default: undefined },
+    comparePhoto: { type: SinglePhotoSchema, default: undefined },
+
     tags: { type: [String], default: [] },
 
     deletedAt: { type: Date, default: null },
@@ -199,8 +225,19 @@ ProgressSchema.index({ userId: 1, createdAt: -1 });
 export const Progress = model<IProgress>("Progress", ProgressSchema);
 
 /* ---------- DTOs (zod) ---------- */
+const SinglePhotoDto = z.object({
+  url: z.url(),
+  publicId: z.string().optional(),
+  notes: z.string().optional(),
+  capturedAt: z.string().optional(), // ISO string
+});
+
+// If you decide to accept them on create/update (optional):
+// startPhoto: SinglePhotoDto.optional(),
+// comparePhoto: SinglePhotoDto.optional(),
+
 const PhotoMeta = z.object({
-  url: z.string().url(),
+  url: z.url(),
   pose: z.enum(["front", "side", "back"]).optional(),
   lighting: z.enum(["natural", "artificial", "unknown"]).optional(),
   notes: z.string().optional(),
@@ -264,7 +301,15 @@ export const CreateProgressDto = z.object({
 
   notes: z.string().optional(),
   photos: z.array(PhotoMeta).optional(),
+  startPhoto: SinglePhotoDto.optional(),
+  comparePhoto: SinglePhotoDto.optional(),
   tags: z.array(z.string()).optional(),
 });
 
 export const UpdateProgressDto = CreateProgressDto.partial();
+
+// patch JSON para setear o limpiar
+export const UpdateReferencePhotosDto = z.object({
+  startPhoto: z.nullable(SinglePhotoDto).optional(), // null => clear
+  comparePhoto: z.nullable(SinglePhotoDto).optional(), // null => clear
+});

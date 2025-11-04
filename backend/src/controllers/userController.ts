@@ -23,22 +23,28 @@ export type AuthRequest = Request & { auth?: { userId: string } };
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const data = RegisterDto.parse(req.body);
 
-  let avatar =
+  let avatarUrl =
     data.avatar ??
     "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1733781971/userAvatart/Avatars/yf13f4uoy32msk195epl.jpg";
+  let avatarPublicId: string | undefined = undefined;
 
+  // si viene archivo (multer memoryStorage)
   if ((req as any).file?.buffer) {
-    avatar = await uploadBufferToCloudinary(
-      (req as any).file.buffer,
-      "userAvatars/Avatars"
-    );
+    const upload = await uploadBufferToCloudinary((req as any).file.buffer, {
+      folder: "userAvatars/Avatars",
+      resource_type: "image",
+      // opcional: recorte a cara, tamaño, formato, etc.
+      // transformation: [{ width: 512, height: 512, crop: "fill", gravity: "face" }],
+    });
+    avatarUrl = upload.secure_url;
+    avatarPublicId = upload.public_id;
   }
 
   const user = new User({
     email: data.email,
     username: data.username,
     password: data.password,
-    avatar,
+    avatarUrl,
     active: true,
   });
 

@@ -1,28 +1,137 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useRef, useEffect } from "react";
 import assets from "@/assets";
-import ProteinGaugeCard from "@/components/dummy-components/ProteinGaugeCard";
 import { useProgress } from "@/lib/hooks/useProgress";
+import {
+  useUpsertPosedPhotos,
+  useUploadReferencePhotos,
+} from "@/lib/hooks/useProgress";
+
+type Pose = "front" | "side" | "back";
+type RefWhich = "start" | "compare";
+type ActiveSlot =
+  | { kind: "pose"; pose: Pose }
+  | { kind: "ref"; which: RefWhich }
+  | null;
 
 const ProgressFeatures = () => {
-  // Trae los últimos registros (pide varios para poder calcular delta si quieres luego)
+  // fetch latest entries
   const { items, isLoading } = useProgress({
     page: 1,
     limit: 7,
     sort: "-date",
   } as any);
-
   const latest = items?.[0];
   const prev = items?.[1];
 
-  // Header date
-  const dateStr = latest?.date ?? new Date().toISOString().slice(0, 10);
+  // mutations
+  const { mutate: upsertPosed, isPending: posedUploading } =
+    useUpsertPosedPhotos();
+  const { mutate: uploadRefs, isPending: refsUploading } =
+    useUploadReferencePhotos();
 
-  // Stats
+  // derive posed URLs by pose name
+  const frontUrl =
+    latest?.photos?.find((p) => p.pose === "front")?.url ?? assets.progress2;
+  const sideUrl =
+    latest?.photos?.find((p) => p.pose === "side")?.url ?? assets.progress3;
+  const backUrl =
+    latest?.photos?.find((p) => p.pose === "back")?.url ?? assets.progress1;
+
+  // local preview state
+  const [photoFront, setPhotoFront] = useState<string>(frontUrl);
+  const [photoSide, setPhotoSide] = useState<string>(sideUrl);
+  const [photoBack, setPhotoBack] = useState<string>(backUrl);
+
+  const startUrl = latest?.startPhoto?.url ?? "";
+  const compareUrl = latest?.comparePhoto?.url ?? "";
+  const [photoStart, setPhotoStart] = useState<string>(
+    startUrl || assets.progress2
+  );
+  const [photoCompare, setPhotoCompare] = useState<string>(
+    compareUrl || assets.progress3
+  );
+
+  useEffect(() => {
+    setPhotoFront(
+      latest?.photos?.find((p) => p.pose === "front")?.url ?? assets.progress2
+    );
+    setPhotoSide(
+      latest?.photos?.find((p) => p.pose === "side")?.url ?? assets.progress3
+    );
+    setPhotoBack(
+      latest?.photos?.find((p) => p.pose === "back")?.url ?? assets.progress1
+    );
+    setPhotoStart(latest?.startPhoto?.url ?? assets.progress2);
+    setPhotoCompare(latest?.comparePhoto?.url ?? assets.progress3);
+  }, [latest]);
+
+  // single hidden input and active slot
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [activeSlot, setActiveSlot] = useState<ActiveSlot>(null);
+  const isUploading = posedUploading || refsUploading;
+
+  const openPickerPose = (pose: Pose) => {
+    setActiveSlot({ kind: "pose", pose });
+    fileInputRef.current?.click();
+  };
+  const openPickerRef = (which: RefWhich) => {
+    setActiveSlot({ kind: "ref", which });
+    fileInputRef.current?.click();
+  };
+
+  // upload dispatcher
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !latest?._id) return;
+
+    if (activeSlot?.kind === "pose") {
+      const files: Partial<Record<Pose, File>> = { [activeSlot.pose]: file };
+      upsertPosed(
+        { id: latest._id, files },
+        {
+          onSuccess: () => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const dataUrl = reader.result as string;
+              if (activeSlot.pose === "front") setPhotoFront(dataUrl);
+              if (activeSlot.pose === "side") setPhotoSide(dataUrl);
+              if (activeSlot.pose === "back") setPhotoBack(dataUrl);
+            };
+            reader.readAsDataURL(file);
+          },
+        }
+      );
+    } else if (activeSlot?.kind === "ref") {
+      const payload: { id: string; start?: File; compare?: File } = {
+        id: latest._id,
+      };
+      if (activeSlot.which === "start") payload.start = file;
+      if (activeSlot.which === "compare") payload.compare = file;
+
+      uploadRefs(payload, {
+        onSuccess: () => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const dataUrl = reader.result as string;
+            if (activeSlot.which === "start") setPhotoStart(dataUrl);
+            if (activeSlot.which === "compare") setPhotoCompare(dataUrl);
+          };
+          reader.readAsDataURL(file);
+        },
+      });
+    }
+
+    setActiveSlot(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  // computed snapshot values
+  const dateStr = latest?.date ?? new Date().toISOString().slice(0, 10);
   const weightKg = latest?.weight_kg ?? null;
   const waistCm = latest?.waist_cm ?? null;
   const bodyFat = latest?.body?.bodyFatPct ?? null;
 
-  // Si tu backend guarda unitSystem, puedes formatear en lbs si es "imperial"
   const unitSystem = latest?.unitSystem ?? "metric";
   const weightVal =
     weightKg == null
@@ -31,8 +140,6 @@ const ProgressFeatures = () => {
         ? (weightKg * 2.20462).toFixed(1)
         : weightKg.toFixed(1);
   const weightUnit = unitSystem === "imperial" ? "lb" : "kg";
-
-  // (Opcional) delta vs entrada anterior, solo texto entre paréntesis
   const deltaKg =
     weightKg != null && prev?.weight_kg != null
       ? weightKg - prev.weight_kg
@@ -45,184 +152,279 @@ const ProgressFeatures = () => {
             ? (deltaKg * 2.20462).toFixed(1)
             : deltaKg.toFixed(1)
         })`;
-
   const waistVal = waistCm == null ? "-" : waistCm.toFixed(0);
   const bodyFatVal = bodyFat == null ? "-" : bodyFat.toFixed(1);
-
-  // Notas
   const notes =
     latest?.notes ??
     "No notes yet. Add a quick reflection to track your context over time.";
-
-  // Fotos (usa las del backend; si no hay, usa fallbacks)
-  const photo1 = latest?.photos?.[0]?.url ?? assets.progress2;
-  const photo2 = latest?.photos?.[1]?.url ?? assets.progress3;
-
-  // Tags (si existen)
   const tags = latest?.tags ?? [];
 
   return (
     <div className="relative">
-      {/* Fondo fijo full viewport */}
+      {/* full-screen background */}
       <img
         src={assets.progress1}
         alt="Progress Feature"
         className="fixed inset-0 h-[100svh] w-screen object-cover object-center"
       />
 
-      {/* Overlay centrado con grid de 2 cards (gap ~1rem) */}
-      <div className="fixed inset-0 z-10 flex items-center justify-center p-4 sm:p-6 md:p-8">
-        <div className="w-full flex items-center gap-6 ml-[14rem]">
-          {/* Card: Progress snapshot (misma UI, datos reales) */}
-          <div className="relative w-[45rem]">
-            <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-black/60 via-black/20 to-transparent opacity-80" />
-            <div className="relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl text-white">
-              <div className="pointer-events-none absolute -top-6 right-10 h-16 w-16 rounded-full bg-white/30 blur-2xl" />
+      {/* centered overlay; scrollable if the viewport is short */}
+      <div className="fixed inset-0 z-10 flex items-start justify-center p-4 sm:p-6 md:p-8 overflow-y-auto">
+        <div className="w-full mt-14 flex flex-col items-center gap-6">
+          {/* 1) Snapshot Card */}
+          <CardShell>
+            <ProgressSnapshot
+              dateStr={dateStr}
+              isLoading={isLoading}
+              weightWithDelta={weightWithDelta}
+              weightUnit={weightKg == null ? undefined : weightUnit}
+              waistVal={waistVal}
+              bodyFatVal={bodyFatVal}
+              steps={
+                latest?.activity?.steps != null
+                  ? latest.activity.steps.toString()
+                  : "—"
+              }
+              weightKg={weightKg}
+              waistCm={waistCm}
+              notes={notes}
+              tags={tags}
+            />
+          </CardShell>
 
-              <div className="p-5 sm:p-6 md:p-8">
-                {/* Header */}
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      className="drop-shadow-sm sm:w-[22px] sm:h-[22px]"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M21 15V8a2 2 0 0 0-2-2h-3" />
-                      <path d="M3 15V8a2 2 0 0 1 2-2h3" />
-                      <rect x="3" y="11" width="18" height="10" rx="2" />
-                      <path d="M8 11v10M16 11v10" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
-                      Progress snapshot
-                    </h2>
-                    <p className="text-xs text-white/70 sm:text-sm">
-                      {dateStr}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <Stat
-                    label={isLoading ? "Weight (loading…)" : "Weight"}
-                    value={weightWithDelta}
-                    unit={weightKg == null ? undefined : weightUnit}
-                  />
-                  <Stat
-                    label={isLoading ? "Waist (loading…)" : "Waist"}
-                    value={waistVal}
-                    unit={waistCm == null ? undefined : "cm"}
-                  />
-                  <Stat
-                    label="Body fat"
-                    value={bodyFatVal}
-                    unit={bodyFat == null ? undefined : "%"}
-                  />
-                  <Stat
-                    label="Steps"
-                    value={
-                      latest?.activity?.steps != null
-                        ? latest.activity.steps.toString()
-                        : "—"
-                    }
+          {/* 2) Two cards: smaller check-in & reference */}
+          <div className="flex w-full max-w-[50rem] flex-col lg:flex-row gap-6">
+            {/* Posed photos: front/side/back (small tiles) */}
+            <CardShell className="lg:flex-1">
+              <SectionHeader
+                title="Check-in photos"
+                subtitle="Front • Side • Back"
+              />
+              <div className="mt-4 flex flex-wrap gap-3">
+                <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
+                  <PhotoTile
+                    src={photoFront}
+                    badge="Front"
+                    disabled={isUploading}
+                    onClick={() => openPickerPose("front")}
+                    size="sm"
                   />
                 </div>
-
-                {/* Barras (deja tu UI original; si quieres, calcula % simple con un target fijo) */}
-                <div className="mt-6 space-y-4">
-                  <Bar
-                    title="Weight goal"
-                    hint="→ 75 kg"
-                    percent={
-                      weightKg != null
-                        ? Math.max(
-                            0,
-                            Math.min(100, Math.round((75 / weightKg) * 100))
-                          )
-                        : 0
-                    }
-                  />
-                  <Bar
-                    title="Waist goal"
-                    hint="→ 80 cm"
-                    percent={
-                      waistCm != null
-                        ? Math.max(
-                            0,
-                            Math.min(100, Math.round((80 / waistCm) * 100))
-                          )
-                        : 0
-                    }
+                <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
+                  <PhotoTile
+                    src={photoSide}
+                    badge="Side"
+                    disabled={isUploading}
+                    onClick={() => openPickerPose("side")}
+                    size="sm"
                   />
                 </div>
-
-                {/* Notas */}
-                <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
-                  <p className="text-sm leading-relaxed text-white/90">
-                    {notes}
-                  </p>
-                </div>
-
-                {/* Tags (si hay) */}
-                {tags.length > 0 && (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {tags.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-xs text-white/90"
-                      >
-                        #{t}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Fotos desde backend */}
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <PhotoPlaceholder src={photo1} />
-                  <PhotoPlaceholder src={photo2} />
-                </div>
-
-                {/* Footer (sin cambios) */}
-                <div className="mt-6 flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    className="rounded-xl bg-white/15 px-3 py-2 text-sm font-medium hover:bg-white/20 transition border border-white/20"
-                  >
-                    + Add entry
-                  </button>
-                  <button
-                    type="button"
-                    className="rounded-XL bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/15 transition border border-white/10"
-                  >
-                    Upload photo
-                  </button>
-                  <span className="ml-auto text-xs text-white/60">
-                    {isLoading ? "Loading…" : "From your latest progress"}
-                  </span>
+                <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
+                  <PhotoTile
+                    src={photoBack}
+                    badge="Back"
+                    disabled={isUploading}
+                    onClick={() => openPickerPose("back")}
+                    size="sm"
+                  />
                 </div>
               </div>
-            </div>
+            </CardShell>
+
+            {/* Reference photos: start/compare (small tiles) */}
+            <CardShell className="lg:flex-1">
+              <SectionHeader
+                title="Reference photos"
+                subtitle="Start • Compare"
+              />
+              <div className="mt-4 flex flex-wrap gap-3">
+                <div className="basis-full sm:basis-[calc(50%-0.375rem)]">
+                  <PhotoTile
+                    src={photoStart}
+                    badge={startUrl ? "Start" : "Start (add)"}
+                    disabled={isUploading}
+                    onClick={() => openPickerRef("start")}
+                    size="sm"
+                  />
+                </div>
+                <div className="basis-full sm:basis-[calc(50%-0.375rem)]">
+                  <PhotoTile
+                    src={photoCompare}
+                    badge={compareUrl ? "Compare" : "Compare (add)"}
+                    disabled={isUploading}
+                    onClick={() => openPickerRef("compare")}
+                    size="sm"
+                  />
+                </div>
+              </div>
+            </CardShell>
           </div>
 
-          {/* NO tocar este componente */}
-          <div className="w-full">
-            <ProteinGaugeCard />
-          </div>
+          {/* hidden input for all uploads */}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleFileChange}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-/* ---------- Subcomponentes originales (sin cambios de estilo) ---------- */
+/* ---------------- Subcomponents (visual style intact) ---------------- */
+
+function CardShell({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`relative w-full max-w-[50rem] ${className}`}>
+      <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-black/60 via-black/20 to-transparent opacity-80" />
+      <div className="relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl text-white">
+        <div className="pointer-events-none absolute -top-6 right-10 h-16 w-16 rounded-full bg-white/30 blur-2xl" />
+        <div className="p-5 sm:p-6 md:p-8">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle?: string;
+}) {
+  return (
+    <div className="mb-1">
+      <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
+        {title}
+      </h3>
+      {subtitle && (
+        <p className="text-xs text-white/70 sm:text-sm">{subtitle}</p>
+      )}
+    </div>
+  );
+}
+
+function ProgressSnapshot({
+  dateStr,
+  isLoading,
+  weightWithDelta,
+  weightUnit,
+  waistVal,
+  bodyFatVal,
+  steps,
+  weightKg,
+  waistCm,
+  notes,
+  tags,
+}: {
+  dateStr: string;
+  isLoading: boolean;
+  weightWithDelta: string;
+  weightUnit?: string;
+  waistVal: string;
+  bodyFatVal: string;
+  steps: string;
+  weightKg: number | null;
+  waistCm: number | null;
+  notes: string;
+  tags: string[];
+}) {
+  return (
+    <>
+      {/* header */}
+      <div className=" mb-5 flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            className="drop-shadow-sm sm:w-[22px] sm:h-[22px]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M21 15V8a2 2 0 0 0-2-2h-3" />
+            <path d="M3 15V8a2 2 0 0 1 2-2h-3" />
+            <rect x="3" y="11" width="18" height="10" rx="2" />
+            <path d="M8 11v10M16 11v10" />
+          </svg>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
+            Progress snapshot
+          </h2>
+          <p className="text-xs text-white/70 sm:text-sm">{dateStr}</p>
+        </div>
+      </div>
+
+      {/* stats */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Stat
+          label={isLoading ? "Weight (loading…)" : "Weight"}
+          value={weightWithDelta}
+          unit={weightUnit}
+        />
+        <Stat
+          label={isLoading ? "Waist (loading…)" : "Waist"}
+          value={waistVal}
+          unit={waistCm == null ? undefined : "cm"}
+        />
+        <Stat label="Body fat" value={bodyFatVal} unit="%" />
+        <Stat label="Steps" value={steps} />
+      </div>
+
+      {/* bars */}
+      <div className="mt-6 space-y-4">
+        <Bar
+          title="Weight goal"
+          hint="→ 75 kg"
+          percent={
+            weightKg != null
+              ? Math.max(0, Math.min(100, Math.round((75 / weightKg) * 100)))
+              : 0
+          }
+        />
+        <Bar
+          title="Waist goal"
+          hint="→ 80 cm"
+          percent={
+            waistCm != null
+              ? Math.max(0, Math.min(100, Math.round((80 / waistCm) * 100)))
+              : 0
+          }
+        />
+      </div>
+
+      {/* notes */}
+      <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
+        <p className="text-sm leading-relaxed text-white/90">{notes}</p>
+      </div>
+
+      {/* tags */}
+      {tags.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-xs text-white/90"
+            >
+              #{t}
+            </span>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
 
 function Stat({
   label,
@@ -274,11 +476,49 @@ function Bar({
   );
 }
 
-function PhotoPlaceholder({ src }: { src: string }) {
+/** Imagen completa sin recorte; tamaño “sm” para tiles más compactos */
+function PhotoTile({
+  src,
+  onClick,
+  badge,
+  disabled,
+  size = "sm",
+}: {
+  src: string;
+  onClick: () => void;
+  badge?: string;
+  disabled?: boolean;
+  /** "sm" (compacto) o "md" (más alto) */
+  size?: "sm" | "md";
+}) {
+  // alturas por tamaño (responsive) via CSS variable
+  const cssHeights =
+    size === "sm"
+      ? `:root{--ph-h: 10rem}@media (min-width:640px){:root{--ph-h: 12rem}}@media (min-width:768px){:root{--ph-h: 14rem}}`
+      : `:root{--ph-h: 13rem}@media (min-width:640px){:root{--ph-h: 16rem}}@media (min-width:768px){:root{--ph-h: 18rem}}`;
+
   return (
-    <div className="group relative grid h-24 place-items-center overflow-hidden rounded-2xl border border-white/15 bg-white/5 sm:h-28">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_50%)] opacity-60" />
-      <img src={src} alt="Progress" className="h-full w-full object-cover" />
+    <div
+      className="group relative flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-2"
+      style={{
+        cursor: disabled ? "not-allowed" : "pointer",
+        height: "var(--ph-h)",
+      }}
+      onClick={() => !disabled && onClick()}
+    >
+      <style>{cssHeights}</style>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_50%)] opacity-60 rounded-2xl pointer-events-none" />
+      <img
+        src={src}
+        alt="Progress"
+        className="max-h-[calc(var(--ph-h)-0.75rem)] max-w-[95%] object-contain z-[1]"
+        draggable={false}
+      />
+      {badge && (
+        <span className="pointer-events-none absolute bottom-2 left-2 rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium text-white shadow-sm z-[1]">
+          {badge}
+        </span>
+      )}
     </div>
   );
 }
