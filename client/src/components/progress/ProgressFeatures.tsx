@@ -6,6 +6,9 @@ import {
   useUpsertPosedPhotos,
   useUploadReferencePhotos,
 } from "@/lib/hooks/useProgress";
+import { RiProgress5Fill } from "react-icons/ri";
+import { FaPerson } from "react-icons/fa6";
+import { IoMdPhotos } from "react-icons/io";
 
 type Pose = "front" | "side" | "back";
 type RefWhich = "start" | "compare";
@@ -199,6 +202,9 @@ const ProgressFeatures = () => {
               <SectionHeader
                 title="Check-in photos"
                 subtitle="Front • Side • Back"
+                icon={
+                  <FaPerson className="text-white drop-shadow-sm text-[22px] inline-block " />
+                }
               />
               <div className="mt-4 flex flex-wrap gap-3">
                 <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
@@ -236,6 +242,9 @@ const ProgressFeatures = () => {
               <SectionHeader
                 title="Reference photos"
                 subtitle="Start • Compare"
+                icon={
+                  <IoMdPhotos className="text-white drop-shadow-sm text-[22px] inline-block" />
+                }
               />
               <div className="mt-4 flex flex-wrap gap-3">
                 <div className="basis-full sm:basis-[calc(50%-0.375rem)]">
@@ -297,17 +306,24 @@ function CardShell({
 function SectionHeader({
   title,
   subtitle,
+  icon,
 }: {
   title: string;
   subtitle?: string;
+  icon?: React.ReactNode;
 }) {
   return (
     <div className="mb-1">
-      <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
-        {title}
-      </h3>
+      <div className="flex items-center">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
+          {icon}
+        </div>
+        <h3 className="text-lg font-semibold tracking-tight sm:text-xl ml-3">
+          {title}
+        </h3>
+      </div>
       {subtitle && (
-        <p className="text-xs text-white/70 sm:text-sm">{subtitle}</p>
+        <p className="text-xs text-white/70 sm:text-sm mt-1.5">{subtitle}</p>
       )}
     </div>
   );
@@ -343,7 +359,7 @@ function ProgressSnapshot({
       {/* header */}
       <div className=" mb-5 flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
-          <svg
+          {/*<svg
             width="20"
             height="20"
             viewBox="0 0 24 24"
@@ -356,7 +372,8 @@ function ProgressSnapshot({
             <path d="M3 15V8a2 2 0 0 1 2-2h-3" />
             <rect x="3" y="11" width="18" height="10" rx="2" />
             <path d="M8 11v10M16 11v10" />
-          </svg>
+          </svg> */}
+          <RiProgress5Fill className="text-white drop-shadow-sm sm:text-[22px]" />
         </div>
         <div>
           <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
@@ -489,7 +506,7 @@ function PhotoTile({
   badge?: string;
   disabled?: boolean;
   /** "sm" (compacto) o "md" (más alto) */
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 }) {
   // alturas por tamaño (responsive) via CSS variable
   const cssHeights =
@@ -499,7 +516,7 @@ function PhotoTile({
 
   return (
     <div
-      className="group relative flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-2"
+      className="group relative flex items-center justify-center rounded-2xl overflow-hidden border border-white/60 bg-white/5"
       style={{
         cursor: disabled ? "not-allowed" : "pointer",
         height: "var(--ph-h)",
@@ -511,11 +528,11 @@ function PhotoTile({
       <img
         src={src}
         alt="Progress"
-        className="max-h-[calc(var(--ph-h)-0.75rem)] max-w-[95%] object-contain z-[1]"
+        className="h-full w-full object-cover z-[1]"
         draggable={false}
       />
       {badge && (
-        <span className="pointer-events-none absolute bottom-2 left-2 rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium text-white shadow-sm z-[1]">
+        <span className="pointer-events-none absolute whitespace-nowrap bottom-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-[1rem] font-medium text-cyan-300 shadow-sm z-[1]">
           {badge}
         </span>
       )}
