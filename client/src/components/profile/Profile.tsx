@@ -4,6 +4,8 @@ import { Route as MealDetailsRoute } from "@/routes/meals/details/$mealId";
 import { useMemo } from "react";
 import { useAuth } from "@/context/UserContext";
 import { useMeals } from "@/lib/hooks/useMeals";
+import ProfileProgressGlance from "./ProfileProgressGlance";
+import ProfileReferencePhotos from "./ProfileReferencePhotos";
 
 type Stat = { label: string; value: number; unit?: string; hint?: string };
 
@@ -178,6 +180,9 @@ const Profile = () => {
             </div>
           </div>
         </section>
+
+        <ProfileProgressGlance />
+        <ProfileReferencePhotos />
 
         {/* Badges */}
         <section className="rounded-2xl border bg-white p-5 shadow-sm">

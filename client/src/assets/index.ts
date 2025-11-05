@@ -16,10 +16,14 @@ import recipe2 from "./images/sections/recipes/recipe_2.png";
 import recipe3 from "./images/sections/recipes/recipe_3.png";
 import routines from "./images/sections/routines/routines.png";
 
-// Progress page
+// Progress page images & videos
 import progress1 from "./images/pages/progress/progress_1.png";
 import progress2 from "./images/pages/progress/progress_2.png";
 import progress3 from "./images/pages/progress/progress_3.png";
+import vOne from "./media/process/v_1.mp4";
+import vTwo from "./media/process/v_2.mp4";
+import vThree from "./media/process/v_3.mp4";
+import vFour from "./media/process/v_4.mp4";
 
 // avatars
 import avatar1 from "./images/avatars/avatar1.jpg";
@@ -87,6 +91,10 @@ const assets: IAssets = {
   prod7,
   prod8,
   prod9,
+  vOne,
+  vTwo,
+  vThree,
+  vFour,
 };
 
 export default assets;

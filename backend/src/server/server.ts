@@ -17,6 +17,8 @@ import { v2 as cloudinary } from "cloudinary";
 import connectDB from "../config/db";
 import { errorHandler } from "../middlewares/error";
 import { multerErrorHandler } from "../middlewares/multeError";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "../swagger";
 
 dotenv.config({
   path: path.resolve(__dirname, "..", "config", "config.env"),
@@ -37,6 +39,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    "/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, { explorer: true })
+  );
+  app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
+}
 
 // Handle cookies
 app.use(cookieParser());

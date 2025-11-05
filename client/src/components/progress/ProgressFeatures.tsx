@@ -9,6 +9,7 @@ import {
 import { RiProgress5Fill } from "react-icons/ri";
 import { FaPerson } from "react-icons/fa6";
 import { IoMdPhotos } from "react-icons/io";
+import { motion, Variants } from "framer-motion";
 
 type Pose = "front" | "side" | "back";
 type RefWhich = "start" | "compare";
@@ -16,6 +17,22 @@ type ActiveSlot =
   | { kind: "pose"; pose: Pose }
   | { kind: "ref"; which: RefWhich }
   | null;
+
+// Motion variants
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+} as Variants;
+const item = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", duration: 0.6, bounce: 0.25 },
+  },
+} as Variants;
 
 const ProgressFeatures = () => {
   // fetch latest entries
@@ -162,6 +179,71 @@ const ProgressFeatures = () => {
     "No notes yet. Add a quick reflection to track your context over time.";
   const tags = latest?.tags ?? [];
 
+  // --- Hover video control for the FRONT tile ---
+  const frontVideoRef = useRef<HTMLVideoElement | null>(null);
+  const handleFrontEnter = () => {
+    const v = frontVideoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+  const handleFrontLeave = () => {
+    const v = frontVideoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+
+  const sideVideoRef = useRef<HTMLVideoElement | null>(null);
+  const handleSideEnter = () => {
+    const v = sideVideoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+  const handleSideLeave = () => {
+    const v = sideVideoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+
+  const backVideoRef = useRef<HTMLVideoElement | null>(null);
+  const handleBackEnter = () => {
+    const v = backVideoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+  const handleBackLeave = () => {
+    const v = backVideoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+
+  const startVideoRef = useRef<HTMLVideoElement | null>(null);
+  const handleStartEnter = () => {
+    const v = startVideoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+  const handleStartLeave = () => {
+    const v = startVideoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+
   return (
     <div className="relative">
       {/* full-screen background */}
@@ -173,101 +255,218 @@ const ProgressFeatures = () => {
 
       {/* centered overlay; scrollable if the viewport is short */}
       <div className="fixed inset-0 z-10 flex items-start justify-center p-4 sm:p-6 md:p-8 overflow-y-auto">
-        <div className="w-full mt-14 flex flex-col items-center gap-6">
+        <motion.div
+          className="w-full mt-14 flex flex-col items-center gap-6"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {/* 1) Snapshot Card */}
-          <CardShell>
-            <ProgressSnapshot
-              dateStr={dateStr}
-              isLoading={isLoading}
-              weightWithDelta={weightWithDelta}
-              weightUnit={weightKg == null ? undefined : weightUnit}
-              waistVal={waistVal}
-              bodyFatVal={bodyFatVal}
-              steps={
-                latest?.activity?.steps != null
-                  ? latest.activity.steps.toString()
-                  : "—"
-              }
-              weightKg={weightKg}
-              waistCm={waistCm}
-              notes={notes}
-              tags={tags}
-            />
-          </CardShell>
+          <motion.div variants={item} className="w-full max-w-[50rem]">
+            <CardShell>
+              <ProgressSnapshot
+                dateStr={dateStr}
+                isLoading={isLoading}
+                weightWithDelta={weightWithDelta}
+                weightUnit={weightKg == null ? undefined : weightUnit}
+                waistVal={waistVal}
+                bodyFatVal={bodyFatVal}
+                steps={
+                  latest?.activity?.steps != null
+                    ? latest.activity.steps.toString()
+                    : "—"
+                }
+                weightKg={weightKg}
+                waistCm={waistCm}
+                notes={notes}
+                tags={tags}
+              />
+            </CardShell>
+          </motion.div>
 
           {/* 2) Two cards: smaller check-in & reference */}
-          <div className="flex w-full max-w-[50rem] flex-col lg:flex-row gap-6">
+          <motion.div
+            variants={item}
+            className="flex w-full max-w-[50rem] flex-col lg:flex-row gap-6"
+          >
             {/* Posed photos: front/side/back (small tiles) */}
-            <CardShell className="lg:flex-1">
-              <SectionHeader
-                title="Check-in photos"
-                subtitle="Front • Side • Back"
-                icon={
-                  <FaPerson className="text-white drop-shadow-sm text-[22px] inline-block " />
-                }
-              />
-              <div className="mt-4 flex flex-wrap gap-3">
-                <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
-                  <PhotoTile
-                    src={photoFront}
-                    badge="Front"
-                    disabled={isUploading}
-                    onClick={() => openPickerPose("front")}
-                    size="sm"
-                  />
-                </div>
-                <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
-                  <PhotoTile
-                    src={photoSide}
-                    badge="Side"
-                    disabled={isUploading}
-                    onClick={() => openPickerPose("side")}
-                    size="sm"
-                  />
-                </div>
-                <div className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]">
-                  <PhotoTile
-                    src={photoBack}
-                    badge="Back"
-                    disabled={isUploading}
-                    onClick={() => openPickerPose("back")}
-                    size="sm"
-                  />
-                </div>
-              </div>
-            </CardShell>
+            <motion.div variants={item} className="lg:flex-1">
+              <CardShell className="lg:flex-1">
+                <SectionHeader
+                  title="Check-in photos"
+                  subtitle="Front • Side • Back"
+                  icon={
+                    <FaPerson className="text-white drop-shadow-sm text-[22px] inline-block " />
+                  }
+                />
+                <motion.div
+                  className="mt-4 flex flex-wrap gap-3"
+                  variants={container}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.2 }}
+                >
+                  {/* FRONT tile with hover video overlay */}
+                  <motion.div
+                    variants={item}
+                    className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]"
+                  >
+                    <div
+                      className="relative overflow-hidden rounded-2xl group"
+                      onMouseEnter={handleFrontEnter}
+                      onMouseLeave={handleFrontLeave}
+                    >
+                      <PhotoTile
+                        src={photoFront}
+                        badge="Front"
+                        disabled={isUploading}
+                        onClick={() => openPickerPose("front")}
+                        size="sm"
+                      />
+
+                      {/* overlay de video */}
+                      <video
+                        ref={frontVideoRef}
+                        src={assets.vOne}
+                        className="pointer-events-none absolute inset-0 h-full w-full object-cover
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                 rounded-2xl z-[2]"
+                        muted
+                        loop
+                        playsInline
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* SIDE */}
+                  <motion.div
+                    variants={item}
+                    className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]"
+                  >
+                    <div
+                      className="relative overflow-hidden rounded-2xl group"
+                      onMouseEnter={handleSideEnter}
+                      onMouseLeave={handleSideLeave}
+                    >
+                      <PhotoTile
+                        src={photoSide}
+                        badge="Side"
+                        disabled={isUploading}
+                        onClick={() => openPickerPose("side")}
+                        size="sm"
+                      />
+
+                      {/* overlay de video */}
+                      <video
+                        ref={sideVideoRef}
+                        src={assets.vThree}
+                        className="pointer-events-none absolute inset-0 h-full w-full object-cover
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                 rounded-2xl z-[2]"
+                        muted
+                        loop
+                        playsInline
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* BACK */}
+                  <motion.div
+                    variants={item}
+                    className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]"
+                  >
+                    <div
+                      className="relative overflow-hidden rounded-2xl group"
+                      onMouseEnter={handleBackEnter}
+                      onMouseLeave={handleBackLeave}
+                    >
+                      <PhotoTile
+                        src={photoBack}
+                        badge="Back"
+                        disabled={isUploading}
+                        onClick={() => openPickerPose("back")}
+                        size="sm"
+                      />
+                      {/* overlay de video */}
+                      <video
+                        ref={backVideoRef}
+                        src={assets.vFour}
+                        className="pointer-events-none absolute inset-0 h-full w-full object-cover
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                 rounded-2xl z-[2]"
+                        muted
+                        loop
+                        playsInline
+                      />
+                    </div>
+                  </motion.div>
+                </motion.div>
+              </CardShell>
+            </motion.div>
 
             {/* Reference photos: start/compare (small tiles) */}
-            <CardShell className="lg:flex-1">
-              <SectionHeader
-                title="Reference photos"
-                subtitle="Start • Compare"
-                icon={
-                  <IoMdPhotos className="text-white drop-shadow-sm text-[22px] inline-block" />
-                }
-              />
-              <div className="mt-4 flex flex-wrap gap-3">
-                <div className="basis-full sm:basis-[calc(50%-0.375rem)]">
-                  <PhotoTile
-                    src={photoStart}
-                    badge={startUrl ? "Start" : "Start (add)"}
-                    disabled={isUploading}
-                    onClick={() => openPickerRef("start")}
-                    size="sm"
-                  />
-                </div>
-                <div className="basis-full sm:basis-[calc(50%-0.375rem)]">
-                  <PhotoTile
-                    src={photoCompare}
-                    badge={compareUrl ? "Compare" : "Compare (add)"}
-                    disabled={isUploading}
-                    onClick={() => openPickerRef("compare")}
-                    size="sm"
-                  />
-                </div>
-              </div>
-            </CardShell>
-          </div>
+            <motion.div variants={item} className="lg:flex-1">
+              <CardShell className="lg:flex-1">
+                <SectionHeader
+                  title="Reference photos"
+                  subtitle="Start • Compare"
+                  icon={
+                    <IoMdPhotos className="text-white drop-shadow-sm text-[22px] inline-block" />
+                  }
+                />
+                <motion.div
+                  className="mt-4 flex flex-wrap gap-3"
+                  variants={container}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.2 }}
+                >
+                  <motion.div
+                    variants={item}
+                    className="basis-full sm:basis-[calc(50%-0.375rem)]"
+                  >
+                    <div
+                      className="relative overflow-hidden rounded-2xl group"
+                      onMouseEnter={handleStartEnter}
+                      onMouseLeave={handleStartLeave}
+                    >
+                      <PhotoTile
+                        src={photoStart}
+                        badge={startUrl ? "Start" : "Start (add)"}
+                        disabled={isUploading}
+                        onClick={() => openPickerRef("start")}
+                        size="sm"
+                      />
+
+                      {/* overlay de video */}
+                      <video
+                        ref={startVideoRef}
+                        src={assets.vTwo}
+                        className="pointer-events-none absolute inset-0 h-full w-full object-cover
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                 rounded-2xl z-[2]"
+                        muted
+                        loop
+                        playsInline
+                      />
+                    </div>
+                  </motion.div>
+                  <motion.div
+                    variants={item}
+                    className="basis-full sm:basis-[calc(50%-0.375rem)]"
+                  >
+                    <PhotoTile
+                      src={photoCompare}
+                      badge={compareUrl ? "Compare" : "Compare (add)"}
+                      disabled={isUploading}
+                      onClick={() => openPickerRef("compare")}
+                      size="sm"
+                    />
+                  </motion.div>
+                </motion.div>
+              </CardShell>
+            </motion.div>
+          </motion.div>
 
           {/* hidden input for all uploads */}
           <input
@@ -277,7 +476,7 @@ const ProgressFeatures = () => {
             className="hidden"
             onChange={handleFileChange}
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );
@@ -500,6 +699,7 @@ function PhotoTile({
   badge,
   disabled,
   size = "sm",
+  className,
 }: {
   src: string;
   onClick: () => void;
@@ -507,6 +707,7 @@ function PhotoTile({
   disabled?: boolean;
   /** "sm" (compacto) o "md" (más alto) */
   size?: "sm" | "md" | "lg";
+  className?: string;
 }) {
   // alturas por tamaño (responsive) via CSS variable
   const cssHeights =
@@ -516,7 +717,7 @@ function PhotoTile({
 
   return (
     <div
-      className="group relative flex items-center justify-center rounded-2xl overflow-hidden border border-white/60 bg-white/5"
+      className={`group relative flex items-center justify-center rounded-2xl overflow-hidden border border-white/60 bg-white/5 ${className}`}
       style={{
         cursor: disabled ? "not-allowed" : "pointer",
         height: "var(--ph-h)",
