@@ -10,11 +10,15 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "baseUrl": ".",
-    "types": ["node"],
+
+    // 👇 estos dos cambios son clave
+    "types": ["node", "express"],
+    "typeRoots": ["./node_modules/@types"],
+
     "paths": {
       "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
