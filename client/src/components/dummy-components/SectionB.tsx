@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { motion, Variants } from "framer-motion";
 
 /* ============== Hook: in-view una sola vez ============== */
 function useInViewOnce<T extends HTMLElement>(
@@ -32,8 +33,8 @@ function useInViewOnce<T extends HTMLElement>(
 function Typewriter({
   text,
   start,
-  speed = 18, // ms por carácter
-  ramp = 140, // ms de "fade-in" inicial antes de comenzar
+  speed = 18,
+  ramp = 140,
   className,
   onDone,
 }: {
@@ -47,7 +48,6 @@ function Typewriter({
   const [idx, setIdx] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  // reduced motion: escribe instantáneo
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mq.matches && start) {
@@ -57,14 +57,12 @@ function Typewriter({
     }
   }, [start, text.length, onDone]);
 
-  // pequeña rampa de entrada (suaviza el inicio)
   useEffect(() => {
     if (!start) return;
     const id = window.setTimeout(() => setVisible(true), ramp);
     return () => window.clearTimeout(id);
   }, [start, ramp]);
 
-  // escritura carácter por carácter
   useEffect(() => {
     if (!start) return;
     if (idx >= text.length) {
@@ -138,75 +136,121 @@ const smallCircle = [
   },
 ];
 
+// Animation variants
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut", delay },
+  }),
+} as Variants;
+
 const SectionB = () => {
   const { ref: smallRef, inView } = useInViewOnce<HTMLDivElement>();
-  // Controla qué índice está escribiéndose (secuencial de arriba hacia abajo)
   const [current, setCurrent] = useState(-1);
 
-  // Cuando entra en viewport, comienza el primero
   useEffect(() => {
     if (inView && current === -1) setCurrent(0);
   }, [inView, current]);
 
   return (
-    <div className="w-full flex flex-col ">
-      <div className="mx-auto  flex flex-col items-center">
-        <h2 className="text-black mt-10 text-4xl font-bold">Section B</h2>
-        <p className="text-black">This is the content for Section B.</p>
+    <motion.div
+      className="w-full flex flex-col px-4 sm:px-6 lg:px-12"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeUp}
+    >
+      <div className="mx-auto flex flex-col items-center text-center">
+        <motion.h2
+          className="text-black mt-10 text-3xl sm:text-4xl font-bold"
+          variants={fadeUp}
+        >
+          Section B
+        </motion.h2>
+        <motion.p
+          className="text-black text-sm sm:text-base"
+          variants={fadeUp}
+          custom={0.1}
+        >
+          This is the content for Section B.
+        </motion.p>
 
-        <div className="w-full flex mt-10 gap-3.5 ">
-          {/* Small Circles con escritura secuencial */}
-          <div
+        <motion.div
+          className="w-full flex flex-col lg:flex-row mt-10 gap-6 lg:gap-10 items-center justify-center"
+          variants={fadeUp}
+          custom={0.2}
+        >
+          {/* Small Circles */}
+          <motion.div
             ref={smallRef}
-            className="shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] rounded-[2.2rem]"
+            className="shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] rounded-[2.2rem] w-full sm:w-[90%] md:w-[35rem] lg:w-[37rem] flex justify-center"
+            variants={fadeUp}
+            custom={0.3}
           >
-            <div className="w-[37rem] h-[25rem] bg-white p-6 shadow-lg border-6 border-[#393a3c] rounded-[2.2rem] overflow-hidden relative ">
+            <div className="bg-white p-4 sm:p-6 shadow-lg border-6 border-[#393a3c] rounded-[2.2rem] overflow-hidden relative w-full h-[22rem] sm:h-[25rem]">
               {smallCircle.map((item, i) => (
-                <div
+                <motion.div
                   key={i}
-                  className={`flex gap-8 mb-4 absolute mt-8`}
+                  className="flex gap-4 sm:gap-8 mb-4 absolute mt-6 sm:mt-8"
                   style={{ top: i * 80, left: 20 }}
+                  variants={fadeUp}
+                  custom={0.4 + i * 0.1}
                 >
                   <div className="mt-2">
                     <div
                       className={`w-3 h-3 ${item.color} flex rounded-full border-2 border-gray-600`}
                     />
                   </div>
-                  <div className="flex flex-col ">
-                    <h3 className="text-black font-semibold">{item.title}</h3>
-                    <p className="text-black w-[22rem]">
+                  <div className="flex flex-col text-left">
+                    <h3 className="text-black font-semibold text-sm sm:text-base">
+                      {item.title}
+                    </h3>
+                    <p className="text-black w-[14rem] sm:w-[20rem] md:w-[22rem] text-xs sm:text-sm">
                       <Typewriter
                         text={item.content}
-                        start={current === i} // SOLO este ítem escribe
-                        speed={20} // más suave
-                        ramp={180} // pequeña rampa
-                        onDone={() => setCurrent((i) => (i === i ? i + 1 : i))}
+                        start={current === i}
+                        speed={20}
+                        ramp={180}
+                        onDone={() => setCurrent((j) => (j === i ? i + 1 : j))}
                       />
                     </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="w-[40%] flex gap-4">
+          {/* Boxes */}
+          <motion.div
+            className="w-full sm:w-[80%] md:w-[70%] lg:w-[40%] flex flex-wrap justify-center gap-4"
+            variants={fadeUp}
+            custom={0.4}
+          >
             {loremContent.map((box, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="w-[10rem] flex justify-center shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] rounded-[1rem]"
+                className="w-[9rem] sm:w-[10rem] md:w-[12rem] flex justify-center shadow-[-3px_3px_0px_0px_rgb(0_0_0/0.8)] rounded-[1rem]"
+                variants={fadeUp}
+                custom={0.5 + index * 0.1}
               >
                 <div
-                  className={`w-2xl text-center text-[#393a3c] flex flex-col justify-center items-center border-6 border-[#393a3c] rounded-[1rem] p-4 ${box.color}`}
+                  className={`text-center text-[#393a3c] flex flex-col justify-center items-center border-6 border-[#393a3c] rounded-[1rem] p-3 sm:p-4 ${box.color}`}
                 >
-                  <h2 className="text-xl font-semibold mb-2">{box.title}</h2>
-                  <p>{box.content}</p>
+                  <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2">
+                    {box.title}
+                  </h2>
+                  <p className="text-xs sm:text-sm md:text-base">
+                    {box.content}
+                  </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

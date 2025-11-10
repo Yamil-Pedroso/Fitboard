@@ -5,24 +5,9 @@ import { Route as RountineDetailsRoute } from "@/routes/routines/routine-details
 import { Route as RoutineUpdateRoute } from "@/routes/routines/update/$routineId";
 import { useRoutines } from "@/lib/hooks/useRoutines"; // <- no-params version
 import type { IRoutine } from "@/services/routineService";
+import { SortOption, SORT_LABEL } from "@/types/types";
+import { makeComparator } from "@/lib/helpers/makeComparator";
 import assets from "@/assets";
-
-type SortOption =
-  | "-updatedAt"
-  | "updatedAt"
-  | "-createdAt"
-  | "createdAt"
-  | "name"
-  | "-name";
-
-const SORT_LABEL: Record<SortOption, string> = {
-  "-updatedAt": "Recently updated",
-  updatedAt: "Least recently updated",
-  "-createdAt": "Newest first",
-  createdAt: "Oldest first",
-  name: "Name A → Z",
-  "-name": "Name Z → A",
-};
 
 const PAGE_SIZE = 20;
 
@@ -344,23 +329,3 @@ function EmptyState({
 }
 
 export default RoutinesList;
-
-// ---- helpers ----
-function makeComparator(sort: SortOption) {
-  const dir = sort.startsWith("-") ? -1 : 1;
-  const field = sort.replace(/^-/, "");
-  return (a: IRoutine, b: IRoutine) => {
-    const av = (a as any)[field];
-    const bv = (b as any)[field];
-    if (!av && !bv) return 0;
-    if (!av) return 1;
-    if (!bv) return -1;
-    if (field === "updatedAt" || field === "createdAt") {
-      return (new Date(av).getTime() - new Date(bv).getTime()) * dir;
-    }
-    if (typeof av === "string" && typeof bv === "string") {
-      return av.localeCompare(bv) * dir;
-    }
-    return (av > bv ? 1 : av < bv ? -1 : 0) * dir;
-  };
-}

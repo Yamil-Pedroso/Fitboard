@@ -29,3 +29,20 @@ export type RecipeEditorProps = {
     ingredients: Ingredient[];
   };
 };
+
+export type SortOption =
+  | "-updatedAt"
+  | "updatedAt"
+  | "-createdAt"
+  | "createdAt"
+  | "name"
+  | "-name";
+
+export const SORT_LABEL: Record<SortOption, string> = {
+  "-updatedAt": "Recently updated",
+  updatedAt: "Least recently updated",
+  "-createdAt": "Newest first",
+  createdAt: "Oldest first",
+  name: "Name A → Z",
+  "-name": "Name Z → A",
+};

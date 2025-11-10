@@ -8,6 +8,7 @@ const FALLBACK_IMG =
 
 const RecipesList = () => {
   const [search, setSearch] = useState("");
+
   const { mutate: deleteRecipe, isPending } = useDeleteRecipe();
   const navigate = useNavigate();
 
@@ -19,6 +20,9 @@ const RecipesList = () => {
     sort: "-name" as const,
     q: "" as string | undefined,
   });
+
+  const { recipes, page, total, isLoading, error } = useRecipes(params);
+  const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 12)));
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -38,9 +42,6 @@ const RecipesList = () => {
       document.removeEventListener("keydown", onKey);
     };
   }, [confirmId]);
-
-  const { recipes, page, total, isLoading, error } = useRecipes(params);
-  const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 12)));
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -102,10 +103,10 @@ const RecipesList = () => {
         <select
           className="w-full rounded border px-3 py-2 text-black"
           value={params.sort}
-          onChange={(e) =>
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setParams((p) => ({
               ...p,
-              sort: e.currentTarget.value as typeof p.sort,
+              sort: e.target.value as typeof p.sort,
             }))
           }
         >

@@ -46,7 +46,7 @@ const MealSection: React.FC = () => {
   return (
     <motion.section
       id="meals"
-      className="relative py-16 md:py-24"
+      className="relative py-16 md:py-24 mt-20"
       variants={parent}
       initial="hidden"
       whileInView="show"

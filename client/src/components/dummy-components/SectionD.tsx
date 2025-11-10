@@ -40,7 +40,7 @@ const zoomIn: Variants = {
   },
 };
 
-const SectionD = () => {
+const SectionC = () => {
   const [click, setClick] = useState(false);
   const [checked, setChecked] = useState(false);
   const [box, setBox] = useState<string[]>([]);
@@ -244,4 +244,4 @@ const SectionD = () => {
   );
 };
 
-export default SectionD;
+export default SectionC;
