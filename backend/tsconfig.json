@@ -10,7 +10,6 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "baseUrl": ".",
-    "types": ["node"],
     "paths": {
       "@/*": ["src/*"]
     }
