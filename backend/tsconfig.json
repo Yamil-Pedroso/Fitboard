@@ -5,6 +5,7 @@
     "module": "CommonJS",
     "baseUrl": ".",
     "rootDir": "./src",
+    "outDir": "./dist",
     "paths": {
       "@/*": ["src/*"]
     },

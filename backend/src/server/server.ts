@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
 
+// Swagger documentation only in dev
 if (process.env.NODE_ENV !== "production") {
   app.use(
     "/docs",
@@ -68,7 +69,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CLIENT_URL || "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -91,7 +92,7 @@ app.use("/api/v1", progressRoutes);
 app.use(multerErrorHandler);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+const PORT = parseInt(process.env.PORT ?? "8080", 10);
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}.`.green.bold);
 });
