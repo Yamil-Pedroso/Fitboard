@@ -40,17 +40,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
-
-// Swagger documentation only in dev
-if (process.env.NODE_ENV !== "production") {
-  app.use(
-    "/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec, { explorer: true })
-  );
-  app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
-}
+//if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+//
+//// Swagger documentation only in dev
+//if (process.env.NODE_ENV !== "production") {
+//  app.use(
+//    "/docs",
+//    swaggerUi.serve,
+//    swaggerUi.setup(swaggerSpec, { explorer: true })
+//  );
+//  app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
+//}
 
 // Handle cookies
 app.use(cookieParser());
