@@ -10,11 +10,7 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "baseUrl": ".",
-
-    // 👇 estos dos cambios son clave
-    "types": ["node", "express"],
     "typeRoots": ["./node_modules/@types"],
-
     "paths": {
       "@/*": ["src/*"]
     }
