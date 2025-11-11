@@ -18,11 +18,15 @@ import connectDB from "../config/db";
 import { errorHandler } from "../middlewares/error";
 import { multerErrorHandler } from "../middlewares/multeError";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "../swagger";
 
-dotenv.config({
-  path: path.resolve(__dirname, "..", "config", "config.env"),
-});
+// ✅ 1. Cargar variables de entorno ANTES de importar nada más
+const envPath =
+  process.env.NODE_ENV === "production"
+    ? path.resolve(__dirname, "../config/config.env")
+    : path.resolve(__dirname, "../../src/config/config.env");
+
+dotenv.config({ path: envPath });
+console.log("[ENV LOADED FROM]:", envPath);
 
 connectDB();
 colors;
@@ -34,6 +38,26 @@ cloudinary.config({
 });
 
 const app = express();
+
+const allowedOrigins = [
+  "https://fitness-nutrition-v1.netlify.app",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,14 +91,7 @@ app.use(
   })
 );
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+
 
 // Routes
 app.get("/", (req, res) => {
@@ -92,7 +109,7 @@ app.use("/api/v1", progressRoutes);
 app.use(multerErrorHandler);
 app.use(errorHandler);
 
-const PORT = parseInt(process.env.PORT ?? "8080", 10);
+const PORT = parseInt(process.env.PORT ?? "3011", 10);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}.`.green.bold);
 });
