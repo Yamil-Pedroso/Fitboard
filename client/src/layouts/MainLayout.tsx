@@ -1,14 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { Toaster } from "sonner";
 import Lenis from "@studio-freight/lenis";
-
+import { DevelopmentModal } from "@/components/dev-modal/DevelopmentModal";
 interface MainLayoutProps {
   children?: React.ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const hasModalShown = localStorage.getItem("modalShown");
+
+    if (!hasModalShown) {
+      const timer = setTimeout(() => {
+        setIsModalOpen(true);
+        localStorage.setItem("modalShown", "true");
+      }, 8000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   useEffect(() => {
     const lenis = new Lenis();
 
@@ -36,6 +51,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 flex flex-col min-h-screen relative
     "
     >
+      <DevelopmentModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+
       <Toaster position="top-right" />
 
       <Navbar />
