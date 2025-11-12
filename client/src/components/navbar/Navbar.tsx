@@ -3,8 +3,10 @@ import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
+import { FiMenu, FiX } from "react-icons/fi";
 import TranslateComp from "../common/translate/TranslateComp";
 
+/* ------------------ USER MENU ------------------ */
 const UserMenu = () => {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
@@ -73,7 +75,8 @@ const UserMenu = () => {
               stiffness: 120,
             }}
             role="menu"
-            className="absolute right-0 mt-1 w-56 overflow-hidden rounded-xl border border-[#393a3c] bg-[#393a3c] shadow-lg text-right"
+            className="absolute  mt-1 w-56 overflow-hidden rounded-xl border border-[#393a3c] bg-[#393a3c] shadow-lg text-right sm:right-0 sm:left-7
+      left-1/2 -translate-x-1/3"
           >
             <div className="px-4 py-3 text-sm">
               <div className="truncate opacity-70">{user.email}</div>
@@ -153,7 +156,7 @@ const UserMenu = () => {
 
               <div className="my-1 h-px bg-black/10" />
               <button
-                className="w-full rounded-lg px-3 py-2  text-emerald-300 dark:hover:bg-neutral-800 text-right"
+                className="w-full rounded-lg px-3 py-2 text-emerald-300 dark:hover:bg-neutral-800 text-right"
                 onClick={() => {
                   setOpen(false);
                   logout();
@@ -169,34 +172,38 @@ const UserMenu = () => {
   );
 };
 
+/* ------------------ NAVBAR ------------------ */
 const Navbar = () => {
   const { user } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-20 backdrop-blur">
-      <div className="mx-auto flex  items-center justify-between px-12 py-3">
-        <Link to="/" className="text-2xl font-bold text-black">
+    <nav className="sticky top-0 z-20 backdrop-blur bg-white/70 border-b border-gray-200">
+      <div className="mx-auto flex items-center justify-between px-4 sm:px-8 py-3">
+        {/* LOGO */}
+        <Link
+          to="/"
+          className="text-xl sm:text-2xl font-bold text-black whitespace-nowrap"
+        >
           Fitness & Nutrition
         </Link>
 
-        <div className="flex items-center gap-4">
+        {/* DESKTOP SECTION */}
+        <div className="hidden md:flex items-center gap-4">
           <div>
             {user ? (
-              <IoIosNotifications className="size-7 ml-4 text-[#393a3c]  cursor-pointer" />
+              <IoIosNotifications className="size-7 ml-4 text-[#393a3c] cursor-pointer" />
             ) : (
               <IoIosNotificationsOff className="size-7 ml-4 text-[#393a3c] cursor-pointer" />
             )}
           </div>
-
-          <div>
-            <TranslateComp />
-          </div>
+          <TranslateComp />
           {user ? (
             <div className="flex items-center gap-3">
               <UserMenu />
             </div>
           ) : (
-            <div className="flex items-center gap-3 ">
+            <div className="flex items-center gap-3">
               <Link
                 to="/auth/login"
                 className="hover:underline font-bold text-black"
@@ -212,7 +219,58 @@ const Navbar = () => {
             </div>
           )}
         </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          className="md:hidden p-2 rounded-lg text-[#393a3c] hover:bg-gray-100 transition"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        </button>
       </div>
+
+      {/* MOBILE DROPDOWN MENU */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="md:hidden bg-white border-t border-gray-200 px-6 py-4 flex flex-col gap-4 "
+          >
+            <div className="flex justify-between items-center">
+              {user ? (
+                <>
+                  <UserMenu />
+                  <IoIosNotifications className="size-6 text-[#393a3c]" />
+                </>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to="/auth/login"
+                    className="font-bold text-black hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/auth/register"
+                    className="font-bold text-black hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <div className="border-t border-gray-100 pt-3">
+              <TranslateComp />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

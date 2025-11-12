@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { Route } from "@/routes/routines/routine-details/$routineId";
 import { useNavigate } from "@tanstack/react-router";
 import {
-  useRoutine,
+  useRoutineById,
   useDeleteRoutine,
   useDuplicateRoutine,
   useArchiveRoutine,
@@ -237,7 +237,7 @@ const RoutineDetails: React.FC = () => {
   const { routineId } = Route.useParams();
   const navigate = useNavigate();
 
-  const { data: routine, isLoading, error } = useRoutine(routineId);
+  const { data: routine, isLoading, error } = useRoutineById(routineId);
   const { mutate: delRoutine, isPending: deleting } = useDeleteRoutine();
   const { mutate: duplicate } = useDuplicateRoutine();
   const { mutate: archive } = useArchiveRoutine();

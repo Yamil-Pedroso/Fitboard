@@ -131,7 +131,14 @@ const TranslateComp = ({
         <div
           role="menu"
           aria-label="Language"
-          className="absolute right-0 z-50 mt-1 w-56 origin-top-right rounded-xl border border-gray-200 p-1 shadow-lg ring-1 ring-black/5 backdrop-blur transition dark:border-neutral-700 bg-[#393a3c]"
+          className={`
+      absolute z-50 mt-1 w-56 origin-top-right rounded-xl border border-gray-200
+      p-1 shadow-lg ring-1 ring-black/5 backdrop-blur transition
+      dark:border-neutral-700 bg-[#393a3c]
+      sm:right-0 sm:left-0
+      left-1/2 -translate-x-1/3
+      max-w-[90vw]
+    `}
         >
           <div className="px-2 py-1.5 text-xs uppercase tracking-wider text-gray-500 dark:text-neutral-400">
             Language

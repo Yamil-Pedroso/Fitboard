@@ -4,11 +4,13 @@
 html,
 body,
 #root {
-  height: 100%;
+  width: 100%;
   margin: 0;
   font-family: "Poppins", sans-serif;
   background-color: var(--main-bg-provisional-color);
   color: white;
+  overflow-x: hidden; /* solo bloquea el eje horizontal */
+  overflow-y: auto;
 }
 
 @theme {

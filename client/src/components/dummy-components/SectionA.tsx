@@ -22,7 +22,7 @@ const container: Variants = {
 };
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30, willChange: "transform, opacity" },
+  hidden: { opacity: 0, y: 15, willChange: "transform, opacity" },
   visible: {
     opacity: 1,
     y: 0,
@@ -36,11 +36,11 @@ const fadeUp: Variants = {
 const SectionA = () => {
   return (
     <motion.div
-      className="px-4 sm:px-6 lg:px-12"
+      className="px-4 sm:px-6 lg:px-12 relative will-change-transform"
       variants={container}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ once: true, margin: "-150px 0px" }}
     >
       {/* Header */}
       <motion.div
@@ -87,7 +87,7 @@ const SectionA = () => {
           {fnImages.map((src, index) => (
             <motion.div
               key={index}
-              className="w-full sm:w-[18rem] md:w-[22rem] lg:w-[25rem] border-6 border-[#393a3c] overflow-hidden shadow-lg rounded-[2rem]"
+              className="w-full sm:w-[18rem] md:w-[22rem] lg:w-[25rem] border-6 border-[#393a3c] overflow-hidden shadow-lg rounded-[2rem] transform-gpu"
               variants={fadeUp}
             >
               <div className="flex justify-between items-center bg-[#bbbbbb] text-[#393a3c] p-4 border-b-6 border-[#393a3c]">
@@ -98,7 +98,16 @@ const SectionA = () => {
                   <RiArrowRightUpFill className="inline-block ml-2 text-3xl md:text-4xl cursor-pointer hover:scale-110 hover:text-emerald-600 transition-all duration-300" />
                 </Link>
               </div>
-              <div className="w-full h-[12rem] sm:h-[14rem] md:h-[16rem] overflow-hidden">
+              <div
+                className="
+  w-full
+  h-[12rem]
+  sm:h-[14rem]
+  md:h-[16rem]
+  overflow-hidden
+  transform-gpu
+"
+              >
                 <img
                   src={src.src}
                   alt={src.alt}

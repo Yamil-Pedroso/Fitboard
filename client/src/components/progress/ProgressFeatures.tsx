@@ -254,9 +254,9 @@ const ProgressFeatures = () => {
       />
 
       {/* centered overlay; scrollable if the viewport is short */}
-      <div className="fixed inset-0 z-10 flex items-start justify-center p-4 sm:p-6 md:p-8 overflow-y-auto">
+      <div className="relative z-10 flex flex-col items-center justify-start p-4 sm:p-6 md:p-8">
         <motion.div
-          className="w-full mt-14 flex flex-col items-center gap-6"
+          className="w-full mt-2 flex flex-col items-center gap-6"
           variants={container}
           initial="hidden"
           animate="show"
