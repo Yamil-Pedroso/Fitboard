@@ -40,7 +40,7 @@ cloudinary.config({
 const app = express();
 
 const allowedOrigins = [
-  "https://fitness-nutrition-v1.netlify.app",
+  "https://fitness-nutrition-app.netlify.app",
   "http://localhost:5173",
 ];
 
@@ -56,7 +56,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json());
@@ -88,10 +88,8 @@ app.use(
     secure: true, // Only send over HTTPS
     sameSite: "none", // Allow cross-origin requests
     httpOnly: true, // Makes the cookie accessible only on the server-side
-  })
+  }),
 );
-
-
 
 // Routes
 app.get("/", (req, res) => {

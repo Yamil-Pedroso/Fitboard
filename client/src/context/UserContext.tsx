@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 import React, {
   createContext,
@@ -5,6 +6,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useCallback,
 } from "react";
 import type { IUser } from "@/services/usersService";
 import {
@@ -119,16 +121,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  function logout() {
+  const logout = useCallback(() => {
     // Con Bearer basta con limpiar el token local.
     void apiLogout().catch(() => {});
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
     setError(null);
-  }
+  }, []);
 
-  async function refreshMe() {
+  const refreshMe = useCallback(async () => {
     if (!token) return;
     try {
       const me = await getMe();
@@ -137,7 +139,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // si falla (401/403), cerrar sesión
       logout();
     }
-  }
+  }, [token, logout]);
 
   const value = useMemo(
     () => ({
@@ -150,7 +152,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       logout,
       refreshMe,
     }),
-    [user, token, isLoading, error]
+    [user, token, isLoading, error, logout, refreshMe]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

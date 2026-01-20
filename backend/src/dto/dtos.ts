@@ -5,7 +5,7 @@ export const SetAdminDto = z.object({ isAdmin: z.boolean() });
 
 // User creation dto
 export const CreateUserDto = z.object({
-  email: z.string().email(),
+  email: z.email(),
   username: z.string().min(3).max(32),
   password: z
     .string()
@@ -13,7 +13,7 @@ export const CreateUserDto = z.object({
     .regex(/[A-Z]/, { message: "Must include an uppercase letter" })
     .regex(/[a-z]/, { message: "Must include a lowercase letter" })
     .regex(/[0-9]/, { message: "Must include a number" }),
-  avatar: z.string().url().optional(),
+  avatar: z.url().optional(),
 });
 export type CreateUserInput = z.infer<typeof CreateUserDto>;
 
@@ -27,33 +27,33 @@ export type UpdateUserInput = z.infer<typeof UpdateUserDto>;
 
 // Password DTOs
 export const ForgotPasswordDto = z.object({
-  email: z.string().email(),
+  email: z.email(),
 });
 
 export const ResetPasswordDto = z.object({
   token: z.string().min(1),
-  email: z.string().email(),
+  email: z.email(),
   newPassword: z.string().min(8),
 });
 
 // Register DTO
 export const RegisterDto = z.object({
-  email: z.string().email(),
+  email: z.email(),
   username: z.string().min(3).max(32),
   password: z.string().min(8),
-  avatar: z.string().url().optional(),
+  avatar: z.url().optional(),
 });
 
 // Login DTO
 export const LoginDto = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(1),
 });
 
 // Update self DTO
 export const UpdateMeDto = z.object({
   username: z.string().min(3).max(32).optional(),
-  avatar: z.string().url().optional(),
+  avatar: z.url().optional(),
   active: z.boolean().optional(),
 });
 
