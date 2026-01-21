@@ -49,9 +49,7 @@ const UserMenu = () => {
             }}
           />
         </span>
-        <span className="hidden sm:block text-sm font-medium">
-          {user.username}
-        </span>
+        <span className=" text-sm font-medium">{user.username}</span>
         <span>{user.isAdmin ? <p className="">Admin</p> : ""}</span>
         <svg
           className="size-4 opacity-70 cursor-pointer"
@@ -75,8 +73,17 @@ const UserMenu = () => {
               stiffness: 120,
             }}
             role="menu"
-            className="absolute  mt-1 w-56 overflow-hidden rounded-xl border border-[#393a3c] bg-[#393a3c] shadow-lg text-right sm:right-0 sm:left-7
-      left-1/2 -translate-x-1/3"
+            className="absolute mt-2
+overflow-hidden rounded-xl
+border border-[#393a3c] bg-[#393a3c]
+shadow-lg text-right
+
+
+md:right-0 md:left-auto md:translate-x-0 md:w-56
+
+
+left-1/2 -translate-x-1/3 w-50
+ z-30"
           >
             <div className="px-4 py-3 text-sm">
               <div className="truncate opacity-70">{user.email}</div>
