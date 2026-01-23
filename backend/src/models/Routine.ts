@@ -58,7 +58,7 @@ const ExerciseItemSchema = new Schema<ExerciseItem>(
     videoUrl: String,
     cues: { type: [String], default: [] },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const RoutineBlockSchema = new Schema<RoutineBlock>(
@@ -77,7 +77,7 @@ const RoutineBlockSchema = new Schema<RoutineBlock>(
       seconds: Number,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const RoutineSchema = new Schema<IRoutine>(
@@ -97,14 +97,13 @@ const RoutineSchema = new Schema<IRoutine>(
     lastPerformedAt: Date,
     timesPerformed: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 RoutineSchema.index({ userId: 1, name: 1 }, { unique: true });
 
 export const Routine = model<IRoutine>("Routine", RoutineSchema);
 
-/* DTOs */
 const ExerciseItemDto = z.object({
   name: z.string().min(1),
   sets: z.number().int().min(1),

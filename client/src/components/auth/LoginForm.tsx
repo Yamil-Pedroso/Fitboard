@@ -29,7 +29,6 @@ const LoginForm = () => {
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-md">
-            {/* Lock icon */}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M7 10V7a5 5 0 1 1 10 0v3"
@@ -55,12 +54,10 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* Email */}
         <div className="space-y-1">
           <label className="text-sm font-medium">Email</label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* Mail icon */}
               <svg
                 width="18"
                 height="18"
@@ -85,12 +82,10 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* Password */}
         <div className="mt-4 space-y-1">
           <label className="text-sm font-medium">Password</label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* Key icon */}
               <svg
                 width="18"
                 height="18"
@@ -119,7 +114,6 @@ const LoginForm = () => {
               aria-label={showPw ? "Hide password" : "Show password"}
             >
               {showPw ? (
-                // Eye-off
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -127,7 +121,6 @@ const LoginForm = () => {
                   />
                 </svg>
               ) : (
-                // Eye
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -139,7 +132,6 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* Alerts */}
         <div className="mt-4 space-y-2">
           {error && (
             <p
@@ -161,7 +153,6 @@ const LoginForm = () => {
           )}
         </div>
 
-        {/* Actions */}
         <button
           type="submit"
           className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-white transition hover:bg-neutral-800 disabled:opacity-60"

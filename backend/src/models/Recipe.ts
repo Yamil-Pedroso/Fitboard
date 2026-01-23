@@ -34,7 +34,7 @@ const IngredientSchema = new Schema<Ingredient>(
     gramsPerUnit: Number,
     densityGPerMl: Number,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const RecipeSchema = new Schema<IRecipe>(
@@ -51,14 +51,13 @@ const RecipeSchema = new Schema<IRecipe>(
     ingredients: { type: [IngredientSchema], default: [] },
     categoryIds: { type: [Types.ObjectId], ref: "Category", default: [] },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 RecipeSchema.index({ userId: 1, name: 1 }, { unique: true });
 
 export const Recipe = model<IRecipe>("Recipe", RecipeSchema);
 
-/* DTOs */
 const IngredientDto = z.object({
   name: z.string().min(1),
 

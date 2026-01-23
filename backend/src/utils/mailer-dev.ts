@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 
 export async function sendResetEmailDev(to: string, link: string) {
-  // Crea una cuenta de pruebas en Ethereal automáticamente (no requiere registro)
   const testAcc = await nodemailer.createTestAccount();
 
   const transporter = nodemailer.createTransport({
@@ -18,8 +17,7 @@ export async function sendResetEmailDev(to: string, link: string) {
     html: `<p>Klicke hier zum Zurücksetzen:</p><p><a href="${link}">${link}</a></p>`,
   });
 
-  // URL de vista previa del email (abre en el navegador)
   const previewUrl = nodemailer.getTestMessageUrl(info);
   console.log("Ethereal preview:", previewUrl);
-  return previewUrl; // por si quieres retornarla en dev
+  return previewUrl;
 }

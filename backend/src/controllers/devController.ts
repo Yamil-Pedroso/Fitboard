@@ -12,17 +12,13 @@ export const makeMeAdmin = asyncHandler(
       return res.status(401).json({ error: "Invalid secret" });
     }
 
-    // Opcional: solo permitir si aún no existe ningún admin
-    // const exists = await User.exists({ isAdmin: true });
-    // if (exists) return res.status(403).json({ error: "Admin already exists" });
-
     const user = await User.findByIdAndUpdate(
       req.auth!.userId,
       { $set: { isAdmin: true } },
-      { new: true }
+      { new: true },
     );
     if (!user) return res.status(404).json({ error: "User not found" });
 
     res.json(user.toSafeJSON());
-  }
+  },
 );

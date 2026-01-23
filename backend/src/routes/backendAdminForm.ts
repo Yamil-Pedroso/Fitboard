@@ -3,7 +3,6 @@ import { Notification } from "../models/Notification";
 
 const router = Router();
 
-// Simple admin form (GET)
 router.get("/notifications/new", (req, res) => {
   res.send(`
     <html>
@@ -129,7 +128,7 @@ router.get("/notifications/list", async (req, res) => {
             </a>
           </td>
         </tr>
-      `
+      `,
     )
     .join("")}
 </tbody>

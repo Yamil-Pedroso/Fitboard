@@ -8,17 +8,15 @@ import {
   UpdateRecipeDto as BaseUpdateRecipeDto,
 } from "../models/Recipe";
 
-// Reutilizamos los DTO del modelo
 const CreateRecipeDto = BaseCreateRecipeDto;
-const UpdateRecipeDto = BaseUpdateRecipeDto; // PATCH parcial
-const ReplaceRecipeDto = CreateRecipeDto; // PUT completo
+const UpdateRecipeDto = BaseUpdateRecipeDto;
+const ReplaceRecipeDto = CreateRecipeDto;
 
-/** ===== Listar con filtros/paginación ===== */
 const ListQuery = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
-  q: z.string().trim().optional(), // búsqueda por nombre
-  category: z.string().optional(), // id de categoría
+  q: z.string().trim().optional(),
+  category: z.string().optional(),
   sort: z
     .enum(["name", "-name", "createdAt", "-createdAt"])
     .default("-createdAt"),
@@ -42,7 +40,6 @@ export const listRecipes = asyncHandler(async (req: AuthReq, res: Response) => {
   res.json({ page, limit, total, items });
 });
 
-/** ===== Obtener una ===== */
 export const getRecipe = asyncHandler(async (req: AuthReq, res: Response) => {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
 
@@ -55,7 +52,6 @@ export const getRecipe = asyncHandler(async (req: AuthReq, res: Response) => {
   res.json(item);
 });
 
-/** ===== Crear ===== */
 export const createRecipe = asyncHandler(
   async (req: AuthReq, res: Response) => {
     if (!req.auth?.userId)
@@ -67,7 +63,6 @@ export const createRecipe = asyncHandler(
       const doc = await Recipe.create({ ...data, userId: req.auth.userId });
       res.status(201).json(doc);
     } catch (err: any) {
-      // índice único (userId + name)
       if (err?.code === 11000) {
         return res
           .status(409)
@@ -75,10 +70,9 @@ export const createRecipe = asyncHandler(
       }
       throw err;
     }
-  }
+  },
 );
 
-/** ===== Actualizar parcial (PATCH) ===== */
 export const updateRecipe = asyncHandler(
   async (req: AuthReq, res: Response) => {
     if (!req.auth?.userId)
@@ -90,7 +84,7 @@ export const updateRecipe = asyncHandler(
       const updated = await Recipe.findOneAndUpdate(
         { _id: req.params.id, userId: req.auth.userId },
         { $set: patch },
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       );
       if (!updated) return res.status(404).json({ error: "Not found" });
       res.json(updated);
@@ -102,10 +96,9 @@ export const updateRecipe = asyncHandler(
       }
       throw err;
     }
-  }
+  },
 );
 
-/** ===== Reemplazo completo (PUT) ===== */
 export const replaceRecipe = asyncHandler(
   async (req: AuthReq, res: Response) => {
     if (!req.auth?.userId)
@@ -115,14 +108,13 @@ export const replaceRecipe = asyncHandler(
     const updated = await Recipe.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { ...data, userId: req.auth.userId },
-      { new: true, runValidators: true, overwrite: true }
+      { new: true, runValidators: true, overwrite: true },
     );
     if (!updated) return res.status(404).json({ error: "Not found" });
     res.json(updated);
-  }
+  },
 );
 
-/** ===== Eliminar ===== */
 export const deleteRecipe = asyncHandler(
   async (req: AuthReq, res: Response) => {
     if (!req.auth?.userId)
@@ -134,17 +126,15 @@ export const deleteRecipe = asyncHandler(
     });
     if (!del.deletedCount) return res.status(404).json({ error: "Not found" });
 
-    // (Opcional) también podrías limpiar Meals que referencian esta recipeId para este user
     res.json({ ok: true });
-  }
+  },
 );
 
-/** ===== Manejo de Zod (opcional, como en Meals) ===== */
 export function recipesErrorBoundary(
   err: any,
   _req: Request,
   res: Response,
-  next: Function
+  next: Function,
 ) {
   if (err instanceof ZodError) {
     return res.status(400).json({ errors: err.flatten() });

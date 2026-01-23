@@ -11,16 +11,15 @@ import { ListAllQuery } from "../dto/meals/mealsDto";
 
 const CreateMealDto = BaseCreateMealDto;
 const UpdateMealDto = BaseUpdateMealDto;
-const ReplaceMealDto = CreateMealDto; // NO .partial()
+const ReplaceMealDto = CreateMealDto;
 
-// GET /meals?from=YYYY-MM-DD&to=YYYY-MM-DD&page=1&limit=20&q=search&slot=&sort=
 export const listAllMeals = asyncHandler(
   async (req: AuthReq, res: Response) => {
     if (!req.auth?.userId)
       return res.status(401).json({ error: "Unauthorized" });
 
     const { page, limit, q, from, to, slot, sort } = ListAllQuery.parse(
-      req.query
+      req.query,
     );
     const skip = (page - 1) * limit;
 
@@ -32,7 +31,6 @@ export const listAllMeals = asyncHandler(
     }
     if (slot) filter.slot = slot;
     if (q) {
-      // busca por nombre de customItem si existe
       filter["customItem.name"] = { $regex: q, $options: "i" };
     }
 
@@ -42,10 +40,9 @@ export const listAllMeals = asyncHandler(
     ]);
 
     res.json({ page, limit, total, items });
-  }
+  },
 );
 
-// GET /meals/day?date=YYYY-MM-DD
 const ListByDayQuery = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
@@ -60,10 +57,9 @@ export const listMealsByDay = asyncHandler(
       .lean();
 
     res.json({ date, items });
-  }
+  },
 );
 
-// GET /meals/range?from=YYYY-MM-DD&to=YYYY-MM-DD
 const ListRangeQuery = z.object({
   from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -82,10 +78,9 @@ export const listMealsByRange = asyncHandler(
       .lean();
 
     res.json({ from, to, items });
-  }
+  },
 );
 
-// POST /meals
 export const createMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
 
@@ -107,7 +102,6 @@ export const createMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   }
 });
 
-// GET /meals/:id
 export const getMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
 
@@ -120,7 +114,6 @@ export const getMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   res.json(item);
 });
 
-// PATCH /meals/:id
 function dotify(obj: any, prefix = ""): Record<string, any> {
   const out: Record<string, any> = {};
   for (const [k, v] of Object.entries(obj)) {
@@ -140,7 +133,6 @@ export const updateMeal = asyncHandler(async (req: AuthReq, res: Response) => {
 
   const patch = UpdateMealDto.parse(req.body);
 
-  // opcional: asegurar exclusión mutua
   if (patch.customItem) {
     patch.recipeId = undefined;
     patch.servings = undefined;
@@ -149,14 +141,13 @@ export const updateMeal = asyncHandler(async (req: AuthReq, res: Response) => {
     patch.customItem = undefined;
   }
 
-  // aplanar a rutas con punto para no machacar subdocs completos
   const $set = dotify(patch);
 
   try {
     const updated = await Meal.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { $set },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!updated) return res.status(404).json({ error: "Not found" });
     return res.json(updated);
@@ -170,12 +161,10 @@ export const updateMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   }
 });
 
-// PUT /meals/:id
 export const replaceMeal = asyncHandler(async (req: AuthReq, res) => {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
   const data = ReplaceMealDto.parse(req.body);
 
-  // limpiar la rama excluyente por claridad
   if (data.recipeId) data.customItem = undefined;
   if (data.customItem) {
     data.recipeId = undefined;
@@ -185,13 +174,12 @@ export const replaceMeal = asyncHandler(async (req: AuthReq, res) => {
   const updated = await Meal.findOneAndUpdate(
     { _id: req.params.id, userId: req.auth.userId },
     { ...data },
-    { new: true, runValidators: true, overwrite: true }
+    { new: true, runValidators: true, overwrite: true },
   );
   if (!updated) return res.status(404).json({ error: "Not found" });
   res.json(updated);
 });
 
-// DELETE /meals/:id
 export const deleteMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
 
@@ -203,7 +191,6 @@ export const deleteMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   res.json({ ok: true });
 });
 
-// POST /meals/:id/move   { date?, slot? }
 const MoveDto = z.object({
   date: z
     .string()
@@ -221,7 +208,7 @@ export const moveMeal = asyncHandler(async (req: AuthReq, res: Response) => {
     const upd = await Meal.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { $set: data },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!upd) return res.status(404).json({ error: "Not found" });
     res.json(upd);
@@ -235,12 +222,11 @@ export const moveMeal = asyncHandler(async (req: AuthReq, res: Response) => {
   }
 });
 
-// Fallback de Zod para estas rutas (opcional)
 export function mealsErrorBoundary(
   err: any,
   _req: Request,
   res: Response,
-  next: Function
+  next: Function,
 ) {
   if (err instanceof ZodError) {
     return res.status(400).json({ errors: err.flatten() });

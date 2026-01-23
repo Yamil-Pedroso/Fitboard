@@ -7,7 +7,7 @@ import streamifier from "streamifier";
 
 export function uploadBufferToCloudinary(
   buffer: Buffer,
-  options: UploadApiOptions = {}
+  options: UploadApiOptions = {},
 ): Promise<UploadApiResponse> {
   return new Promise((resolve, reject) => {
     const upload = cloudinary.uploader.upload_stream(options, (err, result) => {
@@ -23,7 +23,6 @@ export async function deleteFromCloudinary(publicId: string) {
   try {
     return await cloudinary.uploader.destroy(publicId, { invalidate: true });
   } catch (e) {
-    // log y no romper el flujo del API
     console.error("[cloudinary.destroy]", e);
     return null;
   }

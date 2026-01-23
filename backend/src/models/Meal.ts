@@ -5,8 +5,8 @@ import { CustomItems, MealSlot } from "../types/domain";
 export interface IMeal {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
-  date: string; // YYYY-MM-DD
-  slot: MealSlot; // breakfast|lunch|dinner|snack
+  date: string;
+  slot: MealSlot;
   recipeId?: Types.ObjectId;
   servings?: number;
   customItem?: CustomItems;
@@ -33,7 +33,7 @@ const CustomItemSchema = new Schema<CustomItems>(
     gramsPerUnit: Number,
     densityGPerMl: Number,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const MealSchema = new Schema<IMeal>(
@@ -54,7 +54,7 @@ const MealSchema = new Schema<IMeal>(
     servings: { type: Number, min: 0.1 },
     customItem: { type: CustomItemSchema },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 MealSchema.index({ userId: 1, date: 1, slot: 1 }, { unique: true });
@@ -65,8 +65,8 @@ MealSchema.pre("validate", function (next) {
   if (hasRecipe === hasCustom)
     return next(
       new Error(
-        "Use either recipe + servings or customItem (mutually exclusive)."
-      )
+        "Use either recipe + servings or customItem (mutually exclusive).",
+      ),
     );
   if (hasRecipe && !this.servings)
     return next(new Error("Servings is required when recipeId is provided."));
@@ -76,7 +76,6 @@ MealSchema.pre("validate", function (next) {
 
 export const Meal = model<IMeal>("Meal", MealSchema);
 
-/* DTOs */
 const CustomItemDto = z.object({
   name: z.string().min(1),
   amount: z.number().positive(),
@@ -107,7 +106,9 @@ export const CreateMealDto = z
     (d) =>
       (d.recipeId && d.servings && !d.customItem) ||
       (!d.recipeId && !!d.customItem),
-    { message: "Must be recipe + servings or customItem (mutually exclusive)." }
+    {
+      message: "Must be recipe + servings or customItem (mutually exclusive).",
+    },
   );
 
 const CustomItemPatchDto = z.object({

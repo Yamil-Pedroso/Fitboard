@@ -11,7 +11,6 @@ const ResetPasswordForm = () => {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // UI solo (no cambia funcionalidad)
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
 
@@ -54,7 +53,6 @@ const ResetPasswordForm = () => {
     }
   }
 
-  // ---- UI helpers (presentacional) ----
   const { label: strengthLabel, score } = getStrength(pw1);
 
   return (
@@ -63,10 +61,8 @@ const ResetPasswordForm = () => {
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl border border-neutral-200 bg-white/90 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.06)] p-6 sm:p-8 text-black"
       >
-        {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-md">
-            {/* key/lock icon */}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M6 10V7a6 6 0 1 1 12 0v3"
@@ -95,19 +91,16 @@ const ResetPasswordForm = () => {
           </div>
         </div>
 
-        {/* Email mostrado (read-only) */}
         <p className="mb-4 break-all rounded-xl border border-neutral-200 bg-white/70 px-3 py-2 text-xs text-neutral-700">
           Email: <span className="font-mono">{email || "—"}</span>
         </p>
 
-        {/* New password */}
         <div className="space-y-1">
           <label htmlFor="pw1" className="text-sm font-medium">
             New password
           </label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* lock icon */}
               <svg
                 width="18"
                 height="18"
@@ -175,7 +168,6 @@ const ResetPasswordForm = () => {
             </button>
           </div>
 
-          {/* Indicador de fuerza (visual, no bloquea) */}
           <div className="mt-2">
             <div className="mb-1 flex items-center justify-between text-xs">
               <span className="text-neutral-500">Password strength</span>
@@ -202,7 +194,6 @@ const ResetPasswordForm = () => {
           </div>
         </div>
 
-        {/* Repeat password */}
         <div className="mt-4 space-y-1">
           <label htmlFor="pw2" className="text-sm font-medium">
             Repeat password
@@ -276,7 +267,6 @@ const ResetPasswordForm = () => {
           </div>
         </div>
 
-        {/* Mensajes */}
         <div className="mt-4 space-y-2">
           {msg && (
             <p
@@ -296,7 +286,6 @@ const ResetPasswordForm = () => {
           )}
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
@@ -327,7 +316,6 @@ const ResetPasswordForm = () => {
           {loading ? "Updating…" : "Update password"}
         </button>
 
-        {/* Hint del enlace inválido (no altera validación) */}
         {!token || !email ? (
           <p className="mt-3 text-xs text-red-600">
             This reset link is missing data. Try requesting a new one.
@@ -340,7 +328,6 @@ const ResetPasswordForm = () => {
 
 export default ResetPasswordForm;
 
-/* ---------- helpers visuales ---------- */
 function getStrength(pw: string): { label: string; score: number } {
   if (!pw) return { label: "—", score: 0 };
   let score = 0;

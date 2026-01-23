@@ -5,22 +5,20 @@ import { Routine } from "../models/Routine";
 
 type AuthReq = Request & { auth?: { userId: string } };
 
-// Reused DTOs from the model
 import {
   CreateRoutineDto as BaseCreateRoutineDto,
   UpdateRoutineDto as BaseUpdateRoutineDto,
 } from "../models/Routine";
 
 const CreateRoutineDto = BaseCreateRoutineDto;
-const UpdateRoutineDto = BaseUpdateRoutineDto; // PATCH partial
-const ReplaceRoutineDto = CreateRoutineDto; // PUT complete
+const UpdateRoutineDto = BaseUpdateRoutineDto;
+const ReplaceRoutineDto = CreateRoutineDto;
 
-/** ========== Listado con filtros/paginación ========== */
 const ListQuery = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
-  q: z.string().trim().optional(), // text: name, blocks, exercises
-  tag: z.string().optional(), // a tag or list "a,b,c"
+  q: z.string().trim().optional(),
+  tag: z.string().optional(),
   templatesOnly: z.coerce.boolean().optional(),
   includeArchived: z.coerce.boolean().optional(),
   sort: z
@@ -54,7 +52,6 @@ export const listRoutines = asyncHandler(
     if (templatesOnly) filter.isTemplate = true;
 
     if (q) {
-      // Simple regex search (if you need performance later, create a text index)
       const rx = { $regex: q, $options: "i" };
       filter.$or = [
         { name: rx },
@@ -77,7 +74,7 @@ export const listRoutines = asyncHandler(
     ]);
 
     res.json({ page, limit, total, items });
-  }
+  },
 );
 
 export const getRoutine = asyncHandler(async (req: AuthReq, res: Response) => {
@@ -110,7 +107,7 @@ export const createRoutine = asyncHandler(
       }
       throw err;
     }
-  }
+  },
 );
 
 export const updateRoutine = asyncHandler(
@@ -124,7 +121,7 @@ export const updateRoutine = asyncHandler(
       const updated = await Routine.findOneAndUpdate(
         { _id: req.params.id, userId: req.auth.userId },
         { $set: patch },
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       );
       if (!updated) return res.status(404).json({ error: "Not found" });
       res.json(updated);
@@ -136,7 +133,7 @@ export const updateRoutine = asyncHandler(
       }
       throw err;
     }
-  }
+  },
 );
 
 export const replaceRoutine = asyncHandler(
@@ -149,11 +146,11 @@ export const replaceRoutine = asyncHandler(
     const updated = await Routine.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { ...data, userId: req.auth.userId },
-      { new: true, runValidators: true, overwrite: true }
+      { new: true, runValidators: true, overwrite: true },
     );
     if (!updated) return res.status(404).json({ error: "Not found" });
     res.json(updated);
-  }
+  },
 );
 
 export const deleteRoutine = asyncHandler(
@@ -167,7 +164,7 @@ export const deleteRoutine = asyncHandler(
     });
     if (!del.deletedCount) return res.status(404).json({ error: "Not found" });
     res.json({ ok: true });
-  }
+  },
 );
 
 const DuplicateQuery = z.object({ name: z.string().trim().optional() });
@@ -209,7 +206,7 @@ export const duplicateRoutine = asyncHandler(
       }
       throw err;
     }
-  }
+  },
 );
 
 export const archiveRoutine = asyncHandler(
@@ -220,11 +217,11 @@ export const archiveRoutine = asyncHandler(
     const upd = await Routine.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { $set: { isArchived: true } },
-      { new: true }
+      { new: true },
     );
     if (!upd) return res.status(404).json({ error: "Not found" });
     res.json(upd);
-  }
+  },
 );
 
 export const unarchiveRoutine = asyncHandler(
@@ -235,11 +232,11 @@ export const unarchiveRoutine = asyncHandler(
     const upd = await Routine.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { $set: { isArchived: false } },
-      { new: true }
+      { new: true },
     );
     if (!upd) return res.status(404).json({ error: "Not found" });
     res.json(upd);
-  }
+  },
 );
 
 const MarkPerformedDto = z.object({
@@ -259,21 +256,20 @@ export const markPerformed = asyncHandler(
     const upd = await Routine.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { $set: { lastPerformedAt: asDate }, $inc: { timesPerformed: 1 } },
-      { new: true }
+      { new: true },
     );
     if (!upd) return res.status(404).json({ error: "Not found" });
     res.json(upd);
-  }
+  },
 );
 
 export function routinesErrorBoundary(
   err: any,
   _req: Request,
   res: Response,
-  next: Function
+  next: Function,
 ) {
   if (err instanceof ZodError) {
-    // Avoid flatten() if your version marks it as deprecated
     return res.status(400).json({ errors: err.format() });
   }
   next(err);

@@ -1,7 +1,6 @@
 import { Schema, model, Types, HydratedDocument } from "mongoose";
 import { z } from "zod";
 
-/* ---------- Types e interfaces ---------- */
 export type TimeOfDay = "morning" | "evening" | "other";
 export type UnitSystem = "metric" | "imperial";
 export type ProgressSource = "manual" | "device" | "import";
@@ -9,23 +8,22 @@ export type PhotoPose = "front" | "side" | "back";
 export type PhotoLighting = "natural" | "artificial" | "unknown";
 export type ReferenceSlot = "start" | "compare";
 
-// Reusable single photo type (for "start" and "compare")
 export interface ISinglePhoto {
   url: string;
-  publicId?: string; // Cloudinary public ID (optional)
+  publicId?: string;
   notes?: string;
-  capturedAt?: string; // ISO date string if you want to store when it was taken
+  capturedAt?: string;
 }
 
 export interface IProgress {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
   publicId?: string;
-  date: string; // YYYY-MM-DD
-  timeOfDay: TimeOfDay; // default: "other"
-  timezone?: string; // e.g. "Europe/Zurich"
+  date: string;
+  timeOfDay: TimeOfDay;
+  timezone?: string;
 
-  unitSystem: UnitSystem; // default: "metric"
+  unitSystem: UnitSystem;
   source: ProgressSource; // default: "manual"
 
   weight_kg?: number;
@@ -81,11 +79,10 @@ export interface IProgress {
 
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date | null; // soft delete
+  deletedAt?: Date | null;
 }
 export type ProgressDoc = HydratedDocument<IProgress>;
 
-/* ---------- Sub-esquemas ---------- */
 const PhotoSchema = new Schema<IProgress["photos"][number]>({
   url: {
     type: String,
@@ -101,15 +98,14 @@ const PhotoSchema = new Schema<IProgress["photos"][number]>({
   notes: String,
 });
 
-//SinglePhotoSchema for start/compare
 const SinglePhotoSchema = new Schema<ISinglePhoto>(
   {
     url: { type: String, required: true },
     publicId: { type: String },
     notes: { type: String },
-    capturedAt: { type: String }, // optional ISO date
+    capturedAt: { type: String },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const BodySchema = new Schema<IProgress["body"]>(
@@ -126,7 +122,7 @@ const BodySchema = new Schema<IProgress["body"]>(
     neck_cm: { type: Number, min: 0 },
     estimatedLeanMass_kg: { type: Number, min: 0 },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const VitalsSchema = new Schema<IProgress["vitals"]>(
@@ -136,7 +132,7 @@ const VitalsSchema = new Schema<IProgress["vitals"]>(
     bp_diastolic: { type: Number, min: 0 },
     spo2_pct: { type: Number, min: 50, max: 100 },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const WellnessSchema = new Schema<IProgress["wellness"]>(
@@ -146,7 +142,7 @@ const WellnessSchema = new Schema<IProgress["wellness"]>(
     stress_1to5: { type: Number, min: 1, max: 5 },
     soreness_1to5: { type: Number, min: 1, max: 5 },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ActivitySchema = new Schema<IProgress["activity"]>(
@@ -157,10 +153,9 @@ const ActivitySchema = new Schema<IProgress["activity"]>(
     workoutId: { type: Schema.Types.ObjectId, ref: "Routine" },
     caloriesBurned_est: { type: Number, min: 0 },
   },
-  { _id: false }
+  { _id: false },
 );
 
-/* ---------- Principal schema and model ---------- */
 const ProgressSchema = new Schema<IProgress>(
   {
     userId: {
@@ -201,7 +196,6 @@ const ProgressSchema = new Schema<IProgress>(
 
     photos: { type: [PhotoSchema], default: [] },
 
-    //reference photos (single each)
     startPhoto: { type: SinglePhotoSchema, default: undefined },
     comparePhoto: { type: SinglePhotoSchema, default: undefined },
 
@@ -209,32 +203,23 @@ const ProgressSchema = new Schema<IProgress>(
 
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-/* Indexes:
-  - Unique on (userId, date, timeOfDay) when NOT soft-deleted
-  - Recent entries per user
-*/
 ProgressSchema.index(
   { userId: 1, date: 1, timeOfDay: 1 },
-  { unique: true, partialFilterExpression: { deletedAt: { $eq: null } } }
+  { unique: true, partialFilterExpression: { deletedAt: { $eq: null } } },
 );
 ProgressSchema.index({ userId: 1, createdAt: -1 });
 
 export const Progress = model<IProgress>("Progress", ProgressSchema);
 
-/* ---------- DTOs (zod) ---------- */
 const SinglePhotoDto = z.object({
   url: z.url(),
   publicId: z.string().optional(),
   notes: z.string().optional(),
-  capturedAt: z.string().optional(), // ISO string
+  capturedAt: z.string().optional(),
 });
-
-// If you decide to accept them on create/update (optional):
-// startPhoto: SinglePhotoDto.optional(),
-// comparePhoto: SinglePhotoDto.optional(),
 
 const PhotoMeta = z.object({
   url: z.url(),
@@ -308,8 +293,7 @@ export const CreateProgressDto = z.object({
 
 export const UpdateProgressDto = CreateProgressDto.partial();
 
-// patch JSON para setear o limpiar
 export const UpdateReferencePhotosDto = z.object({
-  startPhoto: z.nullable(SinglePhotoDto).optional(), // null => clear
-  comparePhoto: z.nullable(SinglePhotoDto).optional(), // null => clear
+  startPhoto: z.nullable(SinglePhotoDto).optional(),
+  comparePhoto: z.nullable(SinglePhotoDto).optional(),
 });

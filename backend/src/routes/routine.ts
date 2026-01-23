@@ -325,7 +325,6 @@ router.post("/routines/:id/unarchive", ctrl.unarchiveRoutine);
  */
 router.post("/routines/:id/mark-performed", ctrl.markPerformed);
 
-// zod errors
 router.use(ctrl.routinesErrorBoundary);
 
 export default router;

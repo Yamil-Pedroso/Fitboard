@@ -23,7 +23,7 @@ const RegisterForm = () => {
       await register({ email, username, password, avatarFile });
       setOkMsg("Account created and you are logged in!");
     } catch {
-      /* error shown abajo */
+      setOkMsg("Failed to create account.");
     }
   }
 
@@ -36,7 +36,6 @@ const RegisterForm = () => {
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-md">
-            {/* User-plus icon */}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M15 19a6 6 0 0 0-12 0"
@@ -67,12 +66,10 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* Email */}
         <div className="space-y-1">
           <label className="text-sm font-medium">Email</label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* Mail icon */}
               <svg
                 width="18"
                 height="18"
@@ -97,12 +94,10 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* Username */}
         <div className="mt-4 space-y-1">
           <label className="text-sm font-medium">Username</label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* User icon */}
               <svg
                 width="18"
                 height="18"
@@ -127,12 +122,10 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* Password */}
         <div className="mt-4 space-y-1">
           <label className="text-sm font-medium">Password</label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* Key icon */}
               <svg
                 width="18"
                 height="18"
@@ -162,7 +155,6 @@ const RegisterForm = () => {
               aria-label={showPw ? "Hide password" : "Show password"}
             >
               {showPw ? (
-                /* Eye-off */
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -170,7 +162,6 @@ const RegisterForm = () => {
                   />
                 </svg>
               ) : (
-                /* Eye */
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -182,12 +173,10 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* Confirm */}
         <div className="mt-4 space-y-1">
           <label className="text-sm font-medium">Confirm password</label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* Shield icon */}
               <svg
                 width="18"
                 height="18"
@@ -218,7 +207,6 @@ const RegisterForm = () => {
               }
             >
               {showPw2 ? (
-                /* Eye-off */
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -226,7 +214,6 @@ const RegisterForm = () => {
                   />
                 </svg>
               ) : (
-                /* Eye */
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -238,7 +225,6 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* Avatar */}
         <div className="mt-4 space-y-1">
           <label className="text-sm font-medium">Avatar (optional)</label>
           <div className="flex items-center gap-3">
@@ -253,7 +239,6 @@ const RegisterForm = () => {
               htmlFor="avatar"
               className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 cursor-pointer"
             >
-              {/* Upload icon */}
               <svg width="18" height="18" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -270,7 +255,6 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* Alerts */}
         <div className="mt-4 space-y-2">
           {error && (
             <p
@@ -292,7 +276,6 @@ const RegisterForm = () => {
           )}
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
           className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-white transition hover:bg-neutral-800 disabled:opacity-60"
@@ -323,11 +306,10 @@ const RegisterForm = () => {
           {isLoading ? "Creating…" : "Create account"}
         </button>
 
-        {/* Bottom link */}
         <div className="mt-4 flex items-center justify-center gap-1 text-sm">
           <span className="text-neutral-600">Already have an account?</span>
           <Link
-            to="/auth/login" // ajusta si tu ruta de login es distinta
+            to="/auth/login"
             className="font-medium text-neutral-900 underline underline-offset-4 hover:opacity-90"
           >
             Log in

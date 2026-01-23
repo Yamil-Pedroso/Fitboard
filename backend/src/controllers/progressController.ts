@@ -36,7 +36,6 @@ function isHttpUrl(s: unknown): s is string {
   }
 }
 
-// Shared query schema for listing
 const ListQuery = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
@@ -45,9 +44,6 @@ const ListQuery = z.object({
   sort: z.enum(["date", "-date", "createdAt", "-createdAt"]).default("-date"),
 });
 
-// --- CONTROLLER ACTIONS ---
-
-// POST /progress
 export async function createProgress(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -55,7 +51,6 @@ export async function createProgress(req: AuthReq, res: Response) {
 
     const data = CreateProgressDto.parse(req.body);
 
-    // enforce date shape
     if (!isISODate(data.date)) {
       return res
         .status(400)
@@ -66,7 +61,6 @@ export async function createProgress(req: AuthReq, res: Response) {
     return res.status(201).json(doc);
   } catch (err: any) {
     if (err.code === 11000) {
-      // unique (userId, date)
       return res
         .status(409)
         .json({ error: "A progress entry for this date already exists." });
@@ -80,7 +74,6 @@ export async function createProgress(req: AuthReq, res: Response) {
   }
 }
 
-// PUT /progress/:date  (idempotent upsert by date)
 export async function upsertByDate(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -91,7 +84,6 @@ export async function upsertByDate(req: AuthReq, res: Response) {
       return res.status(400).json({ error: "Invalid date param (YYYY-MM-DD)" });
     }
 
-    // allow using Create DTO but date comes from param to avoid mismatch
     const body = CreateProgressDto.omit({ date: true })
       .partial()
       .parse(req.body);
@@ -99,7 +91,7 @@ export async function upsertByDate(req: AuthReq, res: Response) {
     const updated = await Progress.findOneAndUpdate(
       { userId: req.auth.userId, date },
       { $set: { ...body } },
-      { upsert: true, new: true, setDefaultsOnInsert: true }
+      { upsert: true, new: true, setDefaultsOnInsert: true },
     );
 
     return res.json(updated);
@@ -113,7 +105,6 @@ export async function upsertByDate(req: AuthReq, res: Response) {
   }
 }
 
-// GET /progress
 export async function listProgress(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -152,7 +143,6 @@ export async function listProgress(req: AuthReq, res: Response) {
   }
 }
 
-// GET /progress/:id
 export async function getById(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -169,7 +159,6 @@ export async function getById(req: AuthReq, res: Response) {
   }
 }
 
-// GET /progress/date/:date
 export async function getByDate(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -188,7 +177,6 @@ export async function getByDate(req: AuthReq, res: Response) {
   }
 }
 
-// PATCH /progress/:id
 export async function updateById(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -204,7 +192,7 @@ export async function updateById(req: AuthReq, res: Response) {
     const updated = await Progress.findOneAndUpdate(
       { _id: req.params.id, userId: req.auth.userId },
       { $set: body },
-      { new: true }
+      { new: true },
     );
 
     if (!updated) return res.status(404).json({ error: "Not found" });
@@ -219,7 +207,6 @@ export async function updateById(req: AuthReq, res: Response) {
   }
 }
 
-// DELETE /progress/:id
 export async function removeById(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -236,8 +223,6 @@ export async function removeById(req: AuthReq, res: Response) {
   }
 }
 
-// GET /progress/stats?from=YYYY-MM-DD&to=YYYY-MM-DD
-// Lightweight stats for dashboard (delta & per-week pace)
 export async function stats(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -302,7 +287,6 @@ export async function stats(req: AuthReq, res: Response) {
   }
 }
 
-// controller (resumen)
 export async function upsertReferencePhotosUpload(req: AuthReq, res: Response) {
   if (!req.auth?.userId) return res.status(401).json({ error: "Unauthorized" });
   const { id } = req.params;
@@ -320,7 +304,6 @@ export async function upsertReferencePhotosUpload(req: AuthReq, res: Response) {
   const doc = await Progress.findOne({ _id: id, userId: req.auth.userId });
   if (!doc) return res.status(404).json({ error: "Not found" });
 
-  // Upload helpers
   const folder = `progress/${req.auth.userId}/${doc.date}/reference`;
   const uploadOne = (f: Express.Multer.File) =>
     uploadBufferToCloudinary(f.buffer, {
@@ -331,10 +314,9 @@ export async function upsertReferencePhotosUpload(req: AuthReq, res: Response) {
 
   const updates: Partial<IProgress> = {};
 
-  // start
   if (startFile) {
     const { secure_url, public_id } = await uploadOne(startFile);
-    // delete previous if exists
+
     if (doc.startPhoto?.publicId) {
       try {
         await cloudinary.uploader.destroy(doc.startPhoto.publicId, {
@@ -350,7 +332,6 @@ export async function upsertReferencePhotosUpload(req: AuthReq, res: Response) {
     };
   }
 
-  // compare
   if (compareFile) {
     const { secure_url, public_id } = await uploadOne(compareFile);
     if (doc.comparePhoto?.publicId) {
@@ -371,7 +352,7 @@ export async function upsertReferencePhotosUpload(req: AuthReq, res: Response) {
   const updated = await Progress.findOneAndUpdate(
     { _id: id, userId: req.auth.userId },
     { $set: updates },
-    { new: true }
+    { new: true },
   );
   return res.json(updated);
 }
@@ -386,7 +367,7 @@ export async function setReferencePhotosByJson(req: AuthReq, res: Response) {
   if (!doc) return res.status(404).json({ error: "Not found" });
 
   const updates: any = {};
-  // start
+
   if ("startPhoto" in payload) {
     if (payload.startPhoto === null) {
       if (doc.startPhoto?.publicId) {
@@ -401,7 +382,7 @@ export async function setReferencePhotosByJson(req: AuthReq, res: Response) {
       updates.startPhoto = payload.startPhoto;
     }
   }
-  // compare
+
   if ("comparePhoto" in payload) {
     if (payload.comparePhoto === null) {
       if (doc.comparePhoto?.publicId) {
@@ -420,7 +401,7 @@ export async function setReferencePhotosByJson(req: AuthReq, res: Response) {
   const updated = await Progress.findOneAndUpdate(
     { _id: id, userId: req.auth.userId },
     { $set: updates },
-    { new: true }
+    { new: true },
   );
   return res.json(updated);
 }
@@ -432,7 +413,6 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
 
     const { id } = req.params;
 
-    // 1) Collect incoming files by pose
     const files = (req.files as Record<string, Express.Multer.File[]>) || {};
     const entries: Array<{
       pose: Pose;
@@ -458,12 +438,10 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
         .json({ error: "No files uploaded. Use fields: front, side, back." });
     }
 
-    // 2) Load current doc
     const doc = await Progress.findOne({ _id: id, userId: req.auth.userId });
     if (!doc)
       return res.status(404).json({ error: "Progress entry not found." });
 
-    // Map existing photos by pose for quick replace
     const existingByPose = new Map<
       Pose,
       {
@@ -480,7 +458,6 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
       }
     }
 
-    // 3) Upload new files to Cloudinary and prepare replacements
     const uploaded = await Promise.all(
       entries.map(async (e) => {
         const { secure_url, public_id } = await uploadBufferToCloudinary(
@@ -489,7 +466,7 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
             folder: `progress/${req.auth?.userId}/${doc.date}`,
             resource_type: "image",
             overwrite: true,
-          }
+          },
         );
         return {
           pose: e.pose,
@@ -498,10 +475,9 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
           lighting: (e.lighting as any) ?? "unknown",
           notes: e.notes,
         };
-      })
+      }),
     );
 
-    // 4) Replace per pose (delete old Cloudinary asset if present)
     for (const u of uploaded) {
       const prev = existingByPose.get(u.pose);
       if (prev?.publicId) {
@@ -512,9 +488,8 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
       existingByPose.set(u.pose, u);
     }
 
-    // 5) Persist EXACTLY up to 3 posed photos (front/side/back), in fixed order
     const nextPhotos = POSES.map((p) => existingByPose.get(p)).filter(
-      Boolean
+      Boolean,
     ) as Array<{
       url: string;
       publicId?: string;
@@ -526,7 +501,7 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
     const updated = await Progress.findOneAndUpdate(
       { _id: id, userId: req.auth.userId },
       { $set: { photos: nextPhotos } },
-      { new: true }
+      { new: true },
     );
 
     return res.json(updated);
@@ -536,13 +511,6 @@ export async function upsertPosedPhotos(req: AuthReq, res: Response) {
   }
 }
 
-/**
- * POST /progress/:id/photos
- * Accepts:
- *  - multipart/form-data with field "photos" (one or many files)
- *    Optional per-file metadata arrays: pose[], lighting[], notes[]
- *  - OR JSON { photos: string[] } with absolute URLs
- */
 export async function addPhotos(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -551,7 +519,6 @@ export async function addPhotos(req: AuthReq, res: Response) {
     const { id } = req.params;
     const files = (req.files as Express.Multer.File[]) || [];
 
-    // Will accumulate new photo subdocs to push
     const newPhotos: {
       url: string;
       publicId?: string;
@@ -561,7 +528,6 @@ export async function addPhotos(req: AuthReq, res: Response) {
     }[] = [];
 
     if (files.length > 0) {
-      // Read optional metadata arrays (aligned by index)
       const poses = toArray(req.body.pose) as Array<"front" | "side" | "back">;
       const lightings = toArray(req.body.lighting) as Array<
         "natural" | "artificial" | "unknown"
@@ -572,8 +538,6 @@ export async function addPhotos(req: AuthReq, res: Response) {
         const f = files[i];
         const result = await uploadBufferToCloudinary(f.buffer, {
           folder: `progress/${req.auth.userId}`,
-          // e.g. transformation options (opcionales)
-          // transformation: [{ quality: "auto", fetch_format: "auto" }],
         });
 
         newPhotos.push({
@@ -585,7 +549,6 @@ export async function addPhotos(req: AuthReq, res: Response) {
         });
       }
     } else if (Array.isArray((req.body as any)?.photos)) {
-      // Fallback: accept URLs body { photos: string[] }
       const urls = (req.body as any).photos.filter(isHttpUrl);
       if (!urls.length) {
         return res
@@ -603,7 +566,7 @@ export async function addPhotos(req: AuthReq, res: Response) {
     const updated = await Progress.findOneAndUpdate(
       { _id: id, userId: req.auth.userId },
       { $push: { photos: { $each: newPhotos } } },
-      { new: true }
+      { new: true },
     );
 
     if (!updated)
@@ -642,16 +605,11 @@ export async function removeReferencePhoto(req: AuthReq, res: Response) {
   const updated = await Progress.findOneAndUpdate(
     { _id: id, userId: req.auth.userId },
     { $set },
-    { new: true }
+    { new: true },
   );
   return res.json(updated);
 }
 
-/**
- * DELETE /progress/:id/photos/:photoId
- * Removes a photo by subdocument _id (preferred) or URL (if :photoId is a URL-encoded http/https).
- * If subdoc has publicId, it also deletes from Cloudinary.
- */
 export async function removePhoto(req: AuthReq, res: Response) {
   try {
     if (!req.auth?.userId)
@@ -664,13 +622,12 @@ export async function removePhoto(req: AuthReq, res: Response) {
 
     const result = await Progress.updateOne(
       { _id: id, userId: req.auth.userId },
-      { $pull: { photos: pull } }
+      { $pull: { photos: pull } },
     );
 
     if (result.matchedCount === 0)
       return res.status(404).json({ error: "Progress entry not found." });
 
-    // ⬇️ Inserta el if aquí: solo borra en Cloudinary si quitaste algo y te pasaron publicId
     if (result.modifiedCount > 0 && !isUrl) {
       try {
         await cloudinary.uploader.destroy(value, { invalidate: true });
@@ -679,7 +636,6 @@ export async function removePhoto(req: AuthReq, res: Response) {
       }
     }
 
-    // Devuelve el doc actualizado si lo necesitas en el cliente
     const updated = await Progress.findById(id);
     return res.json(updated);
   } catch (err) {

@@ -62,7 +62,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const kcalFromMacros = useMemo(
     () => MOCK_GOAL.p * 4 + MOCK_GOAL.c * 4 + MOCK_GOAL.f * 9,
-    []
+    [],
   );
   const diff = MOCK_GOAL.kcal - kcalFromMacros;
   const diffLabel =
@@ -82,8 +82,8 @@ const Profile = () => {
         <div className="flex items-center gap-4">
           <div className="h-16 w-16 overflow-hidden rounded-full border">
             <img
-              src={user?.avatar || MOCK_PROFILE.avatar}
-              alt={MOCK_PROFILE.username}
+              src={user?.avatar || user?.avatar}
+              alt={user?.username || "User avatar"}
               className="h-full w-full object-cover"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src =
@@ -92,8 +92,8 @@ const Profile = () => {
             />
           </div>
           <div>
-            <h1 className="text-2xl font-semibold">{MOCK_PROFILE.username}</h1>
-            <p className="text-sm opacity-70">{MOCK_PROFILE.email}</p>
+            <h1 className="text-2xl font-semibold">{user?.username}</h1>
+            <p className="text-sm opacity-70">{user?.email}</p>
             <p className="text-xs opacity-60">
               Member since {MOCK_PROFILE.memberSince}
             </p>

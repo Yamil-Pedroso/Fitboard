@@ -19,7 +19,6 @@ import { errorHandler } from "../middlewares/error";
 import { multerErrorHandler } from "../middlewares/multeError";
 import swaggerUi from "swagger-ui-express";
 
-// ✅ 1. Cargar variables de entorno ANTES de importar nada más
 const envPath =
   process.env.NODE_ENV === "production"
     ? path.resolve(__dirname, "../config/config.env")
@@ -76,7 +75,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //  app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
 //}
 
-// Handle cookies
 app.use(cookieParser());
 const cookieTime = process.env.COOKIE_TIME as any;
 const cookieSecret = process.env.COOKIE_SECRET as any;
@@ -85,13 +83,12 @@ app.use(
     name: "session",
     maxAge: cookieTime * 24 * 60 * 60 * 1000,
     keys: [cookieSecret],
-    secure: true, // Only send over HTTPS
-    sameSite: "none", // Allow cross-origin requests
-    httpOnly: true, // Makes the cookie accessible only on the server-side
+    secure: true,
+    sameSite: "none",
+    httpOnly: true,
   }),
 );
 
-// Routes
 app.get("/", (req, res) => {
   res.send("Hola mundo!!");
 });
@@ -103,7 +100,6 @@ app.use("/api/v1", recipeRoutes);
 app.use("/api/v1", routineRoutes);
 app.use("/api/v1", progressRoutes);
 
-// Error handlers
 app.use(multerErrorHandler);
 app.use(errorHandler);
 

@@ -1,9 +1,7 @@
 import { z } from "zod";
 
-// Admin dto: isAdmin can only be set in admin-only routes
 export const SetAdminDto = z.object({ isAdmin: z.boolean() });
 
-// User creation dto
 export const CreateUserDto = z.object({
   email: z.email(),
   username: z.string().min(3).max(32),
@@ -17,7 +15,6 @@ export const CreateUserDto = z.object({
 });
 export type CreateUserInput = z.infer<typeof CreateUserDto>;
 
-/* Update DTO: do not accept isAdmin here (handle it in admin-only routes) */
 export const UpdateUserDto = z.object({
   username: z.string().min(3).max(32).optional(),
   avatar: z.string().url().optional(),
@@ -25,7 +22,6 @@ export const UpdateUserDto = z.object({
 });
 export type UpdateUserInput = z.infer<typeof UpdateUserDto>;
 
-// Password DTOs
 export const ForgotPasswordDto = z.object({
   email: z.email(),
 });
@@ -36,7 +32,6 @@ export const ResetPasswordDto = z.object({
   newPassword: z.string().min(8),
 });
 
-// Register DTO
 export const RegisterDto = z.object({
   email: z.email(),
   username: z.string().min(3).max(32),
@@ -44,20 +39,17 @@ export const RegisterDto = z.object({
   avatar: z.url().optional(),
 });
 
-// Login DTO
 export const LoginDto = z.object({
   email: z.email(),
   password: z.string().min(1),
 });
 
-// Update self DTO
 export const UpdateMeDto = z.object({
   username: z.string().min(3).max(32).optional(),
   avatar: z.url().optional(),
   active: z.boolean().optional(),
 });
 
-// Change password DTO
 export const ChangePasswordDto = z.object({
   currentPassword: z.string().min(1),
   newPassword: z.string().min(8),

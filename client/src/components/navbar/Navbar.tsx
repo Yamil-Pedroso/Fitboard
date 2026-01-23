@@ -6,7 +6,6 @@ import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
 import { FiMenu, FiX } from "react-icons/fi";
 import TranslateComp from "../common/translate/TranslateComp";
 
-/* ------------------ USER MENU ------------------ */
 const UserMenu = () => {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);

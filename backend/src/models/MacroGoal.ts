@@ -8,7 +8,7 @@ export interface IMacroGoal {
   protein: number;
   carbohydrate: number;
   fat: number;
-  effectiveFrom: string; // YYYY-MM-DD
+  effectiveFrom: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,14 +32,13 @@ const MacroGoalSchema = new Schema<IMacroGoal>(
       match: /^\d{4}-\d{2}-\d{2}$/,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 MacroGoalSchema.index({ userId: 1, effectiveFrom: 1 });
 
 export const MacroGoal = model<IMacroGoal>("MacroGoal", MacroGoalSchema);
 
-/* DTOs */
 export const CreateMacroGoalDto = z.object({
   kcal: z.number().int().positive(),
   protein: z.number().int().nonnegative(),

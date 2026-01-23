@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { changePassword } from "@/services/usersService";
-//import { useAuth } from "@/context/UserContext";
 
 export default function ChangePasswordForm() {
-  //const { user } = useAuth(); // optional, in case you want to block if not logged in
   const [current, setCurrent] = useState("");
   const [pw1, setPw1] = useState("");
   const [pw2, setPw2] = useState("");

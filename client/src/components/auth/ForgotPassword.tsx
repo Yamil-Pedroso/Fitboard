@@ -8,7 +8,7 @@ const ForgotPasswordForm = () => {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Solo para DEV
+  // Only for DEV environment
   const [devResetLink, setDevResetLink] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -23,20 +23,17 @@ const ForgotPasswordForm = () => {
     try {
       const res = await requestPasswordReset(email);
 
-      // Mensaje genérico (no filtra si el email existe)
       setOk(
-        "If the email exists, we'll send you a link to reset your password."
+        "If the email exists, we'll send you a link to reset your password.",
       );
 
-      // En DEV, tu backend devuelve resetLink y preview
       if (import.meta.env.MODE !== "production") {
         if (res.resetLink) setDevResetLink(res.resetLink);
         if (res.preview) setPreview(res.preview);
       }
     } catch {
-      // Mismo mensaje genérico para no revelar existencia del email
       setOk(
-        "If the email exists, we'll send you a link to reset your password."
+        "If the email exists, we'll send you a link to reset your password.",
       );
       setErr(null);
     } finally {
@@ -50,10 +47,8 @@ const ForgotPasswordForm = () => {
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl border border-neutral-200 bg-white/90 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.06)] p-6 sm:p-8 text-black"
       >
-        {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-md">
-            {/* Lock-reset icon */}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M6 10V7a6 6 0 1 1 12 0v3"
@@ -82,14 +77,12 @@ const ForgotPasswordForm = () => {
           </div>
         </div>
 
-        {/* Email */}
         <div className="space-y-1">
           <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              {/* Mail icon */}
               <svg
                 width="18"
                 height="18"
@@ -115,7 +108,6 @@ const ForgotPasswordForm = () => {
           </div>
         </div>
 
-        {/* Alerts */}
         <div className="mt-4 space-y-2">
           {ok && (
             <p
@@ -137,7 +129,6 @@ const ForgotPasswordForm = () => {
           )}
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
@@ -168,7 +159,6 @@ const ForgotPasswordForm = () => {
           {loading ? "Sending…" : "Send reset link"}
         </button>
 
-        {/* Dev helpers (solo en desarrollo) */}
         {import.meta.env.MODE !== "production" && (devResetLink || preview) && (
           <div className="mt-5 rounded-2xl border border-neutral-200 bg-white/70 p-4 text-sm text-neutral-800">
             <p className="mb-2 font-medium">Dev helpers:</p>

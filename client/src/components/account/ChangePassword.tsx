@@ -43,10 +43,8 @@ const ChangePasswordForm = () => {
       onSubmit={onSubmit}
       className="mx-auto w-full max-w-md rounded-2xl border border-neutral-200/70 bg-white/80 p-6 shadow-xl backdrop-blur-sm sm:p-8"
     >
-      {/* Header con icono */}
       <div className="mb-6 flex items-center gap-3">
         <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-emerald-400/90 to-cyan-400/90 text-white shadow-md ring-1 ring-white/30">
-          {/* Lock icon */}
           <svg
             viewBox="0 0 24 24"
             className="h-6 w-6"
@@ -68,7 +66,6 @@ const ChangePasswordForm = () => {
         </div>
       </div>
 
-      {/* Mensajes */}
       {okMsg && (
         <p
           role="status"
@@ -87,7 +84,6 @@ const ChangePasswordForm = () => {
       )}
 
       <fieldset disabled={loading} className="space-y-4">
-        {/* Current */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             Current password
@@ -102,7 +98,6 @@ const ChangePasswordForm = () => {
           />
         </div>
 
-        {/* New */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             New password
@@ -119,7 +114,6 @@ const ChangePasswordForm = () => {
           <p className="text-xs text-neutral-500">Minimum 8 characters.</p>
         </div>
 
-        {/* Repeat */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             Repeat new password
@@ -134,7 +128,6 @@ const ChangePasswordForm = () => {
           />
         </div>
 
-        {/* Botón */}
         <button
           type="submit"
           disabled={loading}

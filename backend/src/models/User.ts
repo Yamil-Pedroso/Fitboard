@@ -53,7 +53,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
         "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1709338082/userAvatart/Avatars/ez5hjkxgtf0mcnjytx0c.jpg",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 /* Normalize and keep emailLower in sync */
@@ -62,14 +62,11 @@ UserSchema.pre("validate", function (next) {
   next();
 });
 
-/* ========== Instance methods ========== */
 UserSchema.methods.setPassword = async function (this: UserDoc, plain: string) {
-  // cost factor 10–12 is reasonable for server-side bcrypt
   this.passwordHash = await bcrypt.hash(plain, 12);
 };
 
 UserSchema.methods.isValidPassword = function (this: UserDoc, entered: string) {
-  // passwordHash is select:false; ensure you selected it when querying
   return bcrypt.compare(entered, this.passwordHash);
 };
 
