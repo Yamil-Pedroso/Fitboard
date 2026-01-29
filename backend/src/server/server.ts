@@ -39,7 +39,7 @@ cloudinary.config({
 const app = express();
 
 const allowedOrigins = [
-  "https://fitness-nutrition-app.netlify.app",
+  "https://fitboard-six.vercel.app",
   "http://localhost:5173",
 ];
 
