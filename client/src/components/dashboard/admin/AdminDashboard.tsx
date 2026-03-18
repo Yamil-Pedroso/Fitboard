@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
-//import { Navigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-//import { useAuth } from "@/context/UserContext";
 import { useUsers } from "@/lib/hooks/admin/useUsers";
 import {
   setUserAdmin,
@@ -15,13 +13,10 @@ import {
 type FilterActive = "all" | "active" | "inactive";
 
 export default function UsersAdminPage() {
-  //const { user } = useAuth();
-
-  // Controles de listado
   const [params, setParams] = useState({
     page: 1,
     limit: 20,
-    sort: "-createdAt" as const, // "-createdAt" | "createdAt" | "email" | "-email" | "username" | "-username"
+    sort: "-createdAt" as const,
     q: "" as string | undefined,
     active: undefined as boolean | undefined,
   });
@@ -29,22 +24,19 @@ export default function UsersAdminPage() {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState<FilterActive>("all");
 
-  // Hook de datos
   const { data, isLoading, error } = useUsers(params);
   const users = data?.users ?? [];
   const total = data?.total ?? 0;
 
-  // Derivados (para “stats” de esta página)
   const pageAdmins = useMemo(
     () => users.filter((u) => u.isAdmin).length,
-    [users]
+    [users],
   );
   const pageActive = useMemo(
     () => users.filter((u) => u.active).length,
-    [users]
+    [users],
   );
 
-  // Debounce de búsqueda
   useEffect(() => {
     const t = setTimeout(() => {
       setParams((p) => ({
@@ -56,7 +48,6 @@ export default function UsersAdminPage() {
     return () => clearTimeout(t);
   }, [search]);
 
-  // Filtro de activos
   useEffect(() => {
     setParams((p) => ({
       ...p,
@@ -72,35 +63,23 @@ export default function UsersAdminPage() {
 
   const qc = useQueryClient();
 
-  // ========== Mutations ==========
   const promoteDemote = useMutation({
     mutationFn: async (u: IUser) => {
-      const next = !u.isAdmin;
-      return setUserAdmin(u._id, next);
+      return setUserAdmin(u._id, !u.isAdmin);
     },
     onSuccess: (updated) => {
       toast.success(
-        updated.isAdmin ? "User promoted to admin" : "User demoted to regular"
+        updated.isAdmin ? "User promoted to admin" : "User demoted",
       );
       qc.invalidateQueries({ queryKey: ["admin-users"] });
-    },
-    onError: (e: any) => {
-      toast.error(e?.response?.data?.error ?? "Failed to toggle admin");
     },
   });
 
   const deactivate = useMutation({
-    mutationFn: async (id: string) => {
-      // Tu backend tiene solo “deactivate” (soft delete).
-      // Para reactivar, más adelante puedes crear otro endpoint.
-      return deactivateUser(id);
-    },
+    mutationFn: async (id: string) => deactivateUser(id),
     onSuccess: () => {
       toast.success("User deactivated");
       qc.invalidateQueries({ queryKey: ["admin-users"] });
-    },
-    onError: (e: any) => {
-      toast.error(e?.response?.data?.error ?? "Failed to deactivate user");
     },
   });
 
@@ -110,55 +89,53 @@ export default function UsersAdminPage() {
       toast.success("User deleted");
       qc.invalidateQueries({ queryKey: ["admin-users"] });
     },
-    onError: (e: any) => {
-      toast.error(e?.response?.data?.error ?? "Failed to delete user");
-    },
   });
 
-  // Paginación
-  const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 20)));
+  const totalPages = Math.max(1, Math.ceil(total / params.limit));
 
   return (
-    <div className="mx-auto w-full max-w-6xl p-6 text-black">
-      {/* Header + stats */}
+    <div className="mx-auto w-full max-w-6xl p-6 pt-20 text-black">
+      {/* HEADER */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
-          <p className="text-sm opacity-70">
-            Manage users: roles, status, and more.
+          <h1 className="text-2xl font-semibold text-neutral-900">
+            Admin Dashboard
+          </h1>
+          <p className="text-sm text-neutral-600">
+            Manage users, roles and status.
           </p>
         </div>
 
         <div className="grid grid-cols-3 gap-3">
           <StatCard label="Total users" value={total} />
-          <StatCard label="Admins (page)" value={pageAdmins} />
-          <StatCard label="Active (page)" value={pageActive} />
+          <StatCard label="Admins" value={pageAdmins} />
+          <StatCard label="Active" value={pageActive} />
         </div>
       </div>
 
-      {/* Toolbar: search + filters + sort */}
+      {/* FILTERS */}
       <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <input
-          className="w-full rounded border px-3 py-2"
-          placeholder="Search by email or username…"
+          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
+          placeholder="Search users…"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
 
         <select
-          className="w-full rounded border px-3 py-2"
+          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm"
           value={activeFilter}
           onChange={(e) =>
             setActiveFilter(e.currentTarget.value as FilterActive)
           }
         >
           <option value="all">All users</option>
-          <option value="active">Active only</option>
-          <option value="inactive">Inactive only</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
         </select>
 
         <select
-          className="w-full rounded border px-3 py-2"
+          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm"
           value={params.sort}
           onChange={(e) =>
             setParams((p) => ({
@@ -169,17 +146,15 @@ export default function UsersAdminPage() {
         >
           <option value="-createdAt">Newest</option>
           <option value="createdAt">Oldest</option>
-          <option value="username">Username (A→Z)</option>
-          <option value="-username">Username (Z→A)</option>
-          <option value="email">Email (A→Z)</option>
-          <option value="-email">Email (Z→A)</option>
+          <option value="username">Username A-Z</option>
+          <option value="-username">Username Z-A</option>
         </select>
       </div>
 
-      {/* Tabla */}
-      <div className="overflow-x-auto rounded border bg-white">
+      {/* TABLE */}
+      <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm">
         <table className="min-w-[860px] w-full text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-neutral-50">
             <tr className="border-b">
               <Th>User</Th>
               <Th>Email</Th>
@@ -197,13 +172,7 @@ export default function UsersAdminPage() {
               </tr>
             ) : error ? (
               <tr>
-                <Td colSpan={6} className="text-red-600">
-                  Failed to load users.
-                </Td>
-              </tr>
-            ) : users.length === 0 ? (
-              <tr>
-                <Td colSpan={6}>No users found.</Td>
+                <Td colSpan={6}>Error loading users</Td>
               </tr>
             ) : (
               users.map((u) => (
@@ -213,71 +182,48 @@ export default function UsersAdminPage() {
                       <Avatar src={u.avatar} alt={u.username} />
                       <div>
                         <div className="font-medium">{u.username}</div>
-                        <div className="text-xs opacity-60 truncate max-w-[220px]">
-                          {String(u._id)}
-                        </div>
+                        <div className="text-xs opacity-60">{u._id}</div>
                       </div>
                     </div>
                   </Td>
-                  <Td className="truncate max-w-[240px]">{u.email}</Td>
+
+                  <Td>{u.email}</Td>
+
                   <Td>
-                    <Badge tone={u.isAdmin ? "purple" : "gray"}>
+                    <Badge tone={u.isAdmin ? "lime" : "gray"}>
                       {u.isAdmin ? "admin" : "user"}
                     </Badge>
                   </Td>
+
                   <Td>
-                    <Badge tone={u.active ? "green" : "red"}>
+                    <Badge tone={u.active ? "lime" : "red"}>
                       {u.active ? "active" : "inactive"}
                     </Badge>
                   </Td>
+
                   <Td>{formatDate(u.createdAt)}</Td>
+
                   <Td right>
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex gap-2 justify-end">
                       <button
-                        className="rounded border px-2 py-1 hover:bg-black/5"
-                        disabled={promoteDemote.isPending}
+                        className="rounded-lg border px-2 py-1 text-sm hover:bg-neutral-100"
                         onClick={() => promoteDemote.mutate(u)}
-                        title={
-                          u.isAdmin ? "Demote to user" : "Promote to admin"
-                        }
                       >
-                        {promoteDemote.isPending
-                          ? "…"
-                          : u.isAdmin
-                            ? "Demote"
-                            : "Promote"}
+                        {u.isAdmin ? "Demote" : "Promote"}
                       </button>
 
                       <button
-                        className="rounded border px-2 py-1 hover:bg-black/5 disabled:opacity-50"
-                        disabled={deactivate.isPending || !u.active}
-                        onClick={() => {
-                          if (!u.active) return;
-                          if (confirm(`Deactivate ${u.username}?`)) {
-                            deactivate.mutate(u._id);
-                          }
-                        }}
-                        title={
-                          u.active ? "Deactivate user" : "Already inactive"
-                        }
+                        className="rounded-lg border px-2 py-1 text-sm hover:bg-neutral-100"
+                        onClick={() => deactivate.mutate(u._id)}
                       >
-                        {deactivate.isPending ? "…" : "Deactivate"}
+                        Deactivate
                       </button>
 
                       <button
-                        className="rounded border px-2 py-1 text-red-600 hover:bg-red-50"
-                        disabled={removeUser.isPending}
-                        onClick={() => {
-                          if (
-                            confirm(
-                              `Delete ${u.username}? This cannot be undone.`
-                            )
-                          ) {
-                            removeUser.mutate(u._id);
-                          }
-                        }}
+                        className="rounded-lg border px-2 py-1 text-sm text-red-500 hover:bg-red-50"
+                        onClick={() => removeUser.mutate(u._id)}
                       >
-                        {removeUser.isPending ? "…" : "Delete"}
+                        Delete
                       </button>
                     </div>
                   </Td>
@@ -288,30 +234,22 @@ export default function UsersAdminPage() {
         </table>
       </div>
 
-      {/* Paginación */}
-      <div className="mt-4 flex items-center justify-between text-sm">
-        <span className="opacity-70">
-          Page {params.page} of {totalPages} — Total: {total}
+      {/* PAGINATION */}
+      <div className="mt-4 flex justify-between text-sm text-neutral-600">
+        <span>
+          Page {params.page} / {totalPages}
         </span>
+
         <div className="space-x-2">
           <button
-            className="rounded border px-3 py-1 disabled:opacity-50"
-            disabled={params.page <= 1}
-            onClick={() =>
-              setParams((p) => ({ ...p, page: Math.max(1, p.page - 1) }))
-            }
+            className="rounded-lg border px-3 py-1 hover:bg-neutral-100"
+            onClick={() => setParams((p) => ({ ...p, page: p.page - 1 }))}
           >
             Prev
           </button>
           <button
-            className="rounded border px-3 py-1 disabled:opacity-50"
-            disabled={params.page >= totalPages}
-            onClick={() =>
-              setParams((p) => ({
-                ...p,
-                page: Math.min(totalPages, p.page + 1),
-              }))
-            }
+            className="rounded-lg border px-3 py-1 hover:bg-neutral-100"
+            onClick={() => setParams((p) => ({ ...p, page: p.page + 1 }))}
           >
             Next
           </button>
@@ -321,85 +259,51 @@ export default function UsersAdminPage() {
   );
 }
 
-/* ================== UI helpers ================== */
+// COMPONENTS
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl border bg-white p-4 shadow-sm">
-      <p className="text-xs opacity-60">{label}</p>
-      <p className="mt-1 text-2xl font-semibold">{value}</p>
+    <div className="rounded-xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm">
+      <p className="text-xs text-neutral-500">{label}</p>
+      <p className="text-xl font-semibold">{value}</p>
     </div>
   );
 }
 
 function Avatar({ src, alt }: { src?: string; alt: string }) {
-  const fallback = "https://placehold.co/64x64?text=U";
   return (
-    <span className="block h-10 w-10 overflow-hidden rounded-full border bg-white">
-      <img
-        src={src || fallback}
-        alt={alt}
-        className="h-full w-full object-cover"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src = fallback;
-        }}
-      />
+    <span className="h-10 w-10 rounded-full overflow-hidden border">
+      <img src={src} alt={alt} className="w-full h-full object-cover" />
     </span>
   );
 }
 
 function Badge({
   children,
-  tone = "gray",
+  tone,
 }: {
   children: React.ReactNode;
-  tone?: "green" | "red" | "purple" | "gray";
+  tone: "lime" | "red" | "gray";
 }) {
-  const map = {
-    green: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    red: "bg-rose-50 text-rose-700 border-rose-200",
-    purple: "bg-violet-50 text-violet-700 border-violet-200",
-    gray: "bg-gray-50 text-gray-700 border-gray-200",
-  } as const;
+  const styles = {
+    lime: "bg-lime-100 text-black border-lime-300",
+    red: "bg-red-100 text-red-700 border-red-200",
+    gray: "bg-neutral-100 text-neutral-700 border-neutral-200",
+  };
   return (
-    <span
-      className={`inline-block rounded-full border px-2 py-0.5 text-xs ${map[tone]}`}
-    >
+    <span className={`px-2 py-0.5 text-xs rounded-full border ${styles[tone]}`}>
       {children}
     </span>
   );
 }
 
-function Th({
-  children,
-  right,
-}: {
-  children: React.ReactNode;
-  right?: boolean;
-}) {
-  return (
-    <th className={`p-2 text-left font-medium ${right ? "text-right" : ""}`}>
-      {children}
-    </th>
-  );
+function Th({ children, right }: any) {
+  return <th className={`p-2 ${right ? "text-right" : ""}`}>{children}</th>;
 }
 
-function Td({
-  children,
-  right,
-  colSpan,
-  className = "",
-}: {
-  children: React.ReactNode;
-  right?: boolean;
-  colSpan?: number;
-  className?: string;
-}) {
+function Td({ children, right, colSpan }: any) {
   return (
-    <td
-      className={`p-2 align-middle ${right ? "text-right" : ""} ${className}`}
-      colSpan={colSpan}
-    >
+    <td className={`p-2 ${right ? "text-right" : ""}`} colSpan={colSpan}>
       {children}
     </td>
   );
@@ -407,10 +311,5 @@ function Td({
 
 function formatDate(d?: string) {
   if (!d) return "-";
-  try {
-    const dt = new Date(d);
-    return dt.toLocaleDateString();
-  } catch {
-    return d;
-  }
+  return new Date(d).toLocaleDateString();
 }

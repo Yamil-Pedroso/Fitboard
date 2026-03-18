@@ -1,17 +1,9 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-
 import { useCreateMeal } from "@/lib/hooks/useMeals";
 import type { MealSlot, QtyUnit } from "@/services/mealService";
 
-const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-
-// setCI(...) → Custom Item
-// Actualiza propiedades directas de form.customItem (p.ej. name, amount, unit, …).
-// setCINB(...) → Custom Item Nutrition Basis
-// Actualiza form.customItem.nutritionBasis (p.ej. amount, unit de la base).
-// setCIMP(...) → Custom Item Macros Per-basis
-// Actualiza form.customItem.macrosPerBasis (p.ej. kcal, protein, carbohydrate, fat).
+const todayStr = new Date().toISOString().slice(0, 10);
 
 const CreateMeal = () => {
   const { mutate, isPending, error } = useCreateMeal();
@@ -39,14 +31,14 @@ const CreateMeal = () => {
 
   function setCI<K extends keyof typeof form.customItem>(
     key: K,
-    val: (typeof form.customItem)[K]
+    val: (typeof form.customItem)[K],
   ) {
     setForm((p) => ({ ...p, customItem: { ...p.customItem, [key]: val } }));
   }
 
   function setCINB<K extends keyof typeof form.customItem.nutritionBasis>(
     key: K,
-    val: (typeof form.customItem.nutritionBasis)[K]
+    val: (typeof form.customItem.nutritionBasis)[K],
   ) {
     setForm((p) => ({
       ...p,
@@ -59,7 +51,7 @@ const CreateMeal = () => {
 
   function setCIMP<K extends keyof typeof form.customItem.macrosPerBasis>(
     key: K,
-    val: (typeof form.customItem.macrosPerBasis)[K]
+    val: (typeof form.customItem.macrosPerBasis)[K],
   ) {
     setForm((p) => ({
       ...p,
@@ -72,57 +64,53 @@ const CreateMeal = () => {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     if (form.mode === "custom") {
-      mutate(
-        {
-          date: form.date,
-          slot: form.slot,
-          customItem: form.customItem,
-        },
-        {
-          onSuccess: () => {},
-        }
-      );
+      mutate({
+        date: form.date,
+        slot: form.slot,
+        customItem: form.customItem,
+      });
     } else {
-      if (!form.recipeId || !form.servings) return; // validación básica
-      mutate(
-        {
-          date: form.date,
-          slot: form.slot,
-          recipeId: form.recipeId,
-          servings: form.servings,
-        },
-        {
-          onSuccess: () => {},
-        }
-      );
+      if (!form.recipeId || !form.servings) return;
+
+      mutate({
+        date: form.date,
+        slot: form.slot,
+        recipeId: form.recipeId,
+        servings: form.servings,
+      });
     }
   }
 
   return (
-    <div className="w-full   gap-2">
+    <div className="p-6 pt-24 flex justify-center text-black">
       <form
         onSubmit={onSubmit}
-        className="w-full mx-auto max-w-xl space-y-4 rounded-2xl border p-6 text-black"
+        className="w-full max-w-xl space-y-5 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
       >
-        <h2 className="text-lg font-semibold">Create meal</h2>
+        <div>
+          <h2 className="text-xl font-semibold">Create meal</h2>
+          <p className="text-sm text-neutral-500">
+            Add a custom item or select a recipe.
+          </p>
+        </div>
 
-        {/* Campos base */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <label className="block text-sm">
-            <span className="mb-1 block">Date</span>
+          <label className="text-sm">
+            <span className="mb-1 block text-neutral-600">Date</span>
             <input
               type="date"
-              className="w-full rounded border px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.date}
               onChange={(e) => set("date", e.currentTarget.value)}
             />
           </label>
 
-          <label className="block text-sm">
-            <span className="mb-1 block">Slot</span>
+          <label className="text-sm">
+            <span className="mb-1 block text-neutral-600">Slot</span>
             <select
-              className="w-full rounded border px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.slot}
               onChange={(e) => set("slot", e.currentTarget.value as MealSlot)}
             >
@@ -134,21 +122,18 @@ const CreateMeal = () => {
           </label>
         </div>
 
-        {/* Modo */}
-        <div className="flex gap-4 text-sm">
+        <div className="flex gap-6 text-sm">
           <label className="flex items-center gap-2">
             <input
               type="radio"
-              name="mode"
               checked={form.mode === "custom"}
               onChange={() => set("mode", "custom")}
             />
-            Custom item
+            Custom
           </label>
           <label className="flex items-center gap-2">
             <input
               type="radio"
-              name="mode"
               checked={form.mode === "recipe"}
               onChange={() => set("mode", "recipe")}
             />
@@ -156,25 +141,22 @@ const CreateMeal = () => {
           </label>
         </div>
 
-        {/* Sección: Recipe */}
         {form.mode === "recipe" && (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <label className="block text-sm">
-              <span className="mb-1 block">Recipe ID</span>
+            <label className="text-sm">
+              <span className="mb-1 block text-neutral-600">Recipe ID</span>
               <input
-                className="w-full rounded border px-3 py-2"
-                placeholder="64f...e2"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                 value={form.recipeId}
                 onChange={(e) => set("recipeId", e.currentTarget.value)}
               />
             </label>
-            <label className="block text-sm">
-              <span className="mb-1 block">Servings</span>
+
+            <label className="text-sm">
+              <span className="mb-1 block text-neutral-600">Servings</span>
               <input
                 type="number"
-                min={0.1}
-                step={0.1}
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                 value={form.servings}
                 onChange={(e) => set("servings", Number(e.currentTarget.value))}
               />
@@ -182,34 +164,34 @@ const CreateMeal = () => {
           </div>
         )}
 
-        {/* Sección: Custom item */}
         {form.mode === "custom" && (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <label className="block text-sm sm:col-span-2">
-                <span className="mb-1 block">Name</span>
+              <label className="text-sm sm:col-span-2">
+                <span className="mb-1 block text-neutral-600">Name</span>
                 <input
-                  className="w-full rounded border px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                   value={form.customItem.name}
                   onChange={(e) => setCI("name", e.currentTarget.value)}
                 />
               </label>
-              <label className="block text-sm">
-                <span className="mb-1 block">Amount</span>
+
+              <label className="text-sm">
+                <span className="mb-1 block text-neutral-600">Amount</span>
                 <input
                   type="number"
-                  min={0}
-                  className="w-full rounded border px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                   value={form.customItem.amount}
                   onChange={(e) =>
                     setCI("amount", Number(e.currentTarget.value))
                   }
                 />
               </label>
-              <label className="block text-sm">
-                <span className="mb-1 block">Unit</span>
+
+              <label className="text-sm">
+                <span className="mb-1 block text-neutral-600">Unit</span>
                 <select
-                  className="w-full rounded border px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                   value={form.customItem.unit}
                   onChange={(e) =>
                     setCI("unit", e.currentTarget.value as QtyUnit)
@@ -223,22 +205,22 @@ const CreateMeal = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <label className="block text-sm">
-                <span className="mb-1 block">Basis amount</span>
+              <label className="text-sm">
+                <span className="mb-1 block text-neutral-600">Basis</span>
                 <input
                   type="number"
-                  min={1}
-                  className="w-full rounded border px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                   value={form.customItem.nutritionBasis.amount}
                   onChange={(e) =>
                     setCINB("amount", Number(e.currentTarget.value))
                   }
                 />
               </label>
-              <label className="block text-sm">
-                <span className="mb-1 block">Basis unit</span>
+
+              <label className="text-sm">
+                <span className="mb-1 block text-neutral-600">Unit</span>
                 <select
-                  className="w-full rounded border px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
                   value={form.customItem.nutritionBasis.unit}
                   onChange={(e) =>
                     setCINB("unit", e.currentTarget.value as QtyUnit)
@@ -251,90 +233,56 @@ const CreateMeal = () => {
               </label>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
-              <label className="block text-sm">
-                <span className="mb-1 block">kcal / basis</span>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {["kcal", "protein", "carbohydrate", "fat"].map((key) => (
                 <input
+                  key={key}
                   type="number"
-                  step="any"
-                  min={0}
-                  className="w-full rounded border px-3 py-2"
-                  value={form.customItem.macrosPerBasis.kcal}
+                  className="rounded-xl border border-neutral-300 px-3 py-2"
+                  value={
+                    form.customItem.macrosPerBasis[
+                      key as keyof typeof form.customItem.macrosPerBasis
+                    ]
+                  }
                   onChange={(e) =>
-                    setCIMP("kcal", Number(e.currentTarget.value))
+                    setCIMP(
+                      key as keyof typeof form.customItem.macrosPerBasis,
+                      Number(e.currentTarget.value),
+                    )
                   }
                 />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block">Protein (g)</span>
-                <input
-                  type="number"
-                  step="any"
-                  min={0}
-                  className="w-full rounded border px-3 py-2"
-                  value={form.customItem.macrosPerBasis.protein}
-                  onChange={(e) =>
-                    setCIMP("protein", Number(e.currentTarget.value))
-                  }
-                />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block">Carbs (g)</span>
-                <input
-                  type="number"
-                  step="any"
-                  min={0}
-                  className="w-full rounded border px-3 py-2"
-                  value={form.customItem.macrosPerBasis.carbohydrate}
-                  onChange={(e) =>
-                    setCIMP("carbohydrate", Number(e.currentTarget.value))
-                  }
-                />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block">Fat (g)</span>
-                <input
-                  type="number"
-                  step="any"
-                  min={0}
-                  className="w-full rounded border px-3 py-2"
-                  value={form.customItem.macrosPerBasis.fat}
-                  onChange={(e) =>
-                    setCIMP("fat", Number(e.currentTarget.value))
-                  }
-                />
-              </label>
+              ))}
             </div>
 
-            <label className="block text-sm">
-              <span className="mb-1 block">Grams per unit (optional)</span>
-              <input
-                type="number"
-                step="any"
-                min={0}
-                className="w-full rounded border px-3 py-2"
-                value={form.customItem.gramsPerUnit ?? ""}
-                onChange={(e) => {
-                  const v = e.currentTarget.value;
-                  setCI("gramsPerUnit", v === "" ? undefined : parseFloat(v));
-                }}
-              />
-            </label>
+            <input
+              type="number"
+              placeholder="grams per unit"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              value={form.customItem.gramsPerUnit ?? ""}
+              onChange={(e) =>
+                setCI(
+                  "gramsPerUnit",
+                  e.currentTarget.value === ""
+                    ? undefined
+                    : parseFloat(e.currentTarget.value),
+                )
+              }
+            />
 
-            <label className="block text-sm">
-              <span className="mb-1 block">Density (g/ml, optional)</span>
-              <input
-                type="number"
-                step="any"
-                min={0}
-                className="w-full rounded border px-3 py-2"
-                value={form.customItem.densityGPerMl ?? ""}
-                onChange={(e) => {
-                  const v = e.currentTarget.value;
-                  setCI("densityGPerMl", v === "" ? undefined : parseFloat(v));
-                }}
-              />
-            </label>
+            <input
+              type="number"
+              placeholder="density (g/ml)"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              value={form.customItem.densityGPerMl ?? ""}
+              onChange={(e) =>
+                setCI(
+                  "densityGPerMl",
+                  e.currentTarget.value === ""
+                    ? undefined
+                    : parseFloat(e.currentTarget.value),
+                )
+              }
+            />
           </div>
         )}
 
@@ -343,15 +291,18 @@ const CreateMeal = () => {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+          className="w-full rounded-xl bg-lime-400 py-2.5 font-medium text-black hover:bg-lime-300 disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save meal"}
         </button>
-      </form>
 
-      <Link to="/meals" className="text-black underline underline-offset-1">
-        Back meald
-      </Link>
+        <Link
+          to="/meals"
+          className="block text-center text-sm text-neutral-600 hover:underline"
+        >
+          Back to meals
+        </Link>
+      </form>
     </div>
   );
 };

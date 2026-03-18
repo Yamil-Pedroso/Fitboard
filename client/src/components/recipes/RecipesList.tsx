@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Route as UpdateRecipeRoute } from "@/routes/recipes/update/$recipeId";
 import { useRecipes, useDeleteRecipe } from "@/lib/hooks/useRecipes";
+import { FaPlus } from "react-icons/fa6";
 
 const FALLBACK_IMG =
   "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop";
@@ -72,36 +73,37 @@ const RecipesList = () => {
   };
 
   return (
-    <div className="p-6">
-      {/* Header + acciones */}
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-semibold text-black">Recipes</h1>
+    <div className="p-6 pt-24 space-y-6 text-black">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-2xl font-semibold">Recipes</h1>
+
         <Link
           to="/recipes/create"
-          className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:opacity-90"
+          className="inline-flex items-center justify-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black hover:bg-lime-300"
         >
           New recipe
+          <FaPlus className="ml-2" />
         </Link>
       </div>
 
-      {/* Toolbar de filtros */}
-      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <input
           type="text"
-          className="w-full rounded border px-3 py-2 text-black"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
           placeholder="Search by name or ingredient…"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
+
         <select
-          className="w-full rounded border px-3 py-2 text-black"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2"
           disabled
-          title="Coming soon"
         >
           <option>All categories</option>
         </select>
+
         <select
-          className="w-full rounded border px-3 py-2 text-black"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2"
           value={params.sort}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setParams((p) => ({
@@ -117,20 +119,19 @@ const RecipesList = () => {
         </select>
       </div>
 
-      {/* Grid/cards */}
       {isLoading ? (
-        <div className="text-black opacity-70">Loading recipes…</div>
+        <div className="text-neutral-500">Loading recipes…</div>
       ) : error ? (
         <div className="text-red-600">Failed to load recipes.</div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-xl border p-8 text-center text-black">
+        <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-8 text-center">
           <p className="mb-2 text-lg font-medium">No recipes yet</p>
-          <p className="mb-4 opacity-70">
-            Create your first recipe to start tracking your meals.
+          <p className="mb-4 text-neutral-500">
+            Create your first recipe to get started.
           </p>
           <Link
             to="/recipes/create"
-            className="inline-flex items-center justify-center rounded bg-black px-4 py-2 text-white hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black hover:bg-lime-300"
           >
             Create recipe
           </Link>
@@ -139,8 +140,9 @@ const RecipesList = () => {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((recipe) => {
             const image =
-              // @ts-expect-error optional if you add it later
+              // @ts-expect-error optional
               recipe.imageUrl || FALLBACK_IMG;
+
             const servings = recipe.servings ?? 1;
             const ingCount = Array.isArray(recipe.ingredients)
               ? recipe.ingredients.length
@@ -150,86 +152,70 @@ const RecipesList = () => {
             return (
               <article
                 key={recipe._id}
-                className="
-                  group relative overflow-hidden rounded-2xl border border-neutral-200
-                  bg-white/90 backdrop-blur-sm shadow-sm transition-all
-                  hover:-translate-y-0.5 hover:shadow-lg
-                "
+                className="group relative overflow-hidden rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm hover:shadow-lg transition"
               >
-                {/* cover */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
-                  {/* subtle texture/glow overlay */}
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.06),transparent_45%)]" />
+                <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
                   <img
                     src={image}
                     alt={recipe.name}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
                     }}
                   />
                 </div>
 
-                {/* body */}
-                <div className="flex flex-col space-y-3 p-4 text-black">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="line-clamp-1 text-base md:text-lg font-semibold text-neutral-900">
+                <div className="p-4 space-y-3">
+                  <div className="flex justify-between gap-2">
+                    <h3 className="truncate font-semibold text-neutral-900">
                       {recipe.name}
                     </h3>
-                    <span
-                      className="
-                        shrink-0 rounded-full bg-white/90 px-2 py-0.5 text-xs text-neutral-700
-                        ring-1 ring-inset ring-neutral-200 shadow-sm
-                      "
-                    >
+
+                    <span className="text-xs rounded-full bg-neutral-100 px-2 py-0.5">
                       {servings} servings
                     </span>
                   </div>
 
-                  <p className="text-sm text-neutral-600">
+                  <p className="text-sm text-neutral-500">
                     {ingCount} ingredient{ingCount === 1 ? "" : "s"}
                   </p>
 
-                  <ul className="space-y-1 text-sm text-neutral-800">
+                  <ul className="text-sm space-y-1">
                     {recipe.ingredients.map((ingredient, i) => (
-                      <li
-                        key={i}
-                        className="truncate before:mr-2 before:content-['•'] before:text-neutral-300"
-                      >
-                        {ingredient.name}
+                      <li key={i} className="truncate text-neutral-700">
+                        • {ingredient.name}
                       </li>
                     ))}
                   </ul>
 
-                  {/* category chips */}
                   {cats.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-1">
+                    <div className="flex flex-wrap gap-2">
                       {cats.slice(0, 3).map((c: string) => (
                         <span
                           key={c}
-                          className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 ring-1 ring-inset ring-neutral-200"
+                          className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs"
                         >
                           {c}
                         </span>
                       ))}
                       {cats.length > 3 && (
                         <span className="text-xs text-neutral-500">
-                          +{cats.length - 3} more
+                          +{cats.length - 3}
                         </span>
                       )}
                     </div>
                   )}
 
-                  <div className="relative flex items-center justify-between pt-2">
+                  <div className="relative flex justify-between pt-2">
                     <button
                       onClick={() => handleUpdateRecipeClick(recipe._id)}
-                      className="inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-sm hover:bg-neutral-50"
+                      className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-sm hover:bg-neutral-50"
                     >
                       Edit
                     </button>
 
                     <button
-                      className="inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-sm text-red-600 hover:bg-red-50"
+                      className="rounded-lg border border-red-200 px-2.5 py-1.5 text-sm text-red-600 hover:bg-red-50"
                       onClick={() => setConfirmId(recipe._id)}
                       disabled={isPending && confirmId === recipe._id}
                     >
@@ -239,12 +225,20 @@ const RecipesList = () => {
                     {confirmId === recipe._id && (
                       <div
                         data-confirm-for={recipe._id}
-                        className="absolute right-3 top-[-3rem] -translate-y-1/2 w-40 rounded-2xl border bg-white p-4 text-neutral-900 shadow-2xl z-10"
+                        className="absolute right-0 top-[-3.5rem] w-44 rounded-2xl border border-neutral-200 bg-white/90 backdrop-blur p-4 shadow-xl z-10"
                       >
-                        <p className="mb-3 font-semibold">Are you sure?</p>
-                        <div className="flex items-center justify-end gap-4">
+                        <p className="mb-2 font-semibold">Delete recipe?</p>
+
+                        <div className="flex justify-end gap-3 text-sm">
                           <button
-                            className="text-red-600 hover:font-bold"
+                            className="hover:underline"
+                            onClick={() => setConfirmId(null)}
+                          >
+                            Cancel
+                          </button>
+
+                          <button
+                            className="text-red-600 hover:underline"
                             disabled={isPending}
                             onClick={() => {
                               deleteRecipe(recipe._id, {
@@ -252,13 +246,7 @@ const RecipesList = () => {
                               });
                             }}
                           >
-                            Yes
-                          </button>
-                          <button
-                            className="hover:font-bold"
-                            onClick={() => setConfirmId(null)}
-                          >
-                            No
+                            {isPending ? "Deleting…" : "Delete"}
                           </button>
                         </div>
                       </div>
@@ -271,15 +259,15 @@ const RecipesList = () => {
         </div>
       )}
 
-      {/* Paginación */}
       {recipes.length > 0 && (
-        <div className="mt-6 flex items-center justify-between text-sm text-black">
-          <span className="opacity-70">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-neutral-500">
             Page {page} of {totalPages}
           </span>
-          <div className="space-x-2">
+
+          <div className="flex gap-2">
             <button
-              className="rounded border px-3 py-1 disabled:opacity-50"
+              className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
               disabled={page <= 1}
               onClick={() =>
                 setParams((p) => ({
@@ -290,8 +278,9 @@ const RecipesList = () => {
             >
               Prev
             </button>
+
             <button
-              className="rounded border px-3 py-1 disabled:opacity-50"
+              className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
               disabled={page >= totalPages}
               onClick={() =>
                 setParams((p) => ({

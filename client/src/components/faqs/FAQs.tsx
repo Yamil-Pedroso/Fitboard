@@ -1,7 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 
 // --- Fake data (hardcoded) ---------------------------------------------------
-// Tip: later you'll move this to i18n or your backend.
 export type FaqItem = {
   id: string;
   category: "General" | "Account" | "Billing" | "Technical";
@@ -68,12 +67,10 @@ const CATEGORIES: Array<FaqItem["category"] | "All"> = [
   "Technical",
 ];
 
-// --- Helpers -----------------------------------------------------------------
 function classNames(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
 }
 
-// Smooth height animation for accordion
 function useAutoHeight(isOpen: boolean) {
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -88,8 +85,6 @@ function useAutoHeight(isOpen: boolean) {
   return { ref, height } as const;
 }
 
-// --- Components --------------------------------------------------------------
-
 type AccordionItemProps = {
   item: FaqItem;
   open: boolean;
@@ -98,45 +93,32 @@ type AccordionItemProps = {
 
 function AccordionItem({ item, open, onToggle }: AccordionItemProps) {
   const { ref, height } = useAutoHeight(open);
-  const panelId = `faq-panel-${item.id}`;
-  const buttonId = `faq-button-${item.id}`;
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white/70 p-4 shadow-sm transition hover:shadow dark:border-neutral-700 dark:bg-neutral-900/70">
+    <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm transition hover:shadow-md">
       <button
-        id={buttonId}
-        aria-expanded={open}
-        aria-controls={panelId}
         onClick={onToggle}
         className="group flex w-full items-start justify-between gap-4 text-left"
       >
         <div>
-          <h3 className="text-base font-semibold leading-6 text-gray-900 dark:text-neutral-100">
-            {item.q}
-          </h3>
-          <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">
+          <h3 className="text-base font-semibold text-neutral-900">{item.q}</h3>
+          <p className="mt-1 text-sm text-neutral-500">
             {open ? "Click to collapse" : "Click to view the answer"}
           </p>
         </div>
         <ChevronIcon
           className={classNames(
-            "mt-1 h-5 w-5 shrink-0 transition-transform",
-            open && "rotate-180"
+            "mt-1 h-5 w-5 transition-transform",
+            open && "rotate-180",
           )}
         />
       </button>
 
       <div
-        id={panelId}
-        role="region"
-        aria-labelledby={buttonId}
         style={{ height }}
         className="grid overflow-hidden transition-[height] duration-300 ease-in-out"
       >
-        <div
-          ref={ref}
-          className="pt-3 text-sm leading-6 text-gray-700 dark:text-neutral-200"
-        >
+        <div ref={ref} className="pt-3 text-sm text-neutral-700">
           {item.a}
         </div>
       </div>
@@ -159,8 +141,8 @@ function CategoryPill({
       className={classNames(
         "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition",
         active
-          ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm dark:border-blue-400 dark:bg-blue-400/10 "
-          : "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-800 dark:hover:bg-neutral-800"
+          ? "border-lime-400 bg-lime-100 text-black shadow-sm"
+          : "border-neutral-300 text-neutral-700 hover:bg-neutral-100",
       )}
     >
       <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -182,23 +164,12 @@ function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search questions…"
-        className="w-full rounded-xl border border-gray-300 bg-white/70 px-10 py-2.5 text-sm text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-neutral-100"
+        className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-10 py-2.5 text-sm text-neutral-900 shadow-sm outline-none transition placeholder:text-neutral-400 focus:ring-2 focus:ring-lime-400/30"
       />
-      <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 opacity-60" />
-      {value && (
-        <button
-          aria-label="Clear search"
-          onClick={() => onChange("")}
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-xs text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
-        >
-          Clear
-        </button>
-      )}
+      <SearchIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 opacity-60" />
     </div>
   );
 }
-
-// --- Page component ----------------------------------------------------------
 
 const FAQs: React.FC = () => {
   const [q, setQ] = useState("");
@@ -217,29 +188,24 @@ const FAQs: React.FC = () => {
     });
   }, [q, selected]);
 
-  useEffect(() => {
-    // If the open item is filtered out, close it
-    if (openId && !filtered.some((i) => i.id === openId)) setOpenId(null);
-  }, [filtered, openId]);
-
   return (
-    <section className="mx-auto max-w-4xl px-4 py-10">
-      {/* Header */}
+    <section className="mx-auto max-w-4xl px-4 py-10 pt-20">
       <div className="mb-8 text-center">
-        <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200/60 bg-blue-50 px-3 py-1 text-xs text-blue-700 dark:border-blue-400/30 dark:bg-blue-400/10">
-          <SparkleIcon className="h-4 w-4" />
+        <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 backdrop-blur px-3 py-1 text-xs text-neutral-700">
+          <SparkleIcon className="h-4 w-4 text-lime-500" />
           FAQs
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-neutral-50 sm:text-4xl">
+
+        <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl">
           Have questions? Here are the answers
         </h1>
-        <p className="mx-auto mt-3 max-w-2xl text-gray-600 ">
+
+        <p className="mx-auto mt-3 max-w-2xl text-neutral-600">
           Explore the most common questions about the platform. If you can’t
           find what you need, contact us.
         </p>
       </div>
 
-      {/* Search + Categories */}
       <div className="mb-6 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
         <SearchInput value={q} onChange={setQ} />
         <div className="flex flex-wrap gap-2">
@@ -254,40 +220,31 @@ const FAQs: React.FC = () => {
         </div>
       </div>
 
-      {/* List */}
       <div className="space-y-3">
-        {filtered.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-gray-300 p-8 text-center text-gray-500 dark:border-neutral-700 dark:text-neutral-400">
-            No results for <span className="font-medium">“{q}”</span>. Try
-            different keywords or change the category.
-          </div>
-        ) : (
-          filtered.map((item) => (
-            <AccordionItem
-              key={item.id}
-              item={item}
-              open={openId === item.id}
-              onToggle={() =>
-                setOpenId((id) => (id === item.id ? null : item.id))
-              }
-            />
-          ))
-        )}
+        {filtered.map((item) => (
+          <AccordionItem
+            key={item.id}
+            item={item}
+            open={openId === item.id}
+            onToggle={() =>
+              setOpenId((id) => (id === item.id ? null : item.id))
+            }
+          />
+        ))}
       </div>
 
-      {/* Footer CTA */}
-      <div className="mt-10 flex items-center justify-between rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-blue-50/60 p-5 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800">
+      <div className="mt-10 flex items-center justify-between rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-lime-50/40 p-5">
         <div>
-          <p className="text-sm font-medium text-gray-900 dark:text-neutral-100">
+          <p className="text-sm font-medium text-neutral-900">
             Still need help?
           </p>
-          <p className="text-sm text-gray-600 dark:text-neutral-400">
+          <p className="text-sm text-neutral-600">
             Write to us and we’ll reply in under 24 hours.
           </p>
         </div>
         <a
           href="/contact"
-          className="inline-flex items-center justify-center rounded-lg border border-blue-500 bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 dark:border-blue-500"
+          className="inline-flex items-center justify-center rounded-lg border border-lime-400 bg-lime-400 px-4 py-2 text-sm font-semibold text-black shadow hover:bg-lime-300"
         >
           Contact support
         </a>
@@ -298,19 +255,10 @@ const FAQs: React.FC = () => {
 
 export default FAQs;
 
-// --- Icons (inline, no dependencies) ----------------------------------------
+// Icons
 function ChevronIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
       <path d="M6 9l6 6 6-6" />
     </svg>
   );
@@ -318,16 +266,7 @@ function ChevronIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
       <circle cx="11" cy="11" r="7" />
       <path d="M20 20l-3.5-3.5" />
     </svg>
@@ -336,18 +275,8 @@ function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function SparkleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
       <path d="M12 3l1.6 3.9L18 8.5l-3.6 1.6L12 14l-1.6-3.9L6 8.5l3.6-1.6L12 3z" />
-      <path d="M5 17l.8 2 .8-2 .8-2 .8 2 .8 2 .8-2" opacity=".6" />
     </svg>
   );
 }

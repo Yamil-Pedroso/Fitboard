@@ -18,7 +18,6 @@ type ActiveSlot =
   | { kind: "ref"; which: RefWhich }
   | null;
 
-// Motion variants
 const container = {
   hidden: {},
   show: {
@@ -35,7 +34,6 @@ const item = {
 } as Variants;
 
 const ProgressFeatures = () => {
-  // fetch latest entries
   const { items, isLoading } = useProgress({
     page: 1,
     limit: 7,
@@ -44,13 +42,11 @@ const ProgressFeatures = () => {
   const latest = items?.[0];
   const prev = items?.[1];
 
-  // mutations
   const { mutate: upsertPosed, isPending: posedUploading } =
     useUpsertPosedPhotos();
   const { mutate: uploadRefs, isPending: refsUploading } =
     useUploadReferencePhotos();
 
-  // derive posed URLs by pose name
   const frontUrl =
     latest?.photos?.find((p) => p.pose === "front")?.url ?? assets.progress2;
   const sideUrl =
@@ -66,27 +62,26 @@ const ProgressFeatures = () => {
   const startUrl = latest?.startPhoto?.url ?? "";
   const compareUrl = latest?.comparePhoto?.url ?? "";
   const [photoStart, setPhotoStart] = useState<string>(
-    startUrl || assets.progress2
+    startUrl || assets.progress2,
   );
   const [photoCompare, setPhotoCompare] = useState<string>(
-    compareUrl || assets.progress3
+    compareUrl || assets.progress3,
   );
 
   useEffect(() => {
     setPhotoFront(
-      latest?.photos?.find((p) => p.pose === "front")?.url ?? assets.progress2
+      latest?.photos?.find((p) => p.pose === "front")?.url ?? assets.progress2,
     );
     setPhotoSide(
-      latest?.photos?.find((p) => p.pose === "side")?.url ?? assets.progress3
+      latest?.photos?.find((p) => p.pose === "side")?.url ?? assets.progress3,
     );
     setPhotoBack(
-      latest?.photos?.find((p) => p.pose === "back")?.url ?? assets.progress1
+      latest?.photos?.find((p) => p.pose === "back")?.url ?? assets.progress1,
     );
     setPhotoStart(latest?.startPhoto?.url ?? assets.progress2);
     setPhotoCompare(latest?.comparePhoto?.url ?? assets.progress3);
   }, [latest]);
 
-  // single hidden input and active slot
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [activeSlot, setActiveSlot] = useState<ActiveSlot>(null);
   const isUploading = posedUploading || refsUploading;
@@ -100,7 +95,6 @@ const ProgressFeatures = () => {
     fileInputRef.current?.click();
   };
 
-  // upload dispatcher
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !latest?._id) return;
@@ -120,7 +114,7 @@ const ProgressFeatures = () => {
             };
             reader.readAsDataURL(file);
           },
-        }
+        },
       );
     } else if (activeSlot?.kind === "ref") {
       const payload: { id: string; start?: File; compare?: File } = {
@@ -146,7 +140,6 @@ const ProgressFeatures = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // computed snapshot values
   const dateStr = latest?.date ?? new Date().toISOString().slice(0, 10);
   const weightKg = latest?.weight_kg ?? null;
   const waistCm = latest?.waist_cm ?? null;
@@ -179,7 +172,6 @@ const ProgressFeatures = () => {
     "No notes yet. Add a quick reflection to track your context over time.";
   const tags = latest?.tags ?? [];
 
-  // --- Hover video control for the FRONT tile ---
   const frontVideoRef = useRef<HTMLVideoElement | null>(null);
   const handleFrontEnter = () => {
     const v = frontVideoRef.current;
@@ -245,15 +237,13 @@ const ProgressFeatures = () => {
   };
 
   return (
-    <div className="relative">
-      {/* full-screen background */}
+    <div className="relative pt-20">
       <img
         src={assets.progress1}
         alt="Progress Feature"
         className="fixed inset-0 h-[100svh] w-screen object-cover object-center"
       />
 
-      {/* centered overlay; scrollable if the viewport is short */}
       <div className="relative z-10 flex flex-col items-center justify-start p-4 sm:p-6 md:p-8">
         <motion.div
           className="w-full mt-2 flex flex-col items-center gap-6"
@@ -261,7 +251,6 @@ const ProgressFeatures = () => {
           initial="hidden"
           animate="show"
         >
-          {/* 1) Snapshot Card */}
           <motion.div variants={item} className="w-full max-w-[50rem]">
             <CardShell>
               <ProgressSnapshot
@@ -284,12 +273,10 @@ const ProgressFeatures = () => {
             </CardShell>
           </motion.div>
 
-          {/* 2) Two cards: smaller check-in & reference */}
           <motion.div
             variants={item}
             className="flex w-full max-w-[50rem] flex-col lg:flex-row gap-6"
           >
-            {/* Posed photos: front/side/back (small tiles) */}
             <motion.div variants={item} className="lg:flex-1">
               <CardShell className="lg:flex-1">
                 <SectionHeader
@@ -306,7 +293,6 @@ const ProgressFeatures = () => {
                   whileInView="show"
                   viewport={{ once: true, amount: 0.2 }}
                 >
-                  {/* FRONT tile with hover video overlay */}
                   <motion.div
                     variants={item}
                     className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]"
@@ -324,7 +310,6 @@ const ProgressFeatures = () => {
                         size="sm"
                       />
 
-                      {/* overlay de video */}
                       <video
                         ref={frontVideoRef}
                         src={assets.vOne}
@@ -338,7 +323,6 @@ const ProgressFeatures = () => {
                     </div>
                   </motion.div>
 
-                  {/* SIDE */}
                   <motion.div
                     variants={item}
                     className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]"
@@ -370,7 +354,6 @@ const ProgressFeatures = () => {
                     </div>
                   </motion.div>
 
-                  {/* BACK */}
                   <motion.div
                     variants={item}
                     className="basis-full sm:basis-[calc(50%-0.375rem)] lg:basis-[calc(33.333%-0.5rem)]"
@@ -387,7 +370,7 @@ const ProgressFeatures = () => {
                         onClick={() => openPickerPose("back")}
                         size="sm"
                       />
-                      {/* overlay de video */}
+
                       <video
                         ref={backVideoRef}
                         src={assets.vFour}
@@ -404,7 +387,6 @@ const ProgressFeatures = () => {
               </CardShell>
             </motion.div>
 
-            {/* Reference photos: start/compare (small tiles) */}
             <motion.div variants={item} className="lg:flex-1">
               <CardShell className="lg:flex-1">
                 <SectionHeader
@@ -468,7 +450,6 @@ const ProgressFeatures = () => {
             </motion.div>
           </motion.div>
 
-          {/* hidden input for all uploads */}
           <input
             type="file"
             accept="image/*"
@@ -481,8 +462,6 @@ const ProgressFeatures = () => {
     </div>
   );
 };
-
-/* ---------------- Subcomponents (visual style intact) ---------------- */
 
 function CardShell({
   children,
@@ -555,7 +534,6 @@ function ProgressSnapshot({
 }) {
   return (
     <>
-      {/* header */}
       <div className=" mb-5 flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
           {/*<svg
@@ -582,7 +560,6 @@ function ProgressSnapshot({
         </div>
       </div>
 
-      {/* stats */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat
           label={isLoading ? "Weight (loading…)" : "Weight"}
@@ -598,7 +575,6 @@ function ProgressSnapshot({
         <Stat label="Steps" value={steps} />
       </div>
 
-      {/* bars */}
       <div className="mt-6 space-y-4">
         <Bar
           title="Weight goal"
@@ -620,12 +596,10 @@ function ProgressSnapshot({
         />
       </div>
 
-      {/* notes */}
       <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
         <p className="text-sm leading-relaxed text-white/90">{notes}</p>
       </div>
 
-      {/* tags */}
       {tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {tags.map((t) => (
@@ -692,7 +666,6 @@ function Bar({
   );
 }
 
-/** Imagen completa sin recorte; tamaño “sm” para tiles más compactos */
 function PhotoTile({
   src,
   onClick,
@@ -705,11 +678,9 @@ function PhotoTile({
   onClick: () => void;
   badge?: string;
   disabled?: boolean;
-  /** "sm" (compacto) o "md" (más alto) */
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
-  // alturas por tamaño (responsive) via CSS variable
   const cssHeights =
     size === "sm"
       ? `:root{--ph-h: 10rem}@media (min-width:640px){:root{--ph-h: 12rem}}@media (min-width:768px){:root{--ph-h: 14rem}}`

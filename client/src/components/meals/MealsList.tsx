@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Route as UpdateMealRoute } from "@/routes/meals/update/$mealId";
 import { useMeals, useDeleteMeal } from "@/lib/hooks/useMeals";
+import { FaPlus } from "react-icons/fa6";
 
 const slotBadge: Record<string, string> = {
   breakfast: "bg-amber-100 text-amber-800",
@@ -49,42 +51,42 @@ const MealsList = () => {
   const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 20)));
 
   return (
-    <div className="p-6 space-y-5">
-      {/* Header */}
+    <div className="p-6 pt-24 space-y-6 text-black">
+      {/* HEADER */}
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-black">Meals</h1>
+          <h1 className="text-2xl font-semibold">Meals</h1>
           <p className="text-sm text-neutral-500">
-            Log your meals and keep an eye on macros.
+            Log your meals and track your macros.
           </p>
         </div>
+
         <Link
           to="/meals/create"
-          className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-4 py-2 text-white shadow-sm hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-xl bg-lime-400 px-4 py-2 font-medium text-black shadow-sm hover:bg-lime-300"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" className="shrink-0">
-            <path fill="currentColor" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z" />
-          </svg>
           New meal
+          <FaPlus />
         </Link>
       </div>
 
-      {/* Desktop table */}
-      <div className="hidden rounded-2xl border bg-white lg:block">
+      {/* TABLE DESKTOP */}
+      <div className="hidden rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm lg:block">
         <table className="min-w-[980px] w-full text-sm">
-          <thead className="sticky top-0 z-10 bg-neutral-50/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-50/60">
-            <tr className="text-neutral-700">
+          <thead className="bg-neutral-50/80 backdrop-blur">
+            <tr className="text-neutral-600">
               <Th>Date</Th>
               <Th>Slot</Th>
               <Th>Item</Th>
               <Th>Amount</Th>
               <Th>kcal/100</Th>
-              <Th>Protein/100</Th>
-              <Th>Carbs/100</Th>
-              <Th>Fat/100</Th>
-              <Th className="text-right">Actions</Th>
+              <Th>P</Th>
+              <Th>C</Th>
+              <Th>F</Th>
+              <Th>Actions</Th>
             </tr>
           </thead>
+
           <tbody>
             {isLoading ? (
               <LoadingRows />
@@ -98,17 +100,17 @@ const MealsList = () => {
               meals.map((m, idx) => (
                 <tr
                   key={m._id}
-                  className={`relative border-t ${
-                    idx % 2 ? "bg-neutral-50/50" : "bg-white"
-                  } hover:bg-neutral-50 transition-colors`}
+                  className={`border-t ${
+                    idx % 2 ? "bg-neutral-50/50" : "bg-transparent"
+                  } hover:bg-neutral-50 transition`}
                 >
                   <Td>
-                    <div className="font-medium text-black">{m.date}</div>
+                    <span className="font-medium">{m.date}</span>
                   </Td>
 
                   <Td>
                     <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium shadow-sm ${
+                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                         slotBadge[m.slot] ?? "bg-neutral-100 text-neutral-700"
                       }`}
                     >
@@ -116,19 +118,11 @@ const MealsList = () => {
                     </span>
                   </Td>
 
-                  <Td className="max-w-[320px]">
-                    <div className="truncate font-medium text-black">
-                      {m.customItem?.name ?? `Recipe ${m.recipeId}`}
-                    </div>
-                    {/* optional notes
-                    {m.customItem?.notes && (
-                      <div className="truncate text-xs text-neutral-500">
-                        {m.customItem.notes}
-                      </div>
-                    )}*/}
+                  <Td className="max-w-[300px] truncate font-medium">
+                    {m.customItem?.name ?? `Recipe ${m.recipeId}`}
                   </Td>
 
-                  <Td className="whitespace-nowrap">
+                  <Td>
                     {m.customItem
                       ? `${m.customItem.amount ?? ""}${m.customItem.unit ?? ""}`
                       : `${m.servings} serving(s)`}
@@ -140,31 +134,19 @@ const MealsList = () => {
                   <Td>{m.customItem?.macrosPerBasis?.fat ?? "-"}</Td>
 
                   <Td className="text-right">
-                    <div className="relative inline-flex items-center gap-1">
+                    <div className="relative inline-flex gap-2">
                       <button
-                        className="inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 shadow-sm hover:bg-neutral-50"
+                        className="rounded-lg border border-neutral-200 px-2.5 py-1.5 hover:bg-neutral-50"
                         onClick={() => handleUpdateMealClick(m._id)}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24">
-                          <path
-                            fill="currentColor"
-                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.33H5v-.92l8.06-8.06.92.92L5.92 19.58zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.3a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.84z"
-                          />
-                        </svg>
                         Edit
                       </button>
 
                       <button
-                        className="inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-red-600 shadow-sm hover:bg-red-50"
+                        className="rounded-lg border border-red-200 px-2.5 py-1.5 text-red-600 hover:bg-red-50"
                         onClick={() => setConfirmId(m._id)}
                         disabled={isPending && confirmId === m._id}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24">
-                          <path
-                            fill="currentColor"
-                            d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1z"
-                          />
-                        </svg>
                         {isPending && confirmId === m._id
                           ? "Deleting…"
                           : "Delete"}
@@ -191,48 +173,40 @@ const MealsList = () => {
         </table>
       </div>
 
-      {/* Mobile cards */}
+      {/* MOBILE */}
       <div className="space-y-3 lg:hidden">
         {isLoading ? (
-          <div className="rounded-2xl border bg-white p-4">
-            <div className="h-5 w-40 animate-pulse rounded bg-neutral-200" />
-            <div className="mt-3 h-20 animate-pulse rounded-lg bg-neutral-100" />
+          <div className="rounded-2xl border border-neutral-200 bg-white/80 p-4">
+            <div className="h-5 w-40 animate-pulse bg-neutral-200 rounded" />
           </div>
         ) : meals.length === 0 ? (
-          <div className="rounded-2xl border bg-white p-6 text-center text-neutral-500">
+          <div className="rounded-2xl border border-neutral-200 bg-white/80 p-6 text-center text-neutral-500">
             No meals found
           </div>
         ) : (
           meals.map((m) => (
             <div
               key={m._id}
-              className="rounded-2xl border bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm"
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-black">
-                      {m.date}
-                    </span>
+                    <span className="font-semibold">{m.date}</span>
                     <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium shadow-sm ${
-                        slotBadge[m.slot] ?? "bg-neutral-100 text-neutral-700"
+                      className={`rounded-full px-2 py-0.5 text-xs ${
+                        slotBadge[m.slot] ?? "bg-neutral-100"
                       }`}
                     >
                       {m.slot}
                     </span>
                   </div>
 
-                  <div className="mt-1 truncate text-sm text-black">
+                  <p className="mt-1 text-sm truncate">
                     {m.customItem?.name ?? `Recipe ${m.recipeId}`}
-                  </div>
+                  </p>
 
-                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-600">
-                    <span className="rounded border px-2 py-0.5">
-                      {m.customItem
-                        ? `${m.customItem.amount ?? ""}${m.customItem.unit ?? ""}`
-                        : `${m.servings} serving(s)`}
-                    </span>
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
                     <MacroPill
                       label="kcal"
                       value={m.customItem?.macrosPerBasis?.kcal}
@@ -252,37 +226,20 @@ const MealsList = () => {
                   </div>
                 </div>
 
-                <div className="relative shrink-0">
-                  <div className="flex gap-2">
-                    <button
-                      className="rounded-lg border px-2.5 py-1.5 text-sm shadow-sm hover:bg-neutral-50"
-                      onClick={() => handleUpdateMealClick(m._id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="rounded-lg border px-2.5 py-1.5 text-sm text-red-600 shadow-sm hover:bg-red-50"
-                      onClick={() => setConfirmId(m._id)}
-                      disabled={isPending && confirmId === m._id}
-                    >
-                      {isPending && confirmId === m._id
-                        ? "Deleting…"
-                        : "Delete"}
-                    </button>
-                  </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="rounded-lg border px-2 py-1 text-sm"
+                    onClick={() => handleUpdateMealClick(m._id)}
+                  >
+                    Edit
+                  </button>
 
-                  {confirmId === m._id && (
-                    <ConfirmPopover
-                      anchorId={m._id}
-                      isPending={isPending}
-                      onConfirm={() =>
-                        deleteMeal(m._id, {
-                          onSettled: () => setConfirmId(null),
-                        })
-                      }
-                      onCancel={() => setConfirmId(null)}
-                    />
-                  )}
+                  <button
+                    className="rounded-lg border border-red-200 px-2 py-1 text-sm text-red-600"
+                    onClick={() => setConfirmId(m._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
@@ -290,14 +247,15 @@ const MealsList = () => {
         )}
       </div>
 
-      {/* Pagination */}
-      <div className="flex flex-col items-center justify-between gap-3 text-black sm:flex-row">
+      {/* PAGINATION */}
+      <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
         <span className="text-sm text-neutral-600">
           Page {page} of {totalPages}
         </span>
-        <div className="flex w-full max-w-xs justify-between sm:w-auto sm:space-x-2">
+
+        <div className="flex gap-2">
           <button
-            className="w-[48%] rounded-xl border px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50 sm:w-auto"
+            className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
             disabled={page <= 1}
             onClick={() =>
               setParams((p) => ({ ...p, page: (p.page ?? 1) - 1 }))
@@ -305,8 +263,9 @@ const MealsList = () => {
           >
             Prev
           </button>
+
           <button
-            className="w-[48%] rounded-xl border px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50 sm:w-auto"
+            className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
             disabled={page >= totalPages}
             onClick={() =>
               setParams((p) => ({ ...p, page: (p.page ?? 1) + 1 }))
@@ -322,33 +281,22 @@ const MealsList = () => {
 
 function MacroPill({ label, value }: { label: string; value?: number }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
-      <span className="text-[10px] uppercase text-neutral-500">{label}</span>
-      <span className="text-[11px] text-black">{value ?? "-"}</span>
+    <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-xs">
+      {label}: {value ?? "-"}
     </span>
   );
 }
 
-function Th({
-  children,
-  className = "",
-}: React.PropsWithChildren<{ className?: string }>) {
+function Th({ children }: React.PropsWithChildren) {
   return (
-    <th
-      className={`p-3 text-left text-[11px] font-semibold uppercase tracking-wide text-neutral-600 ${className}`}
-    >
+    <th className="p-3 text-left text-[11px] font-semibold uppercase tracking-wide">
       {children}
     </th>
   );
 }
 
-function Td({
-  children,
-  className = "",
-}: React.PropsWithChildren<{ className?: string }>) {
-  return (
-    <td className={`p-3 align-top text-black ${className}`}>{children}</td>
-  );
+function Td({ children, className = "" }: any) {
+  return <td className={`p-3 ${className}`}>{children}</td>;
 }
 
 function LoadingRows() {
@@ -379,21 +327,23 @@ function ConfirmPopover({
   return (
     <div
       data-confirm-for={anchorId}
-      className="absolute right-0 top-full z-10 mt-2 w-56 rounded-2xl border bg-white p-4 shadow-xl"
+      className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-neutral-200 bg-white/90 backdrop-blur p-4 shadow-xl z-20"
     >
-      <p className="mb-3 font-semibold">Delete meal?</p>
-      <p className="mb-3 text-sm text-neutral-600">
+      <p className="mb-2 font-semibold">Delete meal?</p>
+      <p className="mb-3 text-sm text-neutral-500">
         This action cannot be undone.
       </p>
-      <div className="flex items-center justify-end gap-3">
+
+      <div className="flex justify-end gap-2">
         <button
           className="rounded-xl border px-3 py-1.5 hover:bg-neutral-50"
           onClick={onCancel}
         >
           Cancel
         </button>
+
         <button
-          className="rounded-xl bg-red-600 px-3 py-1.5 text-white hover:opacity-90 disabled:opacity-70"
+          className="rounded-xl bg-red-500 px-3 py-1.5 text-white hover:bg-red-600"
           disabled={isPending}
           onClick={onConfirm}
         >

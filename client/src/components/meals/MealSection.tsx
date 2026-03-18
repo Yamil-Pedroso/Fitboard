@@ -52,7 +52,6 @@ const MealSection: React.FC = () => {
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
     >
-      {/* background accents */}
       <motion.div className="pointer-events-none absolute inset-0 -z-10">
         <motion.div
           className="absolute -top-24 left-0 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl"
@@ -68,7 +67,6 @@ const MealSection: React.FC = () => {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2">
-          {/* LEFT: big visual */}
           <motion.figure
             variants={up}
             className="order-1 lg:order-none"
@@ -102,7 +100,6 @@ const MealSection: React.FC = () => {
                 />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/60 to-transparent" />
 
-                {/* floating chips (animated) */}
                 <Chip className="absolute left-4 top-4" customDelay={0}>
                   460 kcal
                 </Chip>
@@ -122,7 +119,6 @@ const MealSection: React.FC = () => {
             </div>
           </motion.figure>
 
-          {/* RIGHT: copy & actions */}
           <motion.div variants={up} className="space-y-6">
             <motion.p
               variants={up}
@@ -141,7 +137,6 @@ const MealSection: React.FC = () => {
               </span>
             </motion.h2>
 
-            {/* Features with staggered items */}
             <motion.ul variants={parent} className="space-y-3">
               <motion.li variants={up}>
                 <Feature
@@ -166,14 +161,13 @@ const MealSection: React.FC = () => {
               </motion.li>
             </motion.ul>
 
-            {/* CTAs */}
             <motion.div
               variants={up}
               className="flex flex-col gap-3 sm:flex-row"
             >
               <Link
                 to="/meals/create"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-white shadow-sm transition hover:opacity-90"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-lime-400 px-4 py-2 text-neutral-900 shadow-sm transition hover:opacity-90"
               >
                 <Plus className="h-4 w-4" /> Log a meal
               </Link>
@@ -185,7 +179,6 @@ const MealSection: React.FC = () => {
               </Link>
             </motion.div>
 
-            {/* Stats */}
             <motion.dl
               variants={parent}
               className="grid grid-cols-2 gap-4 text-sm text-neutral-600 sm:max-w-md"
@@ -204,7 +197,6 @@ const MealSection: React.FC = () => {
   );
 };
 
-// Animated chip
 function Chip({
   children,
   className = "",

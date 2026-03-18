@@ -41,10 +41,15 @@ const ChangePasswordForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto w-full max-w-md rounded-2xl border border-neutral-200/70 bg-white/80 p-6 shadow-xl backdrop-blur-sm sm:p-8"
+      className="mx-auto w-full h-screen max-w-md rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-xl sm:p-8"
     >
+      {/* HEADER */}
       <div className="mb-6 flex items-center gap-3">
-        <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-emerald-400/90 to-cyan-400/90 text-white shadow-md ring-1 ring-white/30">
+        <div
+          className="grid h-12 w-12 place-items-center rounded-xl
+                        bg-gradient-to-br from-lime-400 to-amber-300
+                        text-black shadow-md"
+        >
           <svg
             viewBox="0 0 24 24"
             className="h-6 w-6"
@@ -56,6 +61,7 @@ const ChangePasswordForm = () => {
             <path d="M7 11V8a5 5 0 0 1 10 0v3" />
           </svg>
         </div>
+
         <div>
           <h2 className="text-xl font-semibold text-neutral-900">
             Change password
@@ -66,92 +72,98 @@ const ChangePasswordForm = () => {
         </div>
       </div>
 
+      {/* SUCCESS */}
       {okMsg && (
-        <p
-          role="status"
-          className="mb-4 rounded-lg border-l-4 border-emerald-500 bg-emerald-50 px-3 py-2 text-sm text-emerald-700"
-        >
+        <p className="mb-4 rounded-lg border border-lime-300 bg-lime-50 px-3 py-2 text-sm text-lime-700">
           {okMsg}
         </p>
       )}
+
+      {/* ERROR */}
       {errMsg && (
-        <p
-          role="alert"
-          className="mb-4 rounded-lg border-l-4 border-red-500 bg-red-50 px-3 py-2 text-sm text-red-700"
-        >
+        <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           {errMsg}
         </p>
       )}
 
       <fieldset disabled={loading} className="space-y-4">
+        {/* CURRENT */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             Current password
           </label>
           <input
             type="password"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-black outline-none transition focus:border-neutral-400 focus:ring-2 focus:ring-emerald-200"
+            className="w-full rounded-xl border border-neutral-200
+                       bg-white/80 backdrop-blur
+                       px-3 py-2 text-black outline-none transition
+                       focus:ring-2 focus:ring-lime-400/30"
             value={current}
             onChange={(e) => setCurrent(e.target.value)}
             required
-            autoComplete="current-password"
           />
         </div>
 
+        {/* NEW */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             New password
           </label>
           <input
             type="password"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-black outline-none transition focus:border-neutral-400 focus:ring-2 focus:ring-emerald-200"
+            className="w-full rounded-xl border border-neutral-200
+                       bg-white/80 backdrop-blur
+                       px-3 py-2 text-black outline-none transition
+                       focus:ring-2 focus:ring-lime-400/30"
             value={pw1}
             onChange={(e) => setPw1(e.target.value)}
             minLength={8}
             required
-            autoComplete="new-password"
           />
           <p className="text-xs text-neutral-500">Minimum 8 characters.</p>
         </div>
 
+        {/* REPEAT */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             Repeat new password
           </label>
           <input
             type="password"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-black outline-none transition focus:border-neutral-400 focus:ring-2 focus:ring-emerald-200"
+            className="w-full rounded-xl border border-neutral-200
+                       bg-white/80 backdrop-blur
+                       px-3 py-2 text-black outline-none transition
+                       focus:ring-2 focus:ring-lime-400/30"
             value={pw2}
             onChange={(e) => setPw2(e.target.value)}
             required
-            autoComplete="new-password"
           />
         </div>
 
+        {/* BUTTON */}
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 font-medium text-white shadow transition hover:opacity-90 disabled:opacity-50"
+          className="mt-2 inline-flex w-full items-center justify-center gap-2
+                     rounded-xl bg-lime-400 text-black
+                     px-4 py-2.5 font-semibold
+                     shadow transition hover:bg-lime-300
+                     disabled:opacity-50"
         >
           {loading ? (
             <>
-              <svg
-                className="h-4 w-4 animate-spin"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
                 <circle
-                  className="opacity-25"
                   cx="12"
                   cy="12"
                   r="10"
                   stroke="currentColor"
                   strokeWidth="4"
+                  className="opacity-25"
                 />
                 <path
-                  className="opacity-75"
-                  fill="currentColor"
                   d="M4 12a8 8 0 018-8v4A4 4 0 004 12z"
+                  fill="currentColor"
                 />
               </svg>
               Updating…

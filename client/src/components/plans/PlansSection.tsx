@@ -109,7 +109,7 @@ const PlansSection: React.FC = () => {
               Yearly
             </button>
             {period === "yearly" && (
-              <span className="ml-2 hidden rounded-xl bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200 sm:inline-block">
+              <span className="ml-2 hidden rounded-xl bg-lime-50 px-2 py-1 text-xs font-medium text-lime-700 ring-1 ring-inset ring-lime-200 sm:inline-block">
                 Save ~17%
               </span>
             )}
@@ -138,12 +138,12 @@ const PlansSection: React.FC = () => {
                 transition={{ duration: 0.5, delay: idx * 0.06 }}
                 className={`relative rounded-2xl border bg-white p-6 shadow-sm transition hover:shadow-md ${
                   plan.highlight
-                    ? "border-transparent bg-gradient-to-b from-white to-white/90 ring-2 ring-emerald-500/60"
+                    ? "border-transparent bg-gradient-to-b from-white to-white/90 ring-2 ring-lime-500/60"
                     : "border-2 border-neutral-800"
                 }`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3 right-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white shadow">
+                  <div className="absolute -top-3 right-4 inline-flex items-center gap-2 rounded-full bg-lime-400 px-3 py-1 text-xs font-medium text-neutral-900 shadow">
                     <Star className="h-3.5 w-3.5" />
                     Most popular
                   </div>
@@ -171,8 +171,8 @@ const PlansSection: React.FC = () => {
                       key={f}
                       className="flex items-start gap-2 text-neutral-800"
                     >
-                      <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200">
-                        <Check className="h-3.5 w-3.5" />
+                      <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-lime-50 text-lime-700 ring-1 ring-inset ring-lime-200">
+                        <Check className="h-3.5 w-3.5 text-neutral-900" />
                       </span>
                       <span>{f}</span>
                     </li>

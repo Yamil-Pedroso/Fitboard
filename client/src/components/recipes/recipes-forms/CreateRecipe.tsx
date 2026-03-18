@@ -46,10 +46,9 @@ const CreateRecipe = () => {
     categoryIds: [],
   });
 
-  // helpers
   function setField<K extends keyof typeof form>(
     key: K,
-    val: (typeof form)[K]
+    val: (typeof form)[K],
   ) {
     setForm((p) => ({ ...p, [key]: val }));
   }
@@ -57,7 +56,7 @@ const CreateRecipe = () => {
   function setIng<K extends keyof IngredientForm>(
     idx: number,
     key: K,
-    val: IngredientForm[K]
+    val: IngredientForm[K],
   ) {
     setForm((p) => {
       const copy = [...p.ingredients];
@@ -69,7 +68,7 @@ const CreateRecipe = () => {
   function setIngNB<K extends keyof IngredientForm["nutritionBasis"]>(
     idx: number,
     key: K,
-    val: IngredientForm["nutritionBasis"][K]
+    val: IngredientForm["nutritionBasis"][K],
   ) {
     setForm((p) => {
       const copy = [...p.ingredients];
@@ -84,7 +83,7 @@ const CreateRecipe = () => {
   function setIngMacros<K extends keyof IngredientForm["macrosPerBasis"]>(
     idx: number,
     key: K,
-    val: IngredientForm["macrosPerBasis"][K]
+    val: IngredientForm["macrosPerBasis"][K],
   ) {
     setForm((p) => {
       const copy = [...p.ingredients];
@@ -114,7 +113,6 @@ const CreateRecipe = () => {
     e.preventDefault();
     if (!form.name.trim()) return;
 
-    // Cast IngredientForm → IIngredient (the shape is the same)
     const ingredients: IIngredient[] = form.ingredients.map((ing) => ({
       ...ing,
       gramsPerUnit:
@@ -128,124 +126,120 @@ const CreateRecipe = () => {
       servings: Number(form.servings),
       ingredients,
       categoryIds: form.categoryIds,
-      date: form.date, // keep if your model supports it
+      date: form.date,
     });
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl p-6 text-black">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Create recipe</h1>
-        <Link to="/recipes" className="underline">
-          Back to recipes
-        </Link>
-      </div>
-
-      <form onSubmit={onSubmit} className="space-y-6 rounded-2xl border p-6">
-        {/* Basic */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          <label className="block text-sm sm:col-span-2">
-            <span className="mb-1 block">Name</span>
-            <input
-              className="w-full rounded border px-3 py-2"
-              value={form.name}
-              onChange={(e) => setField("name", e.currentTarget.value)}
-              required
-            />
-          </label>
-
-          <label className="block text-sm">
-            <span className="mb-1 block">Servings</span>
-            <input
-              type="number"
-              min={1}
-              step={1}
-              className="w-full rounded border px-3 py-2"
-              value={form.servings}
-              onChange={(e) =>
-                setField("servings", Number(e.currentTarget.value))
-              }
-              required
-            />
-          </label>
-
-          <label className="block text-sm">
-            <span className="mb-1 block">Date (optional)</span>
-            <input
-              type="date"
-              className="w-full rounded border px-3 py-2"
-              value={form.date}
-              onChange={(e) => setField("date", e.currentTarget.value)}
-            />
-          </label>
+    <div className="p-6 pt-24 flex justify-center text-black">
+      <div className="w-full max-w-3xl space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Create recipe</h1>
+          <Link
+            to="/recipes"
+            className="text-sm text-neutral-500 hover:underline"
+          >
+            Back to recipes
+          </Link>
         </div>
 
-        {/* Ingredients */}
-        <div>
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-medium">Ingredients</h2>
-            <button
-              type="button"
-              onClick={addIngredient}
-              className="rounded bg-black px-3 py-2 text-white"
-            >
-              + Add ingredient
-            </button>
+        <form
+          onSubmit={onSubmit}
+          className="space-y-6 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+        >
+          <div className="grid gap-4 sm:grid-cols-3">
+            <label className="text-sm sm:col-span-2">
+              <span className="mb-1 block text-neutral-600">Name</span>
+              <input
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                value={form.name}
+                onChange={(e) => setField("name", e.currentTarget.value)}
+                required
+              />
+            </label>
+
+            <label className="text-sm">
+              <span className="mb-1 block text-neutral-600">Servings</span>
+              <input
+                type="number"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                value={form.servings}
+                onChange={(e) =>
+                  setField("servings", Number(e.currentTarget.value))
+                }
+                required
+              />
+            </label>
+
+            <label className="text-sm">
+              <span className="mb-1 block text-neutral-600">Date</span>
+              <input
+                type="date"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                value={form.date}
+                onChange={(e) => setField("date", e.currentTarget.value)}
+              />
+            </label>
           </div>
 
-          {form.ingredients.length === 0 ? (
-            <p className="text-sm opacity-70">No ingredients yet.</p>
-          ) : (
-            <div className="space-y-5">
-              {form.ingredients.map((ing, i) => (
-                <div key={i} className="rounded-xl border p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="font-medium">#{i + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeIngredient(i)}
-                      className="text-sm text-red-600 underline"
-                    >
-                      Remove
-                    </button>
-                  </div>
+          <div>
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-lg font-medium">Ingredients</h2>
+              <button
+                type="button"
+                onClick={addIngredient}
+                className="rounded-xl bg-lime-400 px-3 py-2 text-sm font-medium text-black hover:bg-lime-300"
+              >
+                + Add ingredient
+              </button>
+            </div>
 
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <label className="block text-sm sm:col-span-2">
-                      <span className="mb-1 block">Name</span>
+            {form.ingredients.length === 0 ? (
+              <p className="text-sm text-neutral-500">No ingredients yet.</p>
+            ) : (
+              <div className="space-y-5">
+                {form.ingredients.map((ing, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-neutral-200 bg-white/70 p-4 space-y-4"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-sm">#{i + 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeIngredient(i)}
+                        className="text-sm text-red-600 hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+
+                    <div className="grid gap-3 sm:grid-cols-3">
                       <input
-                        className="w-full rounded border px-3 py-2"
+                        className="sm:col-span-2 rounded-xl border border-neutral-300 px-3 py-2"
+                        placeholder="Ingredient name"
                         value={ing.name}
                         onChange={(e) =>
                           setIng(i, "name", e.currentTarget.value)
                         }
-                        required
                       />
-                    </label>
 
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Amount</span>
                       <input
                         type="number"
-                        min={0}
-                        step="any"
-                        className="w-full rounded border px-3 py-2"
+                        className="rounded-xl border border-neutral-300 px-3 py-2"
+                        placeholder="Amount"
                         value={ing.amount}
                         onChange={(e) =>
                           setIng(
                             i,
                             "amount",
-                            parseFloat(e.currentTarget.value) || 0
+                            parseFloat(e.currentTarget.value) || 0,
                           )
                         }
-                        required
                       />
-                    </label>
 
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Unit</span>
                       <select
-                        className="w-full rounded border px-3 py-2"
+                        className="rounded-xl border border-neutral-300 px-3 py-2"
                         value={ing.unit}
                         onChange={(e) =>
                           setIng(i, "unit", e.currentTarget.value as QtyUnit)
@@ -255,33 +249,25 @@ const CreateRecipe = () => {
                         <option value="ml">ml</option>
                         <option value="unit">unit</option>
                       </select>
-                    </label>
-                  </div>
+                    </div>
 
-                  {/* Basis */}
-                  <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Basis amount</span>
+                    <div className="grid gap-3 sm:grid-cols-3">
                       <input
                         type="number"
-                        min={1}
-                        step="any"
-                        className="w-full rounded border px-3 py-2"
+                        className="rounded-xl border border-neutral-300 px-3 py-2"
+                        placeholder="Basis amount"
                         value={ing.nutritionBasis.amount}
                         onChange={(e) =>
                           setIngNB(
                             i,
                             "amount",
-                            parseFloat(e.currentTarget.value) || 0
+                            parseFloat(e.currentTarget.value) || 0,
                           )
                         }
                       />
-                    </label>
 
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Basis unit</span>
                       <select
-                        className="w-full rounded border px-3 py-2"
+                        className="rounded-xl border border-neutral-300 px-3 py-2"
                         value={ing.nutritionBasis.unit}
                         onChange={(e) =>
                           setIngNB(i, "unit", e.currentTarget.value as QtyUnit)
@@ -291,149 +277,50 @@ const CreateRecipe = () => {
                         <option value="ml">ml</option>
                         <option value="unit">unit</option>
                       </select>
-                    </label>
-                  </div>
+                    </div>
 
-                  {/* Macros per basis */}
-                  <div className="mt-3 grid gap-3 sm:grid-cols-4">
-                    <label className="block text-sm">
-                      <span className="mb-1 block">kcal / basis</span>
-                      <input
-                        type="number"
-                        min={0}
-                        step="any"
-                        className="w-full rounded border px-3 py-2"
-                        value={ing.macrosPerBasis.kcal}
-                        onChange={(e) =>
-                          setIngMacros(
-                            i,
-                            "kcal",
-                            parseFloat(e.currentTarget.value) || 0
-                          )
-                        }
-                      />
-                    </label>
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Protein (g)</span>
-                      <input
-                        type="number"
-                        min={0}
-                        step="any"
-                        className="w-full rounded border px-3 py-2"
-                        value={ing.macrosPerBasis.protein}
-                        onChange={(e) =>
-                          setIngMacros(
-                            i,
-                            "protein",
-                            parseFloat(e.currentTarget.value) || 0
-                          )
-                        }
-                      />
-                    </label>
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Carbs (g)</span>
-                      <input
-                        type="number"
-                        min={0}
-                        step="any"
-                        className="w-full rounded border px-3 py-2"
-                        value={ing.macrosPerBasis.carbohydrate}
-                        onChange={(e) =>
-                          setIngMacros(
-                            i,
-                            "carbohydrate",
-                            parseFloat(e.currentTarget.value) || 0
-                          )
-                        }
-                      />
-                    </label>
-                    <label className="block text-sm">
-                      <span className="mb-1 block">Fat (g)</span>
-                      <input
-                        type="number"
-                        min={0}
-                        step="any"
-                        className="w-full rounded border px-3 py-2"
-                        value={ing.macrosPerBasis.fat}
-                        onChange={(e) =>
-                          setIngMacros(
-                            i,
-                            "fat",
-                            parseFloat(e.currentTarget.value) || 0
-                          )
-                        }
-                      />
-                    </label>
-                  </div>
-
-                  {/* Optional helpers */}
-                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                    {ing.unit === "unit" && (
-                      <label className="block text-sm">
-                        <span className="mb-1 block">
-                          Grams per unit (optional)
-                        </span>
+                    <div className="grid gap-3 sm:grid-cols-4">
+                      {["kcal", "protein", "carbohydrate", "fat"].map((k) => (
                         <input
+                          key={k}
                           type="number"
-                          min={0}
-                          step="any"
-                          className="w-full rounded border px-3 py-2"
-                          value={ing.gramsPerUnit ?? ""}
-                          onChange={(e) => {
-                            const v = e.currentTarget.value;
-                            setIng(
+                          className="rounded-xl border border-neutral-300 px-3 py-2"
+                          value={
+                            ing.macrosPerBasis[
+                              k as keyof typeof ing.macrosPerBasis
+                            ]
+                          }
+                          onChange={(e) =>
+                            setIngMacros(
                               i,
-                              "gramsPerUnit",
-                              v === "" ? undefined : parseFloat(v)
-                            );
-                          }}
+                              k as keyof typeof ing.macrosPerBasis,
+                              parseFloat(e.currentTarget.value) || 0,
+                            )
+                          }
                         />
-                      </label>
-                    )}
-
-                    {ing.unit === "ml" && (
-                      <label className="block text-sm">
-                        <span className="mb-1 block">
-                          Density (g/ml, optional)
-                        </span>
-                        <input
-                          type="number"
-                          min={0}
-                          step="any"
-                          className="w-full rounded border px-3 py-2"
-                          value={ing.densityGPerMl ?? ""}
-                          onChange={(e) => {
-                            const v = e.currentTarget.value;
-                            setIng(
-                              i,
-                              "densityGPerMl",
-                              v === "" ? undefined : parseFloat(v)
-                            );
-                          }}
-                        />
-                      </label>
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {error && (
+            <p className="text-sm text-red-600">
+              {(error as any)?.response?.data?.error || error.message}
+            </p>
           )}
-        </div>
 
-        {error && (
-          <p className="text-sm text-red-600">
-            {(error as any)?.response?.data?.error || error.message}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
-        >
-          {isPending ? "Saving…" : "Save recipe"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full rounded-xl bg-lime-400 py-2.5 font-medium text-black hover:bg-lime-300 disabled:opacity-50"
+          >
+            {isPending ? "Saving…" : "Save recipe"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

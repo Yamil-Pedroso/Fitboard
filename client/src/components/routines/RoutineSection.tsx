@@ -128,7 +128,7 @@ const RoutineSection: React.FC = () => {
             >
               <Link
                 to="/routines"
-                className="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-4 py-2 text-white shadow-sm transition hover:opacity-90"
+                className="inline-flex items-center justify-center rounded-2xl bg-lime-400 px-4 py-2 text-neutral-900 shadow-sm transition hover:opacity-90"
               >
                 Explore routines
               </Link>
@@ -191,7 +191,7 @@ const RoutineSection: React.FC = () => {
               custom={0}
               className="absolute -right-3 top-6 hidden select-none rounded-xl bg-white/90 px-3 py-2 text-[11px] text-neutral-800 ring-1 ring-inset ring-neutral-200 backdrop-blur md:block"
             >
-              <span className="mr-1 inline-flex h-2 w-2 rounded-full bg-emerald-500" />{" "}
+              <span className="mr-1 inline-flex h-2 w-2 rounded-full bg-lime-400" />{" "}
               Marked performed
             </motion.div>
             <motion.div
