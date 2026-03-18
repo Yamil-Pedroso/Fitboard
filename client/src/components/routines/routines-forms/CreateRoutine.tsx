@@ -29,41 +29,49 @@ type FormBlock = {
   exercises: FormExercise[];
 };
 
+type FormState = {
+  name: string;
+  isTemplate: boolean;
+  estimatedDurationMin: number | "";
+  tagsStr: string;
+  blocks: FormBlock[];
+};
+
+const defaultExercise = (): FormExercise => ({
+  name: "",
+  sets: 3,
+  reps: "8-12",
+  restSec: 90,
+  loadKg: "",
+  rir: "",
+  tempo: "",
+  notes: "",
+  videoUrl: "",
+  cuesStr: "",
+});
+
+const defaultBlock = (): FormBlock => ({
+  title: "",
+  exerciseType: "strength",
+  rounds: "",
+  restBetweenExercisesSec: 60,
+  timerMode: "",
+  timerSeconds: "",
+  exercises: [defaultExercise()],
+});
+
 const CreateRoutine = () => {
   const { mutate, isPending, error } = useCreateRoutine();
 
-  const [form, setForm] = React.useState({
+  const [form, setForm] = React.useState<FormState>({
     name: "",
     isTemplate: false,
     estimatedDurationMin: "",
     tagsStr: "",
-    blocks: [
-      {
-        title: "",
-        exerciseType: "strength",
-        rounds: "",
-        restBetweenExercisesSec: 60,
-        timerMode: "",
-        timerSeconds: "",
-        exercises: [
-          {
-            name: "",
-            sets: 3,
-            reps: "8-12",
-            restSec: 90,
-            loadKg: "",
-            rir: "",
-            tempo: "",
-            notes: "",
-            videoUrl: "",
-            cuesStr: "",
-          },
-        ],
-      },
-    ],
+    blocks: [defaultBlock()],
   });
 
-  function set<K extends keyof typeof form>(key: K, val: (typeof form)[K]) {
+  function set<K extends keyof FormState>(key: K, val: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: val }));
   }
 
@@ -78,31 +86,7 @@ const CreateRoutine = () => {
   function addBlock() {
     setForm((p) => ({
       ...p,
-      blocks: [
-        ...p.blocks,
-        {
-          title: "",
-          exerciseType: "strength",
-          rounds: "",
-          restBetweenExercisesSec: 60,
-          timerMode: "",
-          timerSeconds: "",
-          exercises: [
-            {
-              name: "",
-              sets: 3,
-              reps: "8-12",
-              restSec: 90,
-              loadKg: "",
-              rir: "",
-              tempo: "",
-              notes: "",
-              videoUrl: "",
-              cuesStr: "",
-            },
-          ],
-        },
-      ],
+      blocks: [...p.blocks, defaultBlock()],
     }));
   }
 
@@ -125,21 +109,7 @@ const CreateRoutine = () => {
   function addExercise(blockIdx: number) {
     setBlock(blockIdx, (b) => ({
       ...b,
-      exercises: [
-        ...b.exercises,
-        {
-          name: "",
-          sets: 3,
-          reps: "8-12",
-          restSec: 90,
-          loadKg: "",
-          rir: "",
-          tempo: "",
-          notes: "",
-          videoUrl: "",
-          cuesStr: "",
-        },
-      ],
+      exercises: [...b.exercises, defaultExercise()],
     }));
   }
 
@@ -184,9 +154,7 @@ const CreateRoutine = () => {
       name: form.name.trim(),
       isTemplate: !!form.isTemplate,
       tags: parseTags(form.tagsStr),
-      estimatedDurationMin: toIntOrUndef(
-        form.estimatedDurationMin as number | "",
-      ),
+      estimatedDurationMin: toIntOrUndef(form.estimatedDurationMin),
       blocks: form.blocks.map((b, bi) => {
         const timer =
           b.timerMode && b.timerSeconds
@@ -257,7 +225,7 @@ const CreateRoutine = () => {
               type="number"
               min={1}
               className="w-full rounded-xl border border-neutral-300 px-3 py-2"
-              value={form.estimatedDurationMin ?? ""}
+              value={form.estimatedDurationMin}
               onChange={(e) =>
                 set(
                   "estimatedDurationMin",
