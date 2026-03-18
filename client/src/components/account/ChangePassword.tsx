@@ -41,7 +41,7 @@ const ChangePasswordForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto w-full h-screen max-w-md rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-xl sm:p-8"
+      className="mx-auto w-full  max-w-md rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-xl sm:p-8"
     >
       {/* HEADER */}
       <div className="mb-6 flex items-center gap-3">

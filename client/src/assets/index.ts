@@ -5,6 +5,9 @@ import fn4 from "./images/fn_04.webp";
 
 import fitnut from "./images/bg/fit_nut.webp";
 
+// Logo
+import logo from "./images/logo/logo.png";
+
 // Routines page
 import routine1 from "./images/pages/routines/routine_1.webp";
 import routine2 from "./images/pages/routines/routine_2.webp";
@@ -57,6 +60,7 @@ interface IAssets {
 }
 
 const assets: IAssets = {
+  logo,
   fn1,
   fn2,
   fn3,

@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
 import { FiMenu, FiX } from "react-icons/fi";
 import TranslateComp from "../common/translate/TranslateComp";
+import assets from "@/assets";
 
 const UserMenu = () => {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
+
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const UserMenu = () => {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/20 rounded-full px-3 py-1.5 hover:bg-white/30 transition"
+        className="flex items-center gap-2 bg-[#393a3c] backdrop-blur-md border border-white/20 rounded-full  px-3 py-1.5 hover:bg-[#2d2d2f] transition"
       >
         <span className="h-8 w-8 rounded-full overflow-hidden">
           <img
@@ -43,12 +45,10 @@ const UserMenu = () => {
           />
         </span>
 
-        <span className="text-sm text-white hidden sm:block">
-          {user.username}
-        </span>
+        <span className="text-sm text-white sm:block">{user.username}</span>
 
         {user.isAdmin && (
-          <span className="text-xs bg-lime-400 text-black px-2 py-0.5 rounded-full hidden sm:block">
+          <span className="text-xs bg-lime-400 text-black px-2 py-0.5 rounded-full  sm:block">
             Admin
           </span>
         )}
@@ -60,7 +60,13 @@ const UserMenu = () => {
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute right-0 mt-2 w-56 backdrop-blur-xl bg-white border border-white/30 shadow-xl rounded-xl overflow-hidden z-30"
+            className="
+              absolute mt-2
+              w-56
+              md:right-0
+              max-w-[calc(100vw-2rem)]
+              backdrop-blur-xl bg-white border border-white/30 shadow-xl rounded-xl overflow-hidden z-30
+            "
           >
             <div className="px-4 py-3 text-sm truncate text-black text-center">
               {user.email}
@@ -116,7 +122,7 @@ const UserMenu = () => {
                   setOpen(false);
                   logout();
                 }}
-                className="w-full text-right px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 transition text-right"
+                className="w-full text-right px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 transition"
               >
                 Logout
               </button>
@@ -133,17 +139,33 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-black md:bg-transparent md:backdrop-blur-md">
       <div className="flex items-center justify-between px-4 sm:px-8 py-3">
-        <Link to="/" className="text-lg sm:text-xl font-bold text-white">
-          Fitboard
+        <Link
+          to="/"
+          className="w-15 h-15 flex items-center justify-center gap-2 bg-[#393a3c] rounded-full px-2 py-1 transition-all duration-300"
+        >
+          <motion.img
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.2,
+              duration: 0.5,
+              ease: "easeOut",
+              type: "spring",
+              stiffness: 100,
+            }}
+            src={assets.logo}
+            alt="Fitboard Logo"
+            className="h-10 w-auto"
+          />
         </Link>
 
-        <div className="hidden md:flex items-center gap-5 text-white">
+        <div className="hidden md:flex items-center gap-5 text-neutral-400">
           {user ? (
             <IoIosNotifications className="size-6 hover:scale-110 transition cursor-pointer" />
           ) : (
-            <IoIosNotificationsOff className="size-6 opacity-60" />
+            <IoIosNotificationsOff className="size-6 opacity-60 text-neutral-500" />
           )}
 
           <TranslateComp />
@@ -184,10 +206,10 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center justify-between text-neutral-900">
                 <UserMenu />
-                <IoIosNotifications className="size-6" />
+                <IoIosNotifications className="size-6 text-neutral-400" />
               </div>
             ) : (
-              <div className="flex flex-col gap-3 ">
+              <div className="flex flex-col gap-3">
                 <Link to="/auth/login" onClick={() => setMenuOpen(false)}>
                   <p className="text-neutral-900">Login</p>
                 </Link>
