@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Route } from "@/routes/routines/routine-details/$routineId";
@@ -12,7 +13,6 @@ import {
 } from "@/lib/hooks/useRoutines";
 import type { IRoutineBlock } from "@/services/routineService";
 
-// Icons (lucide). Si no usas lucide, cambia por SVG/emoji.
 import {
   Dumbbell,
   Clock,
@@ -35,13 +35,13 @@ import {
 
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- utils ---
 const fmtDate = (iso?: string | null) =>
   iso
     ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(
-        new Date(iso)
+        new Date(iso),
       )
     : "—";
+
 const fmtDuration = (min?: number) => {
   if (min == null) return "—";
   const h = Math.floor(min / 60);
@@ -49,19 +49,18 @@ const fmtDuration = (min?: number) => {
   return h ? `${h}h ${m}m` : `${m} min`;
 };
 
-// Botón simple Tailwind
 const btn = {
-  base: "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
-  primary: "bg-zinc-900 text-white hover:bg-zinc-800",
-  secondary: "bg-zinc-100 text-zinc-900 hover:bg-zinc-200",
-  outline: "border border-zinc-300 text-zinc-900 hover:bg-zinc-50",
-  danger: "bg-red-600 text-white hover:bg-red-500",
-  ghost: "hover:bg-zinc-100",
+  base: "inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition",
+  primary: "bg-lime-400 text-black hover:bg-lime-300 shadow-sm",
+  secondary: "bg-white/70 backdrop-blur border border-black/10 hover:bg-white",
+  outline: "border border-black/10 bg-white/60 backdrop-blur hover:bg-white",
+  danger: "bg-red-500 text-white hover:bg-red-400",
+  ghost: "hover:bg-black/5",
   sm: "px-2.5 py-1.5 text-xs",
 };
 
 const Chip: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <span className="inline-flex items-center gap-1 rounded-full bg-zinc-900/90 px-2.5 py-1 text-xs text-white">
+  <span className="inline-flex items-center gap-1 rounded-full bg-black/80 px-2.5 py-1 text-xs text-white">
     {children}
   </span>
 );
@@ -72,8 +71,8 @@ const Badge: React.FC<
   <span
     className={
       variant === "outline"
-        ? "inline-flex items-center rounded border border-zinc-300 px-1.5 py-0.5 text-[10px] text-zinc-700"
-        : "inline-flex items-center rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-700"
+        ? "inline-flex items-center rounded border border-black/20 px-1.5 py-0.5 text-[10px]"
+        : "inline-flex items-center rounded bg-black/10 px-1.5 py-0.5 text-[10px]"
     }
   >
     {children}
@@ -85,26 +84,12 @@ const Card: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
   children,
 }) => (
   <div
-    className={`rounded-xl border border-zinc-200 bg-white shadow-sm text-black ${className}`}
+    className={`rounded-2xl border border-black/10 bg-white/70 backdrop-blur-xl shadow-sm text-black ${className}`}
   >
     {children}
   </div>
 );
 
-const Skeleton: React.FC = () => (
-  <div className="mx-auto w-full max-w-5xl p-6 text-black">
-    <div className="mb-4 h-7 w-64 animate-pulse rounded bg-zinc-200" />
-    <div className="mb-6 h-4 w-40 animate-pulse rounded bg-zinc-200" />
-    <div className="grid gap-4 md:grid-cols-3">
-      <div className="h-28 animate-pulse rounded-xl bg-zinc-200" />
-      <div className="h-28 animate-pulse rounded-xl bg-zinc-200" />
-      <div className="h-28 animate-pulse rounded-xl bg-zinc-200" />
-    </div>
-    <div className="mt-6 h-72 animate-pulse rounded-2xl bg-zinc-200 text-black" />
-  </div>
-);
-
-// Dropdown minimal sin shadcn
 const useOutsideClose = (open: boolean, onClose: () => void) => {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -118,27 +103,21 @@ const useOutsideClose = (open: boolean, onClose: () => void) => {
   return ref;
 };
 
-const Menu: React.FC<{
-  items: {
-    label: string;
-    icon?: React.ReactNode;
-    onClick: () => void;
-    danger?: boolean;
-  }[];
-  open: boolean;
-  onClose: () => void;
-}> = ({ items, open, onClose }) => {
+const Menu: React.FC<any> = ({ items, open, onClose }) => {
   const ref = useOutsideClose(open, onClose);
   if (!open) return null;
+
   return (
     <div
       ref={ref}
-      className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-lg text-black"
+      className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-xl border border-black/10 bg-white/80 backdrop-blur-xl shadow-lg"
     >
-      {items.map((it, i) => (
+      {items.map((it: any, i: number) => (
         <button
           key={i}
-          className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-zinc-50 ${it.danger ? "text-red-600 hover:bg-red-50" : "text-zinc-800"}`}
+          className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-black/5 ${
+            it.danger ? "text-red-500" : ""
+          }`}
           onClick={() => {
             it.onClick();
             onClose();
@@ -152,71 +131,34 @@ const Menu: React.FC<{
   );
 };
 
-// Modal simple sin shadcn
-const Modal: React.FC<{
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  footer: React.ReactNode;
-}> = ({ open, onClose, title, children, footer }) => (
+const Modal: React.FC<any> = ({ open, onClose, title, children, footer }) => (
   <AnimatePresence>
     {open && (
-      <motion.div
-        className="fixed inset-0 z-40"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
+      <motion.div className="fixed inset-0 z-40">
         <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 20, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="absolute left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5 shadow-xl text-black"
-        >
+        <motion.div className="absolute left-1/2 top-1/2 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-5 shadow-xl text-black">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-lg font-semibold">{title}</h3>
-            <button
-              className={`${btn.ghost} rounded-full p-1`}
-              onClick={onClose}
-              aria-label="Close"
-            >
-              <X className="h-5 w-5" />
+            <button onClick={onClose}>
+              <X />
             </button>
           </div>
-          <div className="text-sm text-zinc-700">{children}</div>
-          <div className="mt-4 flex justify-end gap-2 text-black">{footer}</div>
+
+          <div className="text-sm">{children}</div>
+
+          <div className="mt-4 flex justify-end gap-2">{footer}</div>
         </motion.div>
       </motion.div>
     )}
   </AnimatePresence>
 );
 
-// --- Temas de bloque: gradientes de alto contraste + icono grande ---
 const BLOCK_THEMES = [
-  {
-    header: "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white",
-    iconBg: "bg-white/15",
-    chip: "bg-white/15 text-white border-white/10",
-  },
-  {
-    header: "bg-gradient-to-r from-sky-600 to-cyan-500 text-white",
-    iconBg: "bg-white/15",
-    chip: "bg-white/15 text-white border-white/10",
-  },
-  {
-    header: "bg-gradient-to-r from-emerald-600 to-teal-500 text-white",
-    iconBg: "bg-white/15",
-    chip: "bg-white/15 text-white border-white/10",
-  },
-  {
-    header: "bg-gradient-to-r from-rose-600 to-orange-500 text-white",
-    iconBg: "bg-white/15",
-    chip: "bg-white/15 text-white border-white/10",
-  },
-] as const;
+  "from-lime-500 to-emerald-400",
+  "from-sky-500 to-cyan-400",
+  "from-violet-500 to-fuchsia-500",
+  "from-orange-500 to-rose-500",
+];
 
 const getBlockIcon = (block: IRoutineBlock) => {
   switch (block.exerciseType) {
@@ -238,362 +180,162 @@ const RoutineDetails: React.FC = () => {
   const navigate = useNavigate();
 
   const { data: routine, isLoading, error } = useRoutineById(routineId);
-  const { mutate: delRoutine, isPending: deleting } = useDeleteRoutine();
+  const { mutate: delRoutine } = useDeleteRoutine();
   const { mutate: duplicate } = useDuplicateRoutine();
   const { mutate: archive } = useArchiveRoutine();
   const { mutate: unarchive } = useUnarchiveRoutine();
-  const { mutate: markPerformed, isPending: marking } =
-    useMarkPerformedRoutine();
+  const { mutate: markPerformed } = useMarkPerformedRoutine();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
-  if (isLoading) return <Skeleton />;
-  if (error)
-    return (
-      <div className="mx-auto w-full max-w-5xl p-6 text-red-600">
-        Failed to load routine.
-      </div>
-    );
-  if (!routine)
-    return (
-      <div className="mx-auto w-full max-w-5xl p-6 text-red-600">
-        Routine not found.
-      </div>
-    );
-
-  const onDelete = () => delRoutine(routine._id);
-  const onDuplicate = () =>
-    duplicate({ routineId: routine._id, name: `${routine.name} (copy)` });
-  const onArchiveToggle = () =>
-    routine.isArchived ? unarchive(routine._id) : archive(routine._id);
-  const onMarkPerformed = () => {
-    const today = new Date().toISOString().slice(0, 10);
-    markPerformed({ routineId: routine._id, date: today });
-  };
+  if (isLoading) return <div className="p-6">Loading…</div>;
+  if (error) return <div className="p-6 text-red-600">Error</div>;
+  if (!routine) return <div className="p-6">Not found</div>;
 
   return (
-    <div className="mx-auto w-full max-w-5xl p-4 md:p-6">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-        className="mb-5 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
-      >
-        <div className="flex items-start gap-3">
-          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-900 text-white shadow">
-            <Dumbbell className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-black">
-              {routine.name}
-            </h1>
-            <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-black">
-              <Chip>
-                <Clock className="h-4 w-4" />{" "}
-                {fmtDuration(routine.estimatedDurationMin)}
-              </Chip>
-              <Chip>
-                <RefreshCcw className="h-4 w-4" /> Performed{" "}
-                {routine.timesPerformed}×
-              </Chip>
-              <Chip>
-                <Timer className="h-4 w-4" /> Last:{" "}
-                {fmtDate(routine.lastPerformedAt || undefined)}
-              </Chip>
-            </div>
+    <div className="mx-auto w-full max-w-5xl p-4 md:p-6 lg:pt-20">
+      {/* HEADER */}
+      <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-neutral-900">
+            {routine.name}
+          </h1>
+          <div className="flex flex-wrap gap-2 mt-2">
+            <Chip>
+              <Clock className="h-4 w-4" />{" "}
+              {fmtDuration(routine.estimatedDurationMin)}
+            </Chip>
+            <Chip>
+              <RefreshCcw className="h-4 w-4" /> {routine.timesPerformed}×
+            </Chip>
           </div>
         </div>
 
-        <div className="relative flex items-center gap-2">
+        <div className="flex gap-2 relative">
           <button
-            className={`${btn.base} ${btn.secondary} ${btn.sm}`}
-            onClick={() => navigate({ to: `/routines/${routine._id}/edit` })}
+            className={`${btn.base} ${btn.secondary}`}
+            onClick={() =>
+              navigate({
+                to: `/routines/update/${routine._id}`,
+              })
+            }
           >
-            <Edit className="h-4 w-4" /> Edit
-          </button>
-          <button
-            className={`${btn.base} ${btn.primary} ${btn.sm}`}
-            onClick={onMarkPerformed}
-            disabled={marking}
-          >
-            <Play className="h-4 w-4" /> Start / Mark performed
+            <Edit size={16} className="text-neutral-900" />{" "}
+            <p className="text-neutral-900">Edit</p>
           </button>
 
           <button
-            className={`${btn.base} ${btn.outline} ${btn.sm}`}
-            onClick={() => setOpenMenu((v) => !v)}
-            aria-haspopup="menu"
-            aria-expanded={openMenu}
+            className={`${btn.base} ${btn.primary}`}
+            onClick={() =>
+              markPerformed({
+                routineId: routine._id,
+                date: new Date().toISOString(),
+              })
+            }
           >
-            <MoreVertical className="h-4 w-4" />
+            <Play size={16} className="text-neutral-900" />{" "}
+            <p className="text-neutral-900">Start</p>
           </button>
+
+          <button
+            className={`${btn.base} ${btn.outline}`}
+            onClick={() => setOpenMenu((v) => !v)}
+          >
+            <MoreVertical size={16} className="text-neutral-900" />
+          </button>
+
           <Menu
             open={openMenu}
             onClose={() => setOpenMenu(false)}
             items={[
               {
                 label: "Duplicate",
-                icon: <Copy className="h-4 w-4" />,
-                onClick: onDuplicate,
+                icon: <Copy size={16} className="text-neutral-900" />,
+                onClick: () =>
+                  duplicate({
+                    routineId: routine._id,
+                    name: `${routine.name} (copy)`,
+                  }),
               },
               {
-                label: routine.isArchived ? "Unarchive" : "Archive",
-                icon: routine.isArchived ? (
-                  <ArchiveRestore className="h-4 w-4" />
-                ) : (
-                  <Archive className="h-4 w-4" />
-                ),
-                onClick: onArchiveToggle,
+                label: "Archive",
+                icon: <Archive size={16} className="text-neutral-900" />,
+                onClick: () => archive(routine._id),
               },
               {
                 label: "Delete",
-                icon: <Trash2 className="h-4 w-4" />,
+                icon: <Trash2 size={16} className="text-neutral-900" />,
                 onClick: () => setOpenDelete(true),
                 danger: true,
               },
             ]}
           />
         </div>
-      </motion.div>
-
-      {/* Tags */}
-      {routine.tags?.length ? (
-        <div className="mb-5 flex flex-wrap gap-2">
-          {routine.tags.map((t) => (
-            <span
-              key={t}
-              className="rounded-full bg-zinc-900/90 px-2.5 py-1 text-xs text-white"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      ) : null}
-
-      {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <div className="p-4">
-            <p className="text-xs uppercase tracking-wide text-zinc-600">
-              Estimated Duration
-            </p>
-            <p className="mt-1 text-2xl font-semibold">
-              {fmtDuration(routine.estimatedDurationMin)}
-            </p>
-          </div>
-        </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-xs uppercase tracking-wide text-zinc-600">
-              Last Performed
-            </p>
-            <p className="mt-1 text-2xl font-semibold">
-              {fmtDate(routine.lastPerformedAt || undefined)}
-            </p>
-          </div>
-        </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-xs uppercase tracking-wide text-zinc-600">
-              Times Performed
-            </p>
-            <p className="mt-1 text-2xl font-semibold">
-              {routine.timesPerformed}
-            </p>
-          </div>
-        </Card>
       </div>
 
-      {/* Blocks con alto contraste e icono grande */}
-      <div className="mt-6 space-y-5">
-        {routine.blocks?.length ? (
-          routine.blocks
-            .slice()
-            .sort((a, b) => a.position - b.position)
-            .map((block, i) => {
-              const theme = BLOCK_THEMES[i % BLOCK_THEMES.length];
-              const Icon = getBlockIcon(block);
-              return (
-                <Card key={block.position} className="overflow-hidden">
+      {/* BLOCKS */}
+      <div className="space-y-5">
+        {routine.blocks?.map((block, i) => {
+          const Icon = getBlockIcon(block);
+
+          return (
+            <Card key={i}>
+              <div
+                className={`p-4 text-white bg-gradient-to-r ${BLOCK_THEMES[i % 4]} rounded-t-2xl flex gap-3 items-center`}
+              >
+                <div className="w-12 h-12 flex items-center justify-center bg-white/20 rounded-xl">
+                  <Icon />
+                </div>
+                <div>
+                  <p className="font-semibold">{block.title}</p>
+                </div>
+              </div>
+
+              <div className="divide-y">
+                {block.exercises.map((ex) => (
                   <div
-                    className={`relative flex items-center justify-between px-4 py-4 ${theme.header} `}
+                    key={ex.name}
+                    className="p-4 flex justify-between items-center"
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`flex h-14 w-14 items-center justify-center rounded-xl ${theme.iconBg} ring-1 ring-white/20`}
-                      >
-                        <Icon className="h-8 w-8 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-base font-semibold tracking-tight text-white drop-shadow">
-                          {block.title || `Block ${block.position}`}
-                        </h3>
-                        <div className="mt-1 flex flex-wrap items-center gap-3 text-xs">
-                          {block.rounds ? (
-                            <span
-                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${theme.chip}`}
-                            >
-                              <RefreshCcw className="h-3.5 w-3.5" />{" "}
-                              {block.rounds} rounds
-                            </span>
-                          ) : null}
-                          {typeof block.restBetweenExercisesSec === "number" ? (
-                            <span
-                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5  ${theme.chip}`}
-                            >
-                              <Timer className="h-3.5 w-3.5" /> Rest{" "}
-                              {block.restBetweenExercisesSec}s
-                            </span>
-                          ) : null}
-                          {block.timer ? (
-                            <span
-                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${theme.chip}`}
-                            >
-                              <Timer className="h-3.5 w-3.5" />{" "}
-                              {block.timer.mode} · {block.timer.seconds}s
-                            </span>
-                          ) : null}
-                        </div>
-                      </div>
+                    <div>
+                      <p className="font-medium">{ex.name}</p>
+                      <p className="text-sm opacity-60">
+                        {ex.sets} sets • {ex.reps}
+                      </p>
                     </div>
-                    {/* Icono enorme en fondo para carácter */}
-                    <Icon className="pointer-events-none absolute -right-3 -top-3 h-24 w-24 opacity-10" />
+
+                    {ex.videoUrl && (
+                      <a href={ex.videoUrl}>
+                        <Film size={16} />
+                      </a>
+                    )}
                   </div>
-
-                  <div className="divide-y ">
-                    {block.exercises
-                      .slice()
-                      .sort((a, b) => a.position - b.position)
-                      .map((ex) => (
-                        <motion.div
-                          key={`${block.position}-${ex.position}-${ex.name}`}
-                          initial={{ opacity: 0, y: 8 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, margin: "-20%" }}
-                          transition={{ duration: 0.2 }}
-                          className="grid grid-cols-1 gap-2 px-4 py-3 sm:grid-cols-12 sm:gap-3"
-                        >
-                          {/* main */}
-                          <div className="sm:col-span-4">
-                            <div className="flex items-center gap-2">
-                              <Badge variant="outline">{ex.position}</Badge>
-                              <p className="font-medium leading-tight text-zinc-900">
-                                {ex.name}
-                              </p>
-                            </div>
-                            {ex.notes ? (
-                              <p className="mt-1 text-xs ">{ex.notes}</p>
-                            ) : null}
-                          </div>
-
-                          {/* prescription */}
-                          <div className="sm:col-span-5">
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-zinc-800">
-                              <span className="inline-flex items-center gap-1 ">
-                                <Dumbbell className="h-4 w-4" /> {ex.sets} sets
-                              </span>
-                              <span className="inline-flex items-center gap-1 text-zinc-800">
-                                <Play className="h-4 w-4" /> {ex.reps} reps
-                              </span>
-                              <span className="inline-flex items-center gap-1 text-zinc-800">
-                                <Timer className="h-4 w-4" /> Rest {ex.restSec}
-                              </span>
-                              {typeof ex.loadKg === "number" ? (
-                                <span className="inline-flex items-center gap-1 text-black">
-                                  <Dumbbell className="h-4 w-4 " /> {ex.loadKg}{" "}
-                                  kg
-                                </span>
-                              ) : null}
-                              {typeof ex.rir === "number" ? (
-                                <span className="inline-flex items-center gap-1 text-zinc-800">
-                                  <RefreshCcw className="h-4 w-4" /> RIR{" "}
-                                  {ex.rir}
-                                </span>
-                              ) : null}
-                              {ex.tempo ? (
-                                <span className="inline-flex items-center gap-1 text-black">
-                                  <Clock className="h-4 w-4" /> Tempo {ex.tempo}
-                                </span>
-                              ) : null}
-                            </div>
-                          </div>
-
-                          {/* extras */}
-                          <div className="sm:col-span-3 flex items-center gap-2">
-                            {ex.cues?.length ? (
-                              <div className="flex flex-wrap gap-1">
-                                {ex.cues.slice(0, 3).map((c) => (
-                                  <Badge key={c}>{c}</Badge>
-                                ))}
-                                {ex.cues.length > 3 ? (
-                                  <Badge variant="outline">
-                                    +{ex.cues.length - 3}
-                                  </Badge>
-                                ) : null}
-                              </div>
-                            ) : (
-                              <span className="text-xs text-zinc-500">—</span>
-                            )}
-
-                            {ex.videoUrl ? (
-                              <a
-                                className="ml-auto inline-flex items-center gap-1 rounded-md border border-zinc-300 px-2 py-1 text-xs text-black hover:bg-zinc-50"
-                                href={ex.videoUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <Film className="h-3.5 w-3.5" /> Video{" "}
-                                <ExternalLink className="h-3.5 w-3.5" />
-                              </a>
-                            ) : null}
-                          </div>
-                        </motion.div>
-                      ))}
-                  </div>
-                </Card>
-              );
-            })
-        ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-10 text-center text-black">
-            <Dumbbell className="mb-2 h-7 w-7" />
-            <p className="text-sm font-medium text-zinc-800">
-              No blocks in this routine
-            </p>
-            <p className="mt-1 text-xs">
-              Add exercises and structure the workout.
-            </p>
-          </div>
-        )}
+                ))}
+              </div>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Modal de borrado */}
+      {/* MODAL */}
       <Modal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
         title="Delete routine?"
         footer={
           <>
+            <button onClick={() => setOpenDelete(false)}>Cancel</button>
             <button
-              className={`${btn.base} ${btn.secondary}`}
-              onClick={() => setOpenDelete(false)}
-              disabled={deleting}
+              onClick={() => delRoutine(routine._id)}
+              className="bg-red-500 text-white px-4 py-2 rounded"
             >
-              Cancel
-            </button>
-            <button
-              className={`${btn.base} ${btn.danger}`}
-              onClick={onDelete}
-              disabled={deleting}
-            >
-              <Trash2 className="h-4 w-4" /> Delete
+              Delete
             </button>
           </>
         }
       >
-        This action cannot be undone. The routine "{routine.name}" will be
-        permanently removed.
+        This cannot be undone.
       </Modal>
     </div>
   );
