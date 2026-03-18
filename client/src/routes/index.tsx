@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Hero from "@/components/hero/Hero";
-import DMealComp from "@/components/dummy-components/DMealComp";
-import SectionA from "@/components/dummy-components/SectionA";
-import SectionB from "@/components/dummy-components/SectionB";
+//import DMealComp from "@/components/dummy-components/DMealComp";
+//import SectionA from "@/components/dummy-components/SectionA";
+//import SectionB from "@/components/dummy-components/SectionB";
 import MealSection from "@/components/meals/MealSection";
 import RoutineSection from "@/components/routines/RoutineSection";
 import RecipesSection from "@/components/recipes/RecipesSection";
@@ -14,13 +14,8 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="p-4">
-      <DMealComp />
+    <div className="">
       <Hero />
-
-      <SectionA />
-
-      <SectionB />
 
       <MealSection />
 
