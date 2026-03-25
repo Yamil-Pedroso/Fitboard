@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
 import { Route } from "@/routes/meals/update/$mealId";
 import { useMeal, useUpdateMeal } from "@/lib/hooks/useMeals";
 import { MealSlot, QtyUnit } from "@/services/mealService";
@@ -124,7 +125,7 @@ const UpdateMeal = () => {
           <Field label="Date">
             <input
               type="date"
-              className="input"
+              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={date}
               onChange={(e) => setDate(e.currentTarget.value)}
               required
@@ -133,7 +134,7 @@ const UpdateMeal = () => {
 
           <Field label="Meal">
             <select
-              className="input"
+              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={slot}
               onChange={(e) => setSlot(e.currentTarget.value as MealSlot)}
             >
@@ -148,7 +149,7 @@ const UpdateMeal = () => {
         <div className="mt-4">
           <Field label="Name">
             <input
-              className="input"
+              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               required
@@ -162,7 +163,7 @@ const UpdateMeal = () => {
               type="number"
               step="0.01"
               min="0"
-              className="input"
+              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={Number.isFinite(amount) ? amount : 0}
               onChange={(e) => setAmount(parseFloat(e.currentTarget.value))}
             />
@@ -170,7 +171,7 @@ const UpdateMeal = () => {
 
           <Field label="Unit">
             <select
-              className="input"
+              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={unit}
               onChange={(e) => setUnit(e.currentTarget.value as QtyUnit)}
             >
@@ -190,7 +191,7 @@ const UpdateMeal = () => {
             <Field label="Kcal">
               <input
                 type="number"
-                className="input"
+                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(kcal) ? kcal : 0}
                 onChange={(e) => setKcal(parseFloat(e.currentTarget.value))}
               />
@@ -199,7 +200,7 @@ const UpdateMeal = () => {
             <Field label="Protein (g)">
               <input
                 type="number"
-                className="input"
+                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(protein) ? protein : 0}
                 onChange={(e) => setProtein(parseFloat(e.currentTarget.value))}
               />
@@ -208,7 +209,7 @@ const UpdateMeal = () => {
             <Field label="Carbs (g)">
               <input
                 type="number"
-                className="input"
+                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(carbohydrate) ? carbohydrate : 0}
                 onChange={(e) =>
                   setCarbohydrate(parseFloat(e.currentTarget.value))
@@ -219,7 +220,7 @@ const UpdateMeal = () => {
             <Field label="Fat (g)">
               <input
                 type="number"
-                className="input"
+                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(fat) ? fat : 0}
                 onChange={(e) => setFat(parseFloat(e.currentTarget.value))}
               />
@@ -227,7 +228,7 @@ const UpdateMeal = () => {
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex flex-col items-center justify-center ">
           <button
             type="submit"
             disabled={isPending}
@@ -235,6 +236,13 @@ const UpdateMeal = () => {
           >
             {isPending ? "Updating…" : "Update meal"}
           </button>
+
+          <Link
+            to="/meals"
+            className="block text-center text-sm text-neutral-600 hover:underline mt-2"
+          >
+            Back to meals
+          </Link>
         </div>
       </form>
     </div>

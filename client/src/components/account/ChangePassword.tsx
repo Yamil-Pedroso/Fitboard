@@ -47,7 +47,7 @@ const ChangePasswordForm = () => {
       <div className="mb-6 flex items-center gap-3">
         <div
           className="grid h-12 w-12 place-items-center rounded-xl
-                        bg-gradient-to-br from-lime-400 to-amber-300
+                        bg-gradient-to-br from-lime-400 to-lime-200
                         text-black shadow-md"
         >
           <svg

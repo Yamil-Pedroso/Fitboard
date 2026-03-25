@@ -49,7 +49,7 @@ export default function ChangePasswordForm() {
         <label className="text-sm">Current password</label>
         <input
           type="password"
-          className="w-full rounded border px-3 py-2"
+          className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
           value={current}
           onChange={(e) => setCurrent(e.target.value)}
           required

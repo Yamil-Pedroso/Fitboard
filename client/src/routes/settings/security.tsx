@@ -17,7 +17,7 @@ function SecurityRoute() {
 
   return (
     <div className="mx-auto w-full max-w-lg p-6">
-      <h1 className="mb-4 text-2xl font-semibold">Security</h1>
+      {/*<h1 className="mb-4 text-2xl font-semibold">Security</h1>*/}
       <ChangePasswordForm />
     </div>
   );

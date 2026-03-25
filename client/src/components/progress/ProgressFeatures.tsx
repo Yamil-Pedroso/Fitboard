@@ -493,7 +493,7 @@ function SectionHeader({
   return (
     <div className="mb-1">
       <div className="flex items-center">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-lime-400/80 to-lime-200/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
           {icon}
         </div>
         <h3 className="text-lg font-semibold tracking-tight sm:text-xl ml-3">
@@ -535,7 +535,7 @@ function ProgressSnapshot({
   return (
     <>
       <div className=" mb-5 flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/80 to-cyan-400/80 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-lime-400 to-lime-200 shadow-lg ring-1 ring-white/30 sm:h-12 sm:w-12">
           {/*<svg
             width="20"
             height="20"
@@ -550,7 +550,7 @@ function ProgressSnapshot({
             <rect x="3" y="11" width="18" height="10" rx="2" />
             <path d="M8 11v10M16 11v10" />
           </svg> */}
-          <RiProgress5Fill className="text-white drop-shadow-sm sm:text-[22px]" />
+          <RiProgress5Fill className="text-white drop-shadow-sm sm:text-[22px] " />
         </div>
         <div>
           <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
@@ -658,7 +658,7 @@ function Bar({
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-white/15">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-emerald-300/90 to-cyan-300/90"
+          className="h-full rounded-full bg-gradient-to-br from-lime-400 to-lime-200"
           style={{ width: `${clamped}%` }}
         />
       </div>
@@ -704,7 +704,7 @@ function PhotoTile({
         draggable={false}
       />
       {badge && (
-        <span className="pointer-events-none absolute whitespace-nowrap bottom-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-[1rem] font-medium text-cyan-300 shadow-sm z-[1]">
+        <span className="pointer-events-none absolute whitespace-nowrap bottom-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-[1rem] font-medium  shadow-sm z-[1]">
           {badge}
         </span>
       )}

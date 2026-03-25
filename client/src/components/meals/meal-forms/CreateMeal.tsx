@@ -170,7 +170,7 @@ const CreateMeal = () => {
               <label className="text-sm sm:col-span-2">
                 <span className="mb-1 block text-neutral-600">Name</span>
                 <input
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                   value={form.customItem.name}
                   onChange={(e) => setCI("name", e.currentTarget.value)}
                 />
@@ -180,7 +180,7 @@ const CreateMeal = () => {
                 <span className="mb-1 block text-neutral-600">Amount</span>
                 <input
                   type="number"
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                   value={form.customItem.amount}
                   onChange={(e) =>
                     setCI("amount", Number(e.currentTarget.value))
@@ -191,7 +191,7 @@ const CreateMeal = () => {
               <label className="text-sm">
                 <span className="mb-1 block text-neutral-600">Unit</span>
                 <select
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                   value={form.customItem.unit}
                   onChange={(e) =>
                     setCI("unit", e.currentTarget.value as QtyUnit)
@@ -209,7 +209,7 @@ const CreateMeal = () => {
                 <span className="mb-1 block text-neutral-600">Basis</span>
                 <input
                   type="number"
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                   value={form.customItem.nutritionBasis.amount}
                   onChange={(e) =>
                     setCINB("amount", Number(e.currentTarget.value))
@@ -220,7 +220,7 @@ const CreateMeal = () => {
               <label className="text-sm">
                 <span className="mb-1 block text-neutral-600">Unit</span>
                 <select
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                   value={form.customItem.nutritionBasis.unit}
                   onChange={(e) =>
                     setCINB("unit", e.currentTarget.value as QtyUnit)
@@ -238,7 +238,7 @@ const CreateMeal = () => {
                 <input
                   key={key}
                   type="number"
-                  className="rounded-xl border border-neutral-300 px-3 py-2"
+                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                   value={
                     form.customItem.macrosPerBasis[
                       key as keyof typeof form.customItem.macrosPerBasis
@@ -257,7 +257,7 @@ const CreateMeal = () => {
             <input
               type="number"
               placeholder="grams per unit"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.customItem.gramsPerUnit ?? ""}
               onChange={(e) =>
                 setCI(
@@ -272,7 +272,7 @@ const CreateMeal = () => {
             <input
               type="number"
               placeholder="density (g/ml)"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.customItem.densityGPerMl ?? ""}
               onChange={(e) =>
                 setCI(

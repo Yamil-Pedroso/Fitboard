@@ -65,13 +65,13 @@ const MealsList = () => {
           to="/meals/create"
           className="inline-flex items-center gap-2 rounded-xl bg-lime-400 px-4 py-2 font-medium text-black shadow-sm hover:bg-lime-300"
         >
-          New meal
           <FaPlus />
+          New meal
         </Link>
       </div>
 
       {/* TABLE DESKTOP */}
-      <div className="hidden rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm lg:block">
+      <div className="hidden rounded-2xl border border-neutral-200 bg-white/80 shadow-sm lg:block">
         <table className="min-w-[980px] w-full text-sm">
           <thead className="bg-neutral-50/80 backdrop-blur">
             <tr className="text-neutral-600">
@@ -187,7 +187,7 @@ const MealsList = () => {
           meals.map((m) => (
             <div
               key={m._id}
-              className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm"
+              className="rounded-2xl border border-neutral-200 bg-white/80 p-4 shadow-sm"
             >
               <div className="flex justify-between gap-3">
                 <div className="min-w-0">
@@ -226,20 +226,33 @@ const MealsList = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 relative">
                   <button
-                    className="rounded-lg border px-2 py-1 text-sm"
+                    className="rounded-lg border px-2 py-1 text-sm cursor-pointer"
                     onClick={() => handleUpdateMealClick(m._id)}
                   >
                     Edit
                   </button>
 
                   <button
-                    className="rounded-lg border border-red-200 px-2 py-1 text-sm text-red-600"
+                    className="rounded-lg border border-red-200 px-2 py-1 text-sm text-red-600 cursor-pointer"
                     onClick={() => setConfirmId(m._id)}
+                    disabled={isPending && confirmId === m._id}
                   >
-                    Delete
+                    {isPending && confirmId === m._id ? "Deleting…" : "Delete"}
                   </button>
+                  {confirmId === m._id && (
+                    <ConfirmPopover
+                      anchorId={m._id}
+                      isPending={isPending}
+                      onConfirm={() =>
+                        deleteMeal(m._id, {
+                          onSettled: () => setConfirmId(null),
+                        })
+                      }
+                      onCancel={() => setConfirmId(null)}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -248,7 +261,7 @@ const MealsList = () => {
       </div>
 
       {/* PAGINATION */}
-      <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+      <div className="flex flex-col items-center justify-between gap-3 sm:flex-row ">
         <span className="text-sm text-neutral-600">
           Page {page} of {totalPages}
         </span>
@@ -327,14 +340,16 @@ function ConfirmPopover({
   return (
     <div
       data-confirm-for={anchorId}
-      className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-neutral-200 bg-white/90 backdrop-blur p-4 shadow-xl z-20"
+      className="absolute right-0 top-full mt-2 w-50 rounded-2xl border border-neutral-200 bg-white/90 backdrop-blur p-4 shadow-xl z-50"
     >
-      <p className="mb-2 font-semibold">Delete meal?</p>
-      <p className="mb-3 text-sm text-neutral-500">
-        This action cannot be undone.
-      </p>
+      <div className="flex flex-col items-center">
+        <p className="mb-2 font-semibold">Delete meal?</p>
+        <p className="mb-3 text-sm text-center text-neutral-500">
+          This action cannot be undone.
+        </p>
+      </div>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-center gap-2">
         <button
           className="rounded-xl border px-3 py-1.5 hover:bg-neutral-50"
           onClick={onCancel}
