@@ -4,7 +4,7 @@ import { useAuth } from "@/context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
 import { FiMenu, FiX } from "react-icons/fi";
-import TranslateComp from "../common/translate/TranslateComp";
+//import TranslateComp from "../common/translate/TranslateComp";
 import assets from "@/assets";
 
 const UserMenu = () => {

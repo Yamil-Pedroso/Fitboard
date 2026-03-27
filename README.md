@@ -5,7 +5,7 @@
 <h1 align="center">Fitboard</h1>
 
 <p align="center">
-   A fitness and nutrition web platform to manage meals, recipes, routines, and progress — all in one place.
+   A fitness and nutrition web platform to manage meals, recipes, routines, and progress, all in one place.
 </p>
 
 🔗 **Live demo:** [fitboard-six.vercel.app](https://fitboard-six.vercel.app/)
