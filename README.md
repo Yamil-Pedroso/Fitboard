@@ -5,7 +5,7 @@
 <h1 align="center">Fitboard</h1>
 
 <p align="center">
-  > A fitness and nutrition web platform to manage meals, recipes, routines, and progress — all in one place.
+   A fitness and nutrition web platform to manage meals, recipes, routines, and progress — all in one place.
 </p>
 
 🔗 **Live demo:** [fitboard-six.vercel.app](https://fitboard-six.vercel.app/)
@@ -245,6 +245,6 @@ Planned improvements across modules:
 
 ## About
 
-Fitboard is a personal portfolio project built to demonstrate full-stack development skills using a modern TypeScript-based stack. It covers real-world concerns such as authentication, data validation, cloud storage integration, and scalable API design.
+Fitboard is a personal portfolio project using a modern TypeScript-based stack. It covers real-world concerns such as authentication, data validation, cloud storage integration, and scalable API design.
 
 Built by [Yamil Pedroso](https://github.com/Yamil-Pedroso).

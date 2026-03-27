@@ -168,7 +168,7 @@ const Navbar = () => {
             <IoIosNotificationsOff className="size-6 opacity-60 text-neutral-500" />
           )}
 
-          <TranslateComp />
+          {/*<TranslateComp />*/}
 
           {user ? (
             <UserMenu />
@@ -223,9 +223,9 @@ const Navbar = () => {
               </div>
             )}
 
-            <div className="pt-2 border-t border-white/20">
+            {/*<div className="pt-2 border-t border-white/20">
               <TranslateComp />
-            </div>
+            </div>*/}
           </motion.div>
         )}
       </AnimatePresence>
