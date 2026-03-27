@@ -56,7 +56,7 @@ const ResetPasswordForm = () => {
   const { label: strengthLabel, score } = getStrength(pw1);
 
   return (
-    <div className="mt-20 w-full bg-[radial-gradient(1200px_500px_at_100%_0%,#e9f5ff_0%,transparent_60%),radial-gradient(1000px_500px_at_0%_100%,#f5f3ff_0%,transparent_60%)] flex items-center justify-center p-4 sm:p-6">
+    <div className="w-full flex items-center justify-center p-4 sm:p-6">
       <form
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl border border-neutral-200 bg-white/90 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.06)] p-6 sm:p-8 text-black"

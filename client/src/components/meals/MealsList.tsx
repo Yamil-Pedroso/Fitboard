@@ -51,7 +51,7 @@ const MealsList = () => {
   const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 20)));
 
   return (
-    <div className="p-6 pt-24 space-y-6 text-black">
+    <div className="p-6 space-y-6 text-black">
       {/* HEADER */}
       <div className="flex items-center justify-between gap-3">
         <div>

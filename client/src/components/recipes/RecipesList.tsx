@@ -73,7 +73,7 @@ const RecipesList = () => {
   };
 
   return (
-    <div className="p-6 pt-24 space-y-6 text-black">
+    <div className="p-6 space-y-6 text-black">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold">Recipes</h1>
 
@@ -81,8 +81,8 @@ const RecipesList = () => {
           to="/recipes/create"
           className="inline-flex items-center justify-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black hover:bg-lime-300"
         >
+          <FaPlus className="mr-2" />
           New recipe
-          <FaPlus className="ml-2" />
         </Link>
       </div>
 
@@ -103,7 +103,7 @@ const RecipesList = () => {
         </select>
 
         <select
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
           value={params.sort}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setParams((p) => ({

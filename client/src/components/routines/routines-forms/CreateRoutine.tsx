@@ -202,7 +202,7 @@ const CreateRoutine = () => {
   }
 
   return (
-    <div className="w-full p-6 pt-24">
+    <div className="w-full p-6">
       <form
         onSubmit={onSubmit}
         className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm text-black"
@@ -224,7 +224,7 @@ const CreateRoutine = () => {
             <input
               type="number"
               min={1}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.estimatedDurationMin}
               onChange={(e) =>
                 set(
@@ -240,7 +240,7 @@ const CreateRoutine = () => {
           <label className="block text-sm sm:col-span-2">
             <span className="mb-1 block">Tags (comma-separated)</span>
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.tagsStr}
               onChange={(e) => set("tagsStr", e.currentTarget.value)}
             />
@@ -291,7 +291,7 @@ const CreateRoutine = () => {
                 <label className="block text-sm sm:col-span-2">
                   <span className="mb-1 block">Title</span>
                   <input
-                    className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                    className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                     value={b.title ?? ""}
                     onChange={(e) =>
                       setBlock(bi, (prev) => ({
@@ -305,7 +305,7 @@ const CreateRoutine = () => {
                 <label className="block text-sm">
                   <span className="mb-1 block">Type</span>
                   <select
-                    className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                    className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                     value={b.exerciseType ?? ""}
                     onChange={(e) =>
                       setBlock(bi, (prev) => ({
@@ -343,7 +343,7 @@ const CreateRoutine = () => {
                       <label className="block text-sm sm:col-span-2">
                         <span className="mb-1 block">Name</span>
                         <input
-                          className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                           value={ex.name}
                           onChange={(e) =>
                             setExercise(bi, ei, (p) => ({
@@ -359,7 +359,7 @@ const CreateRoutine = () => {
                         <input
                           type="number"
                           min={1}
-                          className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                           value={ex.sets}
                           onChange={(e) =>
                             setExercise(bi, ei, (p) => ({
@@ -396,14 +396,14 @@ const CreateRoutine = () => {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full rounded-xl bg-lime-400 px-4 py-3 font-medium text-black hover:bg-lime-300 disabled:opacity-50"
+          className="w-full items-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black transition hover:bg-lime-300 disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save routine"}
         </button>
 
         <Link
           to="/routines"
-          className="mt-4 text-sm text-neutral-600 hover:underline text-center block"
+          className="block text-center text-sm text-neutral-600 hover:underline mt-3"
         >
           Back to routines
         </Link>

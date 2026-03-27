@@ -84,7 +84,7 @@ const CreateMeal = () => {
   }
 
   return (
-    <div className="p-6 pt-24 flex justify-center text-black">
+    <div className="p-6 flex justify-center text-black">
       <form
         onSubmit={onSubmit}
         className="w-full max-w-xl space-y-5 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"

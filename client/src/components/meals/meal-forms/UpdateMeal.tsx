@@ -37,7 +37,7 @@ const UpdateMeal = () => {
 
   if (isLoading) {
     return (
-      <div className="mx-auto w-full max-w-2xl p-6 pt-24">
+      <div className="mx-auto w-full max-w-2xl p-6">
         <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm">
           <div className="mb-4 h-6 w-40 animate-pulse rounded bg-neutral-200" />
           <div className="space-y-3">
@@ -52,7 +52,7 @@ const UpdateMeal = () => {
 
   if (!meal) {
     return (
-      <div className="mx-auto w-full max-w-2xl p-6 pt-24">
+      <div className="mx-auto w-full max-w-2xl p-6">
         <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 text-red-500 shadow-sm">
           Meal not found
         </div>
@@ -62,7 +62,7 @@ const UpdateMeal = () => {
 
   if (!meal.customItem) {
     return (
-      <div className="mx-auto w-full max-w-2xl p-6 pt-24">
+      <div className="mx-auto w-full max-w-2xl p-6">
         <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-black">Edit meal</h1>
           <p className="text-sm text-neutral-500">
@@ -109,7 +109,7 @@ const UpdateMeal = () => {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl p-6 pt-24 text-black">
+    <div className="mx-auto w-full max-w-2xl p-6 text-black">
       <form
         onSubmit={onSubmit}
         className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
@@ -125,7 +125,7 @@ const UpdateMeal = () => {
           <Field label="Date">
             <input
               type="date"
-              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={date}
               onChange={(e) => setDate(e.currentTarget.value)}
               required
@@ -134,7 +134,7 @@ const UpdateMeal = () => {
 
           <Field label="Meal">
             <select
-              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={slot}
               onChange={(e) => setSlot(e.currentTarget.value as MealSlot)}
             >
@@ -149,7 +149,7 @@ const UpdateMeal = () => {
         <div className="mt-4">
           <Field label="Name">
             <input
-              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               required
@@ -163,7 +163,7 @@ const UpdateMeal = () => {
               type="number"
               step="0.01"
               min="0"
-              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={Number.isFinite(amount) ? amount : 0}
               onChange={(e) => setAmount(parseFloat(e.currentTarget.value))}
             />
@@ -171,7 +171,7 @@ const UpdateMeal = () => {
 
           <Field label="Unit">
             <select
-              className="input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={unit}
               onChange={(e) => setUnit(e.currentTarget.value as QtyUnit)}
             >
@@ -191,7 +191,7 @@ const UpdateMeal = () => {
             <Field label="Kcal">
               <input
                 type="number"
-                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-20 w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(kcal) ? kcal : 0}
                 onChange={(e) => setKcal(parseFloat(e.currentTarget.value))}
               />
@@ -200,7 +200,7 @@ const UpdateMeal = () => {
             <Field label="Protein (g)">
               <input
                 type="number"
-                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(protein) ? protein : 0}
                 onChange={(e) => setProtein(parseFloat(e.currentTarget.value))}
               />
@@ -209,7 +209,7 @@ const UpdateMeal = () => {
             <Field label="Carbs (g)">
               <input
                 type="number"
-                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(carbohydrate) ? carbohydrate : 0}
                 onChange={(e) =>
                   setCarbohydrate(parseFloat(e.currentTarget.value))
@@ -220,7 +220,7 @@ const UpdateMeal = () => {
             <Field label="Fat (g)">
               <input
                 type="number"
-                className="w-20 input rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                 value={Number.isFinite(fat) ? fat : 0}
                 onChange={(e) => setFat(parseFloat(e.currentTarget.value))}
               />
@@ -232,14 +232,14 @@ const UpdateMeal = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="inline-flex items-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black transition hover:bg-lime-300 disabled:opacity-50"
+            className="w-full items-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black transition hover:bg-lime-300 disabled:opacity-50"
           >
             {isPending ? "Updating…" : "Update meal"}
           </button>
 
           <Link
             to="/meals"
-            className="block text-center text-sm text-neutral-600 hover:underline mt-2"
+            className="block text-center text-sm text-neutral-600 hover:underline mt-3"
           >
             Back to meals
           </Link>

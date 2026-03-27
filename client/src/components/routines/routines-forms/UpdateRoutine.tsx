@@ -266,25 +266,16 @@ export default function UpdateRoutine() {
     return <div className="p-6 text-red-600">Routine not found.</div>;
 
   return (
-    <div className="mx-auto w-full max-w-4xl p-6 pt-24 text-black">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Edit routine</h1>
-        <Link
-          to="/routines"
-          className="text-sm text-neutral-600 hover:underline"
-        >
-          Back
-        </Link>
-      </div>
-
+    <div className="mx-auto w-full max-w-4xl p-6 text-black">
       <form
         onSubmit={onSubmit}
         className="space-y-6 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
       >
+        <h2 className="text-2xl font-semibold">Edit routine</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label="Name" className="sm:col-span-2">
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none  focus:ring-2 focus:ring-lime-200"
               value={form.name}
               onChange={(e) => setTop("name", e.currentTarget.value)}
               required
@@ -294,7 +285,7 @@ export default function UpdateRoutine() {
           <Field label="Estimated duration">
             <input
               type="number"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.estimatedDurationMin ?? ""}
               onChange={(e) =>
                 setTop(
@@ -309,7 +300,7 @@ export default function UpdateRoutine() {
 
           <Field label="Tags" className="sm:col-span-2">
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
               value={form.tagsStr}
               onChange={(e) => setTop("tagsStr", e.currentTarget.value)}
             />
@@ -357,7 +348,7 @@ export default function UpdateRoutine() {
                 <div className="grid gap-3 sm:grid-cols-3">
                   <Field label="Title" className="sm:col-span-2">
                     <input
-                      className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                      className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                       value={b.title ?? ""}
                       onChange={(e) =>
                         setBlock(bi, "title", e.currentTarget.value)
@@ -367,7 +358,7 @@ export default function UpdateRoutine() {
 
                   <Field label="Type">
                     <select
-                      className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                      className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                       value={b.exerciseType ?? ""}
                       onChange={(e) =>
                         setBlock(
@@ -406,7 +397,7 @@ export default function UpdateRoutine() {
 
                       <div className="grid gap-3 sm:grid-cols-3">
                         <input
-                          className="sm:col-span-2 rounded-xl border border-neutral-300 px-3 py-2"
+                          className="sm:col-span-2 rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                           value={ex.name}
                           onChange={(e) =>
                             setEx(bi, ei, "name", e.currentTarget.value)
@@ -415,7 +406,7 @@ export default function UpdateRoutine() {
 
                         <input
                           type="number"
-                          className="rounded-xl border border-neutral-300 px-3 py-2"
+                          className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
                           value={ex.sets}
                           onChange={(e) =>
                             setEx(
@@ -448,6 +439,13 @@ export default function UpdateRoutine() {
         >
           {isPending ? "Saving…" : "Save changes"}
         </button>
+
+        <Link
+          to="/routines"
+          className="block text-center text-sm text-neutral-600 hover:underline mt-3"
+        >
+          Back to routines
+        </Link>
       </form>
     </div>
   );

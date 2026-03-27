@@ -131,7 +131,7 @@ const MealDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="mx-auto w-full max-w-3xl p-6 pt-24">
+      <div className="mx-auto w-full max-w-3xl p-6">
         <div className="h-6 w-48 animate-pulse rounded bg-neutral-200" />
         <div className="mt-4 h-48 animate-pulse rounded-2xl bg-neutral-100" />
       </div>

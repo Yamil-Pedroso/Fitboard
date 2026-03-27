@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { requestPasswordReset } from "@/services/usersService";
-import { RiLockPasswordFill } from "react-icons/ri";
+import { TbLockPassword } from "react-icons/tb";
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState("");
@@ -40,11 +40,7 @@ const ForgotPasswordForm = () => {
   }
 
   return (
-    <div
-      className="mt-20 w-full h-screen
-                    bg-[radial-gradient(1200px_500px_at_100%_0%,rgba(190,242,100,0.25)_0%,transparent_60%),radial-gradient(1000px_500px_at_0%_100%,rgba(253,230,138,0.25)_0%,transparent_60%)]
-                    flex items-center justify-center p-4 sm:p-6"
-    >
+    <div className="w-full flex items-center justify-center p-4 sm:p-6">
       <form
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl
@@ -59,7 +55,7 @@ const ForgotPasswordForm = () => {
                           bg-gradient-to-br from-lime-400 to-amber-300
                           text-black shadow-md"
           >
-            <RiLockPasswordFill className="size-6" />
+            <TbLockPassword className="size-6" />
           </div>
 
           <div>

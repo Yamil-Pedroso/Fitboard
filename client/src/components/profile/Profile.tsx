@@ -63,7 +63,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl p-6 pt-24 text-black">
+    <div className="mx-auto w-full max-w-6xl p-6  text-black">
       {/* HEADER */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex items-center gap-4">

@@ -30,9 +30,9 @@ const RegisterForm = () => {
 
   return (
     <div
-      className="mt-20 w-full h-screen
-                    bg-[radial-gradient(1200px_500px_at_100%_0%,rgba(190,242,100,0.25)_0%,transparent_60%),radial-gradient(1000px_500px_at_0%_100%,rgba(253,230,138,0.25)_0%,transparent_60%)]
-                    flex items-center justify-center p-4 sm:p-6"
+      className=" w-full
+
+                    flex justify-center p-4 sm:p-6"
     >
       <form
         onSubmit={onSubmit}
