@@ -93,7 +93,7 @@ const RoutinesList = () => {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
-            className="rounded-xl border border-neutral-300 px-3 py-2"
+            className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
           >
             {Object.entries(SORT_LABEL).map(([value, label]) => (
               <option key={value} value={value}>
