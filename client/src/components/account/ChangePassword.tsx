@@ -43,7 +43,6 @@ const ChangePasswordForm = () => {
       onSubmit={onSubmit}
       className="mx-auto w-full  max-w-md rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-xl sm:p-8"
     >
-      {/* HEADER */}
       <div className="mb-6 flex items-center gap-3">
         <div
           className="grid h-12 w-12 place-items-center rounded-xl
@@ -72,14 +71,12 @@ const ChangePasswordForm = () => {
         </div>
       </div>
 
-      {/* SUCCESS */}
       {okMsg && (
         <p className="mb-4 rounded-lg border border-lime-300 bg-lime-50 px-3 py-2 text-sm text-lime-700">
           {okMsg}
         </p>
       )}
 
-      {/* ERROR */}
       {errMsg && (
         <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           {errMsg}
@@ -87,7 +84,6 @@ const ChangePasswordForm = () => {
       )}
 
       <fieldset disabled={loading} className="space-y-4">
-        {/* CURRENT */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             Current password
@@ -104,7 +100,6 @@ const ChangePasswordForm = () => {
           />
         </div>
 
-        {/* NEW */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             New password
@@ -123,7 +118,6 @@ const ChangePasswordForm = () => {
           <p className="text-xs text-neutral-500">Minimum 8 characters.</p>
         </div>
 
-        {/* REPEAT */}
         <div className="space-y-1">
           <label className="text-sm font-medium text-neutral-800">
             Repeat new password
@@ -140,7 +134,6 @@ const ChangePasswordForm = () => {
           />
         </div>
 
-        {/* BUTTON */}
         <button
           type="submit"
           disabled={loading}

@@ -94,8 +94,7 @@ export default function UsersAdminPage() {
   const totalPages = Math.max(1, Math.ceil(total / params.limit));
 
   return (
-    <div className="mx-auto w-full max-w-6xl p-6 pt-20 text-black">
-      {/* HEADER */}
+    <div className="mx-auto w-full max-w-6xl p-6 text-black">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900">
@@ -113,7 +112,6 @@ export default function UsersAdminPage() {
         </div>
       </div>
 
-      {/* FILTERS */}
       <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <input
           className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
@@ -123,7 +121,7 @@ export default function UsersAdminPage() {
         />
 
         <select
-          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm"
+          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
           value={activeFilter}
           onChange={(e) =>
             setActiveFilter(e.currentTarget.value as FilterActive)
@@ -135,7 +133,7 @@ export default function UsersAdminPage() {
         </select>
 
         <select
-          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm"
+          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
           value={params.sort}
           onChange={(e) =>
             setParams((p) => ({
@@ -151,7 +149,6 @@ export default function UsersAdminPage() {
         </select>
       </div>
 
-      {/* TABLE */}
       <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm">
         <table className="min-w-[860px] w-full text-sm">
           <thead className="bg-neutral-50">
@@ -234,7 +231,6 @@ export default function UsersAdminPage() {
         </table>
       </div>
 
-      {/* PAGINATION */}
       <div className="mt-4 flex justify-between text-sm text-neutral-600">
         <span>
           Page {params.page} / {totalPages}
@@ -258,8 +254,6 @@ export default function UsersAdminPage() {
     </div>
   );
 }
-
-// COMPONENTS
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (

@@ -33,3 +33,6 @@ logs/
 
 # .txt files
 *.txt
+
+# .md files
+*.md

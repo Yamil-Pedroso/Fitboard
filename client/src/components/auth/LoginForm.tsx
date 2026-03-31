@@ -38,7 +38,7 @@ const LoginForm = () => {
         <div className="mb-6 flex items-center gap-3">
           <div
             className="grid h-12 w-12 place-items-center rounded-2xl
-                          bg-gradient-to-br from-lime-400 to-amber-300
+                          bg-gradient-to-br from-lime-400 to-lime-200
                           text-black shadow-md"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">

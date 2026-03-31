@@ -189,7 +189,7 @@ const FAQs: React.FC = () => {
   }, [q, selected]);
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-10 pt-20">
+    <section className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-8 text-center">
         <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 backdrop-blur px-3 py-1 text-xs text-neutral-700">
           <SparkleIcon className="h-4 w-4 text-lime-500" />

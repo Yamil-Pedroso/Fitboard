@@ -2,8 +2,6 @@
 import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/UserContext";
-import assets from "@/assets";
-
 type UnitSystem = "metric" | "imperial";
 type Theme = "system" | "light" | "dark";
 type Language = "en" | "de" | "es";
@@ -41,13 +39,10 @@ const Settings = () => {
   }
 
   return (
-    <div className="relative pt-20">
-      {/* BG */}
-
+    <div className="relative">
       <div className="fixed inset-0 bg-white/40 backdrop-blur-[2px]" />
 
       <div className="relative z-10 mx-auto max-w-6xl p-4 sm:p-6 md:p-8 text-black">
-        {/* HEADER */}
         <header className="mb-8 flex justify-between items-end">
           <div>
             <h1 className="text-2xl font-semibold">Settings</h1>
@@ -59,7 +54,6 @@ const Settings = () => {
         </header>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* LEFT */}
           <div className="space-y-6">
             <GlassCard>
               <h2 className="text-lg font-semibold">Profile</h2>
@@ -141,7 +135,6 @@ const Settings = () => {
             </GlassCard>
           </div>
 
-          {/* RIGHT */}
           <div className="lg:col-span-2 space-y-6">
             <GlassCard>
               <h2 className="text-lg font-semibold">Preferences</h2>

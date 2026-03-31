@@ -123,10 +123,10 @@ const RoutinesList = () => {
 
             <Link
               to="/routines/create"
-              className="inline-flex items-center rounded-xl bg-lime-400 px-4 py-2 font-medium text-black hover:bg-lime-300"
+              className="inline-flex items-center gap-2 rounded-xl bg-lime-400 px-4 py-2 font-medium text-black hover:bg-lime-300"
             >
+              <FaPlus className="mr-1" />
               New
-              <FaPlus className="ml-2" />
             </Link>
           </div>
         </div>
