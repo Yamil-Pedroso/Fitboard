@@ -163,6 +163,35 @@ router.patch("/me", requireAuth, ctrl.updateMe);
 
 /**
  * @openapi
+ * /api/v1/me/avatar:
+ *   patch:
+ *     tags: [Users]
+ *     summary: Update my avatar
+ *     security: [ { bearerAuth: [] } ]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+console.log("✅ userRoutes loaded with /me/avatar");
+router.patch(
+  "/me/avatar",
+  requireAuth,
+  upload.single("avatar"),
+  ctrl.updateAvatar,
+);
+
+/**
+ * @openapi
  * /api/v1/change-password:
  *   post:
  *     tags: [Users]

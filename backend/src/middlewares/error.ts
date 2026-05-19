@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
 import { Error as MongooseError } from "mongoose";
 
 export class AppError extends Error {
@@ -16,10 +16,10 @@ export function errorHandler(
   err: any,
   _req: Request,
   res: Response,
-  _next: NextFunction
+  _next: NextFunction,
 ) {
   if (err instanceof ZodError) {
-    return res.status(400).json({ errors: err.flatten() });
+    return res.status(400).json({ errors: z.flattenError(err) });
   }
   if (err instanceof MongooseError.CastError) {
     return res.status(400).json({ error: "Invalid id format" });

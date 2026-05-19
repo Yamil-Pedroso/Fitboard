@@ -49,7 +49,7 @@ export async function registerUser(input: {
 // Login (email + password). Devuelve token + user
 export async function loginUser(
   email: string,
-  password: string
+  password: string,
 ): Promise<LoginResponse> {
   const { data } = await axiosInstance.post<LoginResponse>("/login", {
     email,
@@ -65,15 +65,24 @@ export async function getMe(): Promise<IUser> {
 }
 
 export async function updateMe(
-  patch: Partial<Pick<IUser, "username" | "avatar" | "active">>
+  patch: Partial<Pick<IUser, "username" | "avatar" | "active">>,
 ): Promise<IUser> {
   const { data } = await axiosInstance.patch<IUser>("/me", patch);
   return data;
 }
 
+export async function updateAvatar(file: File): Promise<IUser> {
+  const fd = new FormData();
+  fd.append("avatar", file);
+
+  const { data } = await axiosInstance.patch<IUser>("/me/avatar", fd);
+
+  return data;
+}
+
 export async function changePassword(
   currentPassword: string,
-  newPassword: string
+  newPassword: string,
 ): Promise<{ ok: true }> {
   const { data } = await axiosInstance.post<{ ok: true }>("/change-password", {
     currentPassword,
@@ -113,11 +122,11 @@ export async function getUsers(params?: {
 // Dar/quitar admin
 export async function setUserAdmin(
   userId: string,
-  isAdmin: boolean
+  isAdmin: boolean,
 ): Promise<IUser> {
   const { data } = await axiosInstance.patch<IUser>(
     `/admin/users/${userId}/is-admin`,
-    { isAdmin }
+    { isAdmin },
   );
   return data;
 }
@@ -125,7 +134,7 @@ export async function setUserAdmin(
 // Desactivar (soft delete)
 export async function deactivateUser(userId: string): Promise<IUser> {
   const { data } = await axiosInstance.patch<IUser>(
-    `/admin/users/${userId}/deactivate`
+    `/admin/users/${userId}/deactivate`,
   );
   return data;
 }
@@ -146,7 +155,7 @@ export async function requestPasswordReset(email: string): Promise<{
 export async function resetPassword(
   token: string,
   email: string,
-  newPassword: string
+  newPassword: string,
 ): Promise<void> {
   await axiosInstance.post("/reset-password", { token, email, newPassword });
 }

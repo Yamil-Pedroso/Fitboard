@@ -44,7 +44,7 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(() =>
-    localStorage.getItem("token")
+    localStorage.getItem("token"),
   );
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setLoading] = useState<boolean>(!!token);
@@ -152,7 +152,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       logout,
       refreshMe,
     }),
-    [user, token, isLoading, error, logout, refreshMe]
+    [user, token, isLoading, error, logout, refreshMe],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

@@ -40,7 +40,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     email: data.email,
     username: data.username,
     password: data.password,
-    avatarUrl,
+    avatar: avatarUrl,
     active: true,
   });
 
@@ -136,6 +136,39 @@ export const updateMe = asyncHandler(
       { new: true },
     );
     if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json(user.toSafeJSON());
+  },
+);
+
+export const updateAvatar = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    if (!req.auth?.userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (!(req as any).file?.buffer) {
+      return res.status(400).json({ error: "Avatar file is required" });
+    }
+
+    const upload = await uploadBufferToCloudinary((req as any).file.buffer, {
+      folder: "userAvatars/Avatars",
+      resource_type: "image",
+    });
+
+    const user = await User.findByIdAndUpdate(
+      req.auth.userId,
+      {
+        $set: {
+          avatar: upload.secure_url,
+        },
+      },
+      { new: true },
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     res.json(user.toSafeJSON());
   },
