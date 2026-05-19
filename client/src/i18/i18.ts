@@ -64,7 +64,8 @@ i18n
         settings: deSettings,
       },
     },
-
+    ns: ["hero", "meals", "routines", "recipes", "plans", "settings"],
+    defaultNS: "hero",
     fallbackLng: "en",
 
     interpolation: {

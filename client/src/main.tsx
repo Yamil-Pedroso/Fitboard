@@ -6,6 +6,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "./index.css";
 
+import "@/i18/i18";
+
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({ routeTree });
@@ -25,6 +27,6 @@ if (!rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 }
