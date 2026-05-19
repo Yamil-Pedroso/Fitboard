@@ -1,0 +1,27 @@
+{
+  "badge": "Rutinas",
+  "titlePrefix": "Crea, ejecuta y controla tus",
+  "titleHighlight": "rutinas de entrenamiento",
+  "subtitle": "Crea plantillas reutilizables, duplica variaciones para cada fase de entrenamiento, archiva ciclos antiguos y marca sesiones como realizadas para mantener tu progreso siempre visible.",
+
+  "duplicateTitle": "Duplica rápido",
+  "duplicateDesc": "Itera con seguridad usando copias con un solo clic.",
+
+  "archiveTitle": "Archiva ciclos",
+  "archiveDesc": "Ordena sin perder tu historial.",
+
+  "timersTitle": "EMOM y temporizadores",
+  "timersDesc": "Calentamientos, EMOMs y cuentas regresivas.",
+
+  "setsTitle": "Series y notas",
+  "setsDesc": "Cargas, RIR, tempo y observaciones.",
+
+  "exploreRoutines": "Explorar rutinas",
+  "createRoutine": "Crear una rutina",
+
+  "routinesCreated": "Rutinas creadas",
+  "workoutsLogged": "Entrenamientos registrados",
+
+  "markedPerformed": "Marcado como realizado",
+  "duplicated": "Duplicado"
+}

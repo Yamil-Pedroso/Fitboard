@@ -1,0 +1,29 @@
+{
+  "badge": "Recipes",
+  "titlePrefix": "Craft delicious recipes,",
+  "titleHighlight": "with macros handled for you",
+  "subtitle": "Build once, reuse forever. Ingredients per 100g, automatic macro math, and tags to keep everything tidy—so you can focus on taste and hit your targets.",
+
+  "ingredientTitle": "Ingredient-first",
+  "ingredientDesc": "Add ingredients with amount + unit, we compute macros.",
+
+  "categoriesTitle": "Categories & tags",
+  "categoriesDesc": "Filter by cuisine, goal, or your own tags.",
+
+  "servingTitle": "Macros per serving",
+  "servingDesc": "Servings-aware nutrition with one click.",
+
+  "createRecipe": "Create a recipe",
+  "browseRecipes": "Browse recipes",
+
+  "recipe1Title": "Mediterranean Bowl",
+  "recipe2Title": "Berry Overnight Oats",
+  "recipe3Title": "Green Power Smoothie",
+
+  "tagHighProtein": "high-protein",
+  "tagMealPrep": "meal-prep",
+  "tagBreakfast": "breakfast",
+  "tagQuick": "quick",
+  "tagSnack": "snack",
+  "tagVegan": "vegan"
+}

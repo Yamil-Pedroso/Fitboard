@@ -1,0 +1,47 @@
+{
+  "title": "Wähle deinen Plan",
+  "subtitle": "Einfache Preise. Leistungsstarke Funktionen. Jederzeit upgraden.",
+
+  "monthly": "Monatlich",
+  "yearly": "Jährlich",
+
+  "save": "Spare ~17%",
+  "mostPopular": "Am beliebtesten",
+
+  "billedYearly": "{{price}}/Monat jährlich abgerechnet",
+  "foreverFree": "Für immer kostenlos",
+
+  "freeName": "Kostenlos",
+  "freeTagline": "Starte deine Reise",
+
+  "proName": "Pro",
+  "proTagline": "Für engagierte Sportler",
+
+  "eliteName": "Elite",
+  "eliteTagline": "Alles, maximiert",
+
+  "freeFeature1": "Mahlzeiten-Log (Basis)",
+  "freeFeature2": "Bis zu 50 Rezepte",
+  "freeFeature3": "Bis zu 5 Routinen",
+  "freeFeature4": "Makroziele (ein Satz)",
+  "freeFeature5": "Einfaches Fortschrittstracking",
+
+  "proFeature1": "Unbegrenzte Rezepte & Routinen",
+  "proFeature2": "Timer (EMOM/Countdown)",
+  "proFeature3": "Routinen duplizieren & archivieren",
+  "proFeature4": "Erweiterte Makroziele",
+  "proFeature5": "Bild-Uploads für Rezepte",
+  "proFeature6": "Priorisierte Synchronisation",
+
+  "eliteFeature1": "Alles aus Pro",
+  "eliteFeature2": "Erweitertes Analyse-Dashboard",
+  "eliteFeature3": "Fortschritt als CSV exportieren",
+  "eliteFeature4": "Coach-Tools (bis zu 5 Kunden)",
+  "eliteFeature5": "Priorisierter Support",
+
+  "getStarted": "Loslegen",
+  "upgradePro": "Auf Pro upgraden",
+  "goElite": "Elite wählen",
+
+  "footnote": "Die Preise sind Beispielwerte. Währung und Rabatte können jederzeit geändert werden."
+}

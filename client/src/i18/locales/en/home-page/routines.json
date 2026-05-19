@@ -1,0 +1,27 @@
+{
+  "badge": "Routines",
+  "titlePrefix": "Build, run, and track your",
+  "titleHighlight": "workout routines",
+  "subtitle": "Create reusable templates, duplicate variations for each training phase, archive old cycles, and mark sessions as performed to keep your progress front and center.",
+
+  "duplicateTitle": "Duplicate fast",
+  "duplicateDesc": "Iterate safely with one click copies.",
+
+  "archiveTitle": "Archive cycles",
+  "archiveDesc": "Declutter without losing history.",
+
+  "timersTitle": "EMOM & timers",
+  "timersDesc": "Warm-ups, EMOMs and countdowns.",
+
+  "setsTitle": "Sets & cues",
+  "setsDesc": "Loads, RIR, tempo and notes.",
+
+  "exploreRoutines": "Explore routines",
+  "createRoutine": "Create a routine",
+
+  "routinesCreated": "Routines created",
+  "workoutsLogged": "Workouts logged",
+
+  "markedPerformed": "Marked performed",
+  "duplicated": "Duplicated"
+}

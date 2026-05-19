@@ -1,0 +1,39 @@
+{
+  "title": "Configuración",
+  "subtitle": "Personaliza tu experiencia.",
+
+  "profile": "Perfil",
+  "changePhoto": "Cambiar foto",
+  "reset": "Restablecer",
+  "saveChanges": "Guardar cambios",
+  "saving": "Guardando...",
+
+  "security": "Seguridad",
+  "password": "Contraseña",
+  "lastUpdated": "Última actualización: hace 3 meses",
+  "change": "Cambiar",
+
+  "preferences": "Preferencias",
+  "english": "Inglés",
+  "german": "Alemán",
+  "spanish": "Español",
+
+  "system": "Sistema",
+  "light": "Claro",
+  "dark": "Oscuro",
+
+  "metric": "Métrico",
+  "imperial": "Imperial",
+
+  "savePreferences": "Guardar preferencias",
+
+  "macroGoals": "Objetivos nutricionales",
+  "saveGoals": "Guardar objetivos",
+
+  "notifications": "Notificaciones",
+  "mealReminders": "Recordatorios de comidas",
+  "weeklySummary": "Resumen semanal",
+  "productUpdates": "Actualizaciones del producto",
+
+  "saveNotifications": "Guardar notificaciones"
+}

@@ -9,6 +9,26 @@ export interface IUser {
   username: string;
   passwordHash: string;
   avatar?: string;
+
+  preferences: {
+    language: "en" | "de" | "es";
+    theme: "system" | "light" | "dark";
+    unitSystem: "metric" | "imperial";
+  };
+
+  macroGoals: {
+    kcal: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+  };
+
+  notifications: {
+    meals: boolean;
+    weekly: boolean;
+    product: boolean;
+  };
+
   isAdmin: boolean;
   active: boolean;
   resetTokenHash?: string | null;
@@ -34,29 +54,84 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     email: { type: String, required: true, trim: true },
     emailLower: { type: String, required: true, unique: true, index: true },
     username: { type: String, required: true, unique: true, trim: true },
+
     passwordHash: {
       type: String,
       required: true,
-      select: false, // never return by default
+      select: false,
       validate: {
         validator: (v: string) => bcryptHashRe.test(v),
         message: "Invalid password hash format (expected bcrypt).",
       },
     },
-    resetTokenHash: { type: String, default: null, select: false },
-    resetTokenExpiry: { type: Date, default: null, select: false },
-    isAdmin: { type: Boolean, default: false },
-    active: { type: Boolean, default: false },
+
     avatar: {
       type: String,
       default:
         "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1709338082/userAvatart/Avatars/ez5hjkxgtf0mcnjytx0c.jpg",
     },
+
+    preferences: {
+      language: {
+        type: String,
+        enum: ["en", "de", "es"],
+        default: "en",
+      },
+      theme: {
+        type: String,
+        enum: ["system", "light", "dark"],
+        default: "system",
+      },
+      unitSystem: {
+        type: String,
+        enum: ["metric", "imperial"],
+        default: "metric",
+      },
+    },
+
+    macroGoals: {
+      kcal: {
+        type: Number,
+        default: 2200,
+      },
+      protein: {
+        type: Number,
+        default: 160,
+      },
+      carbs: {
+        type: Number,
+        default: 220,
+      },
+      fats: {
+        type: Number,
+        default: 70,
+      },
+    },
+
+    notifications: {
+      meals: {
+        type: Boolean,
+        default: true,
+      },
+      weekly: {
+        type: Boolean,
+        default: true,
+      },
+      product: {
+        type: Boolean,
+        default: false,
+      },
+    },
+
+    resetTokenHash: { type: String, default: null, select: false },
+    resetTokenExpiry: { type: Date, default: null, select: false },
+
+    isAdmin: { type: Boolean, default: false },
+    active: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
 
-/* Normalize and keep emailLower in sync */
 UserSchema.pre("validate", function (next) {
   if (this.email) this.emailLower = this.email.toLowerCase().trim();
   next();
@@ -72,15 +147,20 @@ UserSchema.methods.isValidPassword = function (this: UserDoc, entered: string) {
 
 UserSchema.methods.getSignedJwtToken = function (this: UserDoc): string {
   const secret: Secret = process.env.JWT_SECRET ?? "dev_secret_change_me";
+
   const options: SignOptions = {
     expiresIn: (process.env.JWT_EXPIRE ?? "7d") as SignOptions["expiresIn"],
     algorithm: "HS256",
   };
-  const payload = { sub: this._id.toString(), isAdmin: this.isAdmin } as const;
+
+  const payload = {
+    sub: this._id.toString(),
+    isAdmin: this.isAdmin,
+  } as const;
+
   return jwt.sign(payload, secret, options);
 };
 
-/* Strip sensitive fields on JSON */
 UserSchema.methods.toSafeJSON = function (this: UserDoc) {
   const { passwordHash, __v, ...rest } = this.toObject({ getters: true });
   return rest as Omit<IUser, "passwordHash">;

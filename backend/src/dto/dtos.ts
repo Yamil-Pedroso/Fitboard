@@ -48,6 +48,31 @@ export const UpdateMeDto = z.object({
   username: z.string().min(3).max(32).optional(),
   avatar: z.url().optional(),
   active: z.boolean().optional(),
+
+  preferences: z
+    .object({
+      language: z.enum(["en", "de", "es"]).optional(),
+      theme: z.enum(["system", "light", "dark"]).optional(),
+      unitSystem: z.enum(["metric", "imperial"]).optional(),
+    })
+    .optional(),
+
+  macroGoals: z
+    .object({
+      kcal: z.number().min(0).optional(),
+      protein: z.number().min(0).optional(),
+      carbs: z.number().min(0).optional(),
+      fats: z.number().min(0).optional(),
+    })
+    .optional(),
+
+  notifications: z
+    .object({
+      meals: z.boolean().optional(),
+      weekly: z.boolean().optional(),
+      product: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 export const ChangePasswordDto = z.object({

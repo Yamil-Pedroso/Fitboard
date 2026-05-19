@@ -1,0 +1,29 @@
+{
+  "badge": "Rezepte",
+  "titlePrefix": "Erstelle leckere Rezepte,",
+  "titleHighlight": "während die Makros automatisch berechnet werden",
+  "subtitle": "Einmal erstellen, immer wieder verwenden. Zutaten pro 100g, automatische Makroberechnung und Tags für mehr Ordnung—damit du dich auf den Geschmack konzentrieren und deine Ziele erreichen kannst.",
+
+  "ingredientTitle": "Zutaten zuerst",
+  "ingredientDesc": "Füge Zutaten mit Menge + Einheit hinzu, wir berechnen die Makros.",
+
+  "categoriesTitle": "Kategorien & Tags",
+  "categoriesDesc": "Filtere nach Küche, Ziel oder deinen eigenen Tags.",
+
+  "servingTitle": "Makros pro Portion",
+  "servingDesc": "Portionsbasierte Ernährung mit einem Klick.",
+
+  "createRecipe": "Rezept erstellen",
+  "browseRecipes": "Rezepte ansehen",
+
+  "recipe1Title": "Mediterrane Bowl",
+  "recipe2Title": "Beeren Overnight Oats",
+  "recipe3Title": "Grüner Power-Smoothie",
+
+  "tagHighProtein": "proteinreich",
+  "tagMealPrep": "Meal Prep",
+  "tagBreakfast": "Frühstück",
+  "tagQuick": "schnell",
+  "tagSnack": "Snack",
+  "tagVegan": "vegan"
+}

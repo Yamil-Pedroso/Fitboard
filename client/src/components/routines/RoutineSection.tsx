@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Dumbbell, Clock3, Copy, Archive } from "lucide-react";
 import assets from "@/assets";
 
-// Motion variants
 const sectionV = {
   hidden: { opacity: 0 },
   show: {
@@ -38,6 +38,8 @@ const chipV = {
 } as Variants;
 
 const RoutineSection: React.FC = () => {
+  const { t } = useTranslation("routines");
+
   return (
     <motion.section
       id="routines"
@@ -47,13 +49,13 @@ const RoutineSection: React.FC = () => {
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
     >
-      {/* BG flair */}
       <motion.div className="pointer-events-none absolute inset-0 -z-10">
         <motion.div
           className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-tr from-emerald-300/30 via-sky-300/20 to-fuchsia-300/30 blur-3xl"
           animate={{ opacity: [0.35, 0.6, 0.35] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
+
         <motion.div
           className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-gradient-to-tr from-fuchsia-300/30 via-emerald-300/20 to-sky-300/30 blur-3xl"
           animate={{ opacity: [0.35, 0.6, 0.35] }}
@@ -63,29 +65,27 @@ const RoutineSection: React.FC = () => {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2">
-          {/* Left: copy */}
           <motion.div variants={upV} className="space-y-6">
             <motion.p
               variants={upV}
               className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700 ring-1 ring-inset ring-neutral-200"
             >
-              <Dumbbell className="h-4 w-4" /> Routines
+              <Dumbbell className="h-4 w-4" />
+              {t("badge")}
             </motion.p>
 
             <motion.h2
               variants={upV}
               className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
             >
-              Build, run, and track your{" "}
+              {t("titlePrefix")}{" "}
               <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
-                workout routines
+                {t("titleHighlight")}
               </span>
             </motion.h2>
 
             <motion.p variants={upV} className="max-w-xl text-neutral-600">
-              Create reusable templates, duplicate variations for each training
-              phase, archive old cycles, and mark sessions as performed to keep
-              your progress front and center.
+              {t("subtitle")}
             </motion.p>
 
             <motion.ul
@@ -95,29 +95,32 @@ const RoutineSection: React.FC = () => {
               <motion.li variants={upV}>
                 <Feature
                   icon={<Copy className="h-4 w-4" />}
-                  title="Duplicate fast"
-                  desc="Iterate safely with one click copies."
+                  title={t("duplicateTitle")}
+                  desc={t("duplicateDesc")}
                 />
               </motion.li>
+
               <motion.li variants={upV}>
                 <Feature
                   icon={<Archive className="h-4 w-4" />}
-                  title="Archive cycles"
-                  desc="Declutter without losing history."
+                  title={t("archiveTitle")}
+                  desc={t("archiveDesc")}
                 />
               </motion.li>
+
               <motion.li variants={upV}>
                 <Feature
                   icon={<Clock3 className="h-4 w-4" />}
-                  title="EMOM & timers"
-                  desc="Warm-ups, EMOMs and countdowns."
+                  title={t("timersTitle")}
+                  desc={t("timersDesc")}
                 />
               </motion.li>
+
               <motion.li variants={upV}>
                 <Feature
                   icon={<Dumbbell className="h-4 w-4" />}
-                  title="Sets & cues"
-                  desc="Loads, RIR, tempo and notes."
+                  title={t("setsTitle")}
+                  desc={t("setsDesc")}
                 />
               </motion.li>
             </motion.ul>
@@ -130,13 +133,14 @@ const RoutineSection: React.FC = () => {
                 to="/routines"
                 className="inline-flex items-center justify-center rounded-2xl bg-lime-400 px-4 py-2 text-neutral-900 shadow-sm transition hover:opacity-90"
               >
-                Explore routines
+                {t("exploreRoutines")}
               </Link>
+
               <Link
                 to="/routines/create"
                 className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-neutral-900 shadow-sm transition hover:bg-neutral-50"
               >
-                Create a routine
+                {t("createRoutine")}
               </Link>
             </motion.div>
 
@@ -145,15 +149,15 @@ const RoutineSection: React.FC = () => {
               className="mt-4 grid grid-cols-2 gap-4 text-sm text-neutral-600 sm:max-w-lg"
             >
               <motion.div variants={upV}>
-                <Stat kpi="2.3k+" label="Routines created" />
+                <Stat kpi="2.3k+" label={t("routinesCreated")} />
               </motion.div>
+
               <motion.div variants={upV}>
-                <Stat kpi="14k+" label="Workouts logged" />
+                <Stat kpi="14k+" label={t("workoutsLogged")} />
               </motion.div>
             </motion.dl>
           </motion.div>
 
-          {/* Right: device mock + image */}
           <motion.div
             variants={upV}
             transition={{ delay: 0.05 }}
@@ -164,7 +168,6 @@ const RoutineSection: React.FC = () => {
               transition: { type: "spring", stiffness: 220, damping: 18 },
             }}
           >
-            {/* Phone frame */}
             <div className="relative mx-auto aspect-[9/19] w-full rounded-[2.2rem] border-6 border-gray-800 bg-white shadow-2xl ring-1 ring-black/5 overflow-hidden">
               <div className="absolute inset-0 rounded-[2.1rem]">
                 <img
@@ -172,35 +175,28 @@ const RoutineSection: React.FC = () => {
                   alt="Routines preview"
                   className="h-full w-full rounded-[1.8rem] object-cover"
                   loading="lazy"
-                  //whileInView={{ y: [0, -6, 0] }}
-                  //viewport={{ once: false, amount: 0.4 }}
-                  //transition={{
-                  //  duration: 6,
-                  //  repeat: Infinity,
-                  //  ease: "easeInOut",
-                  //}}
                 />
               </div>
-              {/* Notch */}
+
               <div className="absolute left-1/2 top-0 h-6 w-32 -translate-x-1/2 rounded-b-2xl bg-neutral-900/90" />
             </div>
 
-            {/* Floating stickers */}
             <motion.div
               variants={chipV}
               custom={0}
               className="absolute -right-3 top-6 hidden select-none rounded-xl bg-white/90 px-3 py-2 text-[11px] text-neutral-800 ring-1 ring-inset ring-neutral-200 backdrop-blur md:block"
             >
-              <span className="mr-1 inline-flex h-2 w-2 rounded-full bg-lime-400" />{" "}
-              Marked performed
+              <span className="mr-1 inline-flex h-2 w-2 rounded-full bg-lime-400" />
+              {t("markedPerformed")}
             </motion.div>
+
             <motion.div
               variants={chipV}
               custom={0.1}
               className="absolute -left-3 bottom-10 hidden select-none rounded-xl bg-white/90 px-3 py-2 text-[11px] text-neutral-800 ring-1 ring-inset ring-neutral-200 backdrop-blur md:block"
             >
-              <span className="mr-1 inline-flex h-2 w-2 rounded-full bg-sky-500" />{" "}
-              Duplicated
+              <span className="mr-1 inline-flex h-2 w-2 rounded-full bg-sky-500" />
+              {t("duplicated")}
             </motion.div>
           </motion.div>
         </div>
@@ -223,6 +219,7 @@ function Feature({
       <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-100 text-neutral-800">
         {icon}
       </div>
+
       <div>
         <div className="font-medium text-neutral-900">{title}</div>
         <p className="text-neutral-600">{desc}</p>

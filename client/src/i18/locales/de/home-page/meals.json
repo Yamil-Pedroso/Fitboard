@@ -1,0 +1,26 @@
+{
+  "badge": "Mahlzeiten & Makros",
+
+  "titleLine1": "Iss smarter, tracke besser —",
+
+  "titleLine2": "Rezepte, individuelle Lebensmittel und tägliche Makroziele an einem Ort.",
+
+  "dayTimelineTitle": "Tagesübersicht",
+  "dayTimelineDesc": "Frühstück, Mittagessen, Abendessen und Snacks übersichtlich nach Datum organisiert.",
+
+  "autoNutritionTitle": "Automatische Ernährung",
+  "autoNutritionDesc": "Makros pro 100g oder Portion—keine Tabellen nötig.",
+
+  "macroGoalsTitle": "Makroziele",
+  "macroGoalsDesc": "Lege kcal / Protein / Kohlenhydrate / Fett fest und verfolge deinen Fortschritt auf einen Blick.",
+
+  "logMeal": "Mahlzeit erfassen",
+  "browseMeals": "Mahlzeiten ansehen",
+
+  "dailyTargets": "Tagesziele erreicht",
+  "kcalVariance": "kcal Abweichung",
+
+  "breakfastToday": "Frühstück · Heute",
+
+  "balancedMacros": "P {{protein}}g · C {{carbs}}g · F {{fat}}g"
+}

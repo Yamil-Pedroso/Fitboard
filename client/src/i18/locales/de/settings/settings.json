@@ -1,0 +1,39 @@
+{
+  "title": "Einstellungen",
+  "subtitle": "Personalisiere dein Erlebnis.",
+
+  "profile": "Profil",
+  "changePhoto": "Foto ändern",
+  "reset": "Zurücksetzen",
+  "saveChanges": "Änderungen speichern",
+  "saving": "Speichern...",
+
+  "security": "Sicherheit",
+  "password": "Passwort",
+  "lastUpdated": "Zuletzt aktualisiert: vor 3 Monaten",
+  "change": "Ändern",
+
+  "preferences": "Präferenzen",
+  "english": "Englisch",
+  "german": "Deutsch",
+  "spanish": "Spanisch",
+
+  "system": "System",
+  "light": "Hell",
+  "dark": "Dunkel",
+
+  "metric": "Metrisch",
+  "imperial": "Imperial",
+
+  "savePreferences": "Präferenzen speichern",
+
+  "macroGoals": "Makroziele",
+  "saveGoals": "Ziele speichern",
+
+  "notifications": "Benachrichtigungen",
+  "mealReminders": "Mahlzeit-Erinnerungen",
+  "weeklySummary": "Wöchentliche Zusammenfassung",
+  "productUpdates": "Produkt-Updates",
+
+  "saveNotifications": "Benachrichtigungen speichern"
+}

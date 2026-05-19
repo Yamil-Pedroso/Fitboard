@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+
 import assets from "@/assets";
 
 const Hero = () => {
+  const { t } = useTranslation("hero");
+
   return (
     <section className="relative w-full">
       <div className="relative w-full h-[36rem] sm:h-[40rem] lg:h-[44rem] overflow-hidden bg-black">
@@ -12,7 +16,7 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         />
 
-        {/* Gradient overlay (suave) */}
+        {/* Gradient overlay */}
         <div
           className="absolute inset-0 bg-gradient-to-r
                         from-black/80
@@ -31,11 +35,11 @@ const Hero = () => {
               transition={{ duration: 0.8 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
             >
-              Eat smarter.
+              {t("titleLine1")}
               <br />
-              Train better.
+              {t("titleLine2")}
               <br />
-              Track everything.
+              {t("titleLine3")}
             </motion.h1>
 
             {/* Subtitle */}
@@ -45,7 +49,7 @@ const Hero = () => {
               transition={{ duration: 1 }}
               className="text-white/70 text-sm sm:text-base md:text-lg max-w-md"
             >
-              Your all-in-one fitness system for meals, routines and progress.
+              {t("subtitle")}
             </motion.p>
 
             {/* CTA */}
@@ -56,11 +60,11 @@ const Hero = () => {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto"
             >
               <button className="bg-lime-400 text-black px-5 py-3 rounded-full font-semibold text-sm sm:text-base hover:scale-105 transition w-full sm:w-auto">
-                Start for free →
+                {t("startFree")}
               </button>
 
               <button className="bg-white/10 backdrop-blur px-5 py-3 rounded-full text-white text-sm sm:text-base hover:bg-white/20 transition w-full sm:w-auto">
-                Learn more
+                {t("learnMore")}
               </button>
             </motion.div>
           </div>
@@ -73,11 +77,11 @@ const Hero = () => {
           transition={{ duration: 1.3 }}
           className="hidden md:block absolute bottom-6 left-6 bg-white/90 backdrop-blur rounded-xl p-4 w-[200px]"
         >
-          <p className="text-sm text-gray-500">Daily Calories</p>
+          <p className="text-sm text-gray-500">{t("dailyCalories")}</p>
+
           <h3 className="text-lg font-bold text-gray-900">2,340 kcal</h3>
-          <p className="text-xs text-gray-400 mt-1">
-            Balanced nutrition achieved
-          </p>
+
+          <p className="text-xs text-gray-400 mt-1">{t("balancedNutrition")}</p>
         </motion.div>
 
         {/* Floating Card RIGHT */}
@@ -89,10 +93,9 @@ const Hero = () => {
                      bg-lime-400 text-black rounded-xl p-4 sm:p-5
                      w-[180px] sm:w-[220px]"
         >
-          <h3 className="font-bold text-sm sm:text-lg">Start your journey</h3>
-          <p className="text-xs sm:text-sm mt-1">
-            Build your fitness system today.
-          </p>
+          <h3 className="font-bold text-sm sm:text-lg">{t("journeyTitle")}</h3>
+
+          <p className="text-xs sm:text-sm mt-1">{t("journeySubtitle")}</p>
         </motion.div>
       </div>
     </section>

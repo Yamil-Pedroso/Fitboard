@@ -1,0 +1,47 @@
+{
+  "title": "Choose your plan",
+  "subtitle": "Simple pricing. Powerful features. Upgrade anytime.",
+
+  "monthly": "Monthly",
+  "yearly": "Yearly",
+
+  "save": "Save ~17%",
+  "mostPopular": "Most popular",
+
+  "billedYearly": "{{price}}/mo billed yearly",
+  "foreverFree": "Forever free",
+
+  "freeName": "Free",
+  "freeTagline": "Start your journey",
+
+  "proName": "Pro",
+  "proTagline": "For committed lifters",
+
+  "eliteName": "Elite",
+  "eliteTagline": "Everything, supercharged",
+
+  "freeFeature1": "Meals log (basic)",
+  "freeFeature2": "Up to 50 recipes",
+  "freeFeature3": "Up to 5 routines",
+  "freeFeature4": "Macro goals (single set)",
+  "freeFeature5": "Basic progress tracking",
+
+  "proFeature1": "Unlimited recipes & routines",
+  "proFeature2": "Timers (EMOM/Countdown)",
+  "proFeature3": "Duplicate & archive routines",
+  "proFeature4": "Advanced macro targets",
+  "proFeature5": "Image uploads for recipes",
+  "proFeature6": "Priority sync speed",
+
+  "eliteFeature1": "Everything in Pro",
+  "eliteFeature2": "Advanced analytics dashboard",
+  "eliteFeature3": "Export progress as CSV",
+  "eliteFeature4": "Coach tools (up to 5 clients)",
+  "eliteFeature5": "Priority support",
+
+  "getStarted": "Get started",
+  "upgradePro": "Upgrade to Pro",
+  "goElite": "Go Elite",
+
+  "footnote": "Prices are example placeholders. You can change currency and discounts anytime."
+}

@@ -1,0 +1,26 @@
+{
+  "badge": "Comidas y Macros",
+
+  "titleLine1": "Come mejor, controla mejor —",
+
+  "titleLine2": "recetas, alimentos personalizados y objetivos diarios de macros en un solo lugar.",
+
+  "dayTimelineTitle": "Cronología diaria",
+  "dayTimelineDesc": "Desayuno, almuerzo, cena y snacks organizados por fecha.",
+
+  "autoNutritionTitle": "Nutrición automática",
+  "autoNutritionDesc": "Macros por 100g o por porción—sin necesidad de hojas de cálculo.",
+
+  "macroGoalsTitle": "Objetivos nutricionales",
+  "macroGoalsDesc": "Define kcal / proteínas / carbohidratos / grasas y visualiza tu progreso rápidamente.",
+
+  "logMeal": "Registrar comida",
+  "browseMeals": "Explorar comidas",
+
+  "dailyTargets": "objetivos diarios alcanzados",
+  "kcalVariance": "variación kcal",
+
+  "breakfastToday": "Desayuno · Hoy",
+
+  "balancedMacros": "P {{protein}}g · C {{carbs}}g · G {{fat}}g"
+}

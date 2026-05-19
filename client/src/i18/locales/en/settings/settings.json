@@ -1,0 +1,39 @@
+{
+  "title": "Settings",
+  "subtitle": "Customize your experience.",
+
+  "profile": "Profile",
+  "changePhoto": "Change photo",
+  "reset": "Reset",
+  "saveChanges": "Save changes",
+  "saving": "Saving...",
+
+  "security": "Security",
+  "password": "Password",
+  "lastUpdated": "Last updated: 3 months ago",
+  "change": "Change",
+
+  "preferences": "Preferences",
+  "english": "English",
+  "german": "Deutsch",
+  "spanish": "Español",
+
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+
+  "metric": "Metric",
+  "imperial": "Imperial",
+
+  "savePreferences": "Save preferences",
+
+  "macroGoals": "Macro goals",
+  "saveGoals": "Save goals",
+
+  "notifications": "Notifications",
+  "mealReminders": "Meal reminders",
+  "weeklySummary": "Weekly summary",
+  "productUpdates": "Product updates",
+
+  "saveNotifications": "Save notifications"
+}

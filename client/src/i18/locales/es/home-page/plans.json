@@ -1,0 +1,47 @@
+{
+  "title": "Elige tu plan",
+  "subtitle": "Precios simples. Funciones potentes. Mejora cuando quieras.",
+
+  "monthly": "Mensual",
+  "yearly": "Anual",
+
+  "save": "Ahorra ~17%",
+  "mostPopular": "Más popular",
+
+  "billedYearly": "{{price}}/mes facturado anualmente",
+  "foreverFree": "Gratis para siempre",
+
+  "freeName": "Gratis",
+  "freeTagline": "Comienza tu viaje",
+
+  "proName": "Pro",
+  "proTagline": "Para atletas comprometidos",
+
+  "eliteName": "Elite",
+  "eliteTagline": "Todo, potenciado",
+
+  "freeFeature1": "Registro de comidas (básico)",
+  "freeFeature2": "Hasta 50 recetas",
+  "freeFeature3": "Hasta 5 rutinas",
+  "freeFeature4": "Objetivos de macros (un solo set)",
+  "freeFeature5": "Seguimiento básico de progreso",
+
+  "proFeature1": "Recetas y rutinas ilimitadas",
+  "proFeature2": "Temporizadores (EMOM/Cuenta regresiva)",
+  "proFeature3": "Duplicar y archivar rutinas",
+  "proFeature4": "Objetivos avanzados de macros",
+  "proFeature5": "Subida de imágenes para recetas",
+  "proFeature6": "Velocidad de sincronización prioritaria",
+
+  "eliteFeature1": "Todo en Pro",
+  "eliteFeature2": "Dashboard avanzado de analíticas",
+  "eliteFeature3": "Exportar progreso como CSV",
+  "eliteFeature4": "Herramientas para coaches (hasta 5 clientes)",
+  "eliteFeature5": "Soporte prioritario",
+
+  "getStarted": "Comenzar",
+  "upgradePro": "Mejorar a Pro",
+  "goElite": "Ir a Elite",
+
+  "footnote": "Los precios son ejemplos temporales. Puedes cambiar moneda y descuentos cuando quieras."
+}

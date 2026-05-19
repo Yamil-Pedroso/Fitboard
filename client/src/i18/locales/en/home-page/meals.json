@@ -1,0 +1,26 @@
+{
+  "badge": "Meals & Macros",
+
+  "titleLine1": "Eat smart, track better —",
+
+  "titleLine2": "recipes, custom foods, and daily macro targets in one place.",
+
+  "dayTimelineTitle": "Day timeline",
+  "dayTimelineDesc": "Breakfast, lunch, dinner & snacks neatly organized by date.",
+
+  "autoNutritionTitle": "Auto nutrition",
+  "autoNutritionDesc": "Macros per 100g or per serving—no spreadsheets needed.",
+
+  "macroGoalsTitle": "Macro goals",
+  "macroGoalsDesc": "Set kcal / protein / carbs / fat and see your progress at a glance.",
+
+  "logMeal": "Log a meal",
+  "browseMeals": "Browse meals",
+
+  "dailyTargets": "hit daily targets",
+  "kcalVariance": "kcal variance",
+
+  "breakfastToday": "Breakfast · Today",
+
+  "balancedMacros": "P {{protein}}g · C {{carbs}}g · F {{fat}}g"
+}

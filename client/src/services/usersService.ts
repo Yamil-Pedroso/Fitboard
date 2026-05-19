@@ -7,10 +7,29 @@ export interface IUser {
   isAdmin: boolean;
   active: boolean;
   avatar?: string;
+
+  preferences?: {
+    language: "en" | "de" | "es";
+    theme: "system" | "light" | "dark";
+    unitSystem: "metric" | "imperial";
+  };
+
+  macroGoals?: {
+    kcal: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+  };
+
+  notifications?: {
+    meals: boolean;
+    weekly: boolean;
+    product: boolean;
+  };
+
   createdAt?: string;
   updatedAt?: string;
 }
-
 export type LoginResponse = { token: string; user: IUser };
 
 export type UsersListResponse = {
@@ -64,9 +83,7 @@ export async function getMe(): Promise<IUser> {
   return data;
 }
 
-export async function updateMe(
-  patch: Partial<Pick<IUser, "username" | "avatar" | "active">>,
-): Promise<IUser> {
+export async function updateMe(patch: Partial<IUser>): Promise<IUser> {
   const { data } = await axiosInstance.patch<IUser>("/me", patch);
   return data;
 }

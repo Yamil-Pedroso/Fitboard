@@ -1,0 +1,27 @@
+{
+  "badge": "Routinen",
+  "titlePrefix": "Erstelle, starte und verfolge deine",
+  "titleHighlight": "Trainingsroutinen",
+  "subtitle": "Erstelle wiederverwendbare Vorlagen, dupliziere Varianten für jede Trainingsphase, archiviere alte Zyklen und markiere Einheiten als erledigt, damit dein Fortschritt immer im Fokus bleibt.",
+
+  "duplicateTitle": "Schnell duplizieren",
+  "duplicateDesc": "Sicher iterieren mit Kopien per Klick.",
+
+  "archiveTitle": "Zyklen archivieren",
+  "archiveDesc": "Aufräumen, ohne Verlauf zu verlieren.",
+
+  "timersTitle": "EMOM & Timer",
+  "timersDesc": "Warm-ups, EMOMs und Countdowns.",
+
+  "setsTitle": "Sätze & Hinweise",
+  "setsDesc": "Gewichte, RIR, Tempo und Notizen.",
+
+  "exploreRoutines": "Routinen ansehen",
+  "createRoutine": "Routine erstellen",
+
+  "routinesCreated": "Erstellte Routinen",
+  "workoutsLogged": "Protokollierte Workouts",
+
+  "markedPerformed": "Als erledigt markiert",
+  "duplicated": "Dupliziert"
+}

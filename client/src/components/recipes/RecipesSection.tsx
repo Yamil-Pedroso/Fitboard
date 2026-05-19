@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { BookOpen, Leaf, Tag, Sparkles, Plus } from "lucide-react";
 import assets from "@/assets";
 
@@ -38,6 +39,8 @@ const cardV = {
 } as Variants;
 
 const RecipesSection: React.FC = () => {
+  const { t } = useTranslation("recipes");
+
   return (
     <motion.section
       id="recipes"
@@ -47,14 +50,15 @@ const RecipesSection: React.FC = () => {
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
     >
-      {/* Subtle background grid + blobs (different vibe than other sections) */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.04),transparent_45%)]" />
+
         <motion.div
           className="absolute -top-16 right-10 h-64 w-64 rounded-full bg-lime-300/20 blur-3xl"
           animate={{ opacity: [0.35, 0.6, 0.35] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
+
         <motion.div
           className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-rose-300/20 blur-3xl"
           animate={{ opacity: [0.35, 0.6, 0.35] }}
@@ -64,52 +68,54 @@ const RecipesSection: React.FC = () => {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
-          {/* Left: editorial-style copy */}
           <motion.div variants={upV} className="space-y-6">
             <p className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700 ring-1 ring-inset ring-neutral-200">
-              <BookOpen className="h-4 w-4" /> Recipes
+              <BookOpen className="h-4 w-4" />
+              {t("badge")}
             </p>
 
             <motion.h2
               variants={upV}
               className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
             >
-              Craft delicious recipes,{" "}
+              {t("titlePrefix")}{" "}
               <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
-                with macros handled for you
+                {t("titleHighlight")}
               </span>
             </motion.h2>
 
             <motion.p variants={upV} className="max-w-xl text-neutral-600">
-              Build once, reuse forever. Ingredients per 100g, automatic macro
-              math, and tags to keep everything tidy—so you can focus on taste
-              and hit your targets.
+              {t("subtitle")}
             </motion.p>
 
-            {/* Feature timeline (different from chips/bullets used elsewhere) */}
             <motion.ol variants={sectionV} className="relative ml-4 space-y-5">
               <li className="relative">
                 <span className="absolute -left-4 top-1.5 h-2 w-2 rounded-full bg-lime-500" />
+
                 <FeatureLine
                   icon={<Leaf className="h-4 w-4" />}
-                  title="Ingredient-first"
-                  desc="Add ingredients with amount + unit, we compute macros."
+                  title={t("ingredientTitle")}
+                  desc={t("ingredientDesc")}
                 />
               </li>
+
               <li className="relative">
                 <span className="absolute -left-4 top-1.5 h-2 w-2 rounded-full bg-sky-500" />
+
                 <FeatureLine
                   icon={<Tag className="h-4 w-4" />}
-                  title="Categories & tags"
-                  desc="Filter by cuisine, goal, or your own tags."
+                  title={t("categoriesTitle")}
+                  desc={t("categoriesDesc")}
                 />
               </li>
+
               <li className="relative">
                 <span className="absolute -left-4 top-1.5 h-2 w-2 rounded-full bg-rose-500" />
+
                 <FeatureLine
                   icon={<Sparkles className="h-4 w-4" />}
-                  title="Macros per serving"
-                  desc="Servings-aware nutrition with one click."
+                  title={t("servingTitle")}
+                  desc={t("servingDesc")}
                 />
               </li>
             </motion.ol>
@@ -122,38 +128,41 @@ const RecipesSection: React.FC = () => {
                 to="/recipes/create"
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-lime-400 px-4 py-2 text-neutral-900 shadow-sm transition hover:opacity-90"
               >
-                <Plus className="h-4 w-4" /> Create a recipe
+                <Plus className="h-4 w-4" />
+                {t("createRecipe")}
               </Link>
+
               <Link
                 to="/recipes"
                 className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-neutral-900 shadow-sm transition hover:bg-neutral-50"
               >
-                Browse recipes
+                {t("browseRecipes")}
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Right: staggered “masonry” card stack */}
           <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2">
             <RecipeCard
               i={0}
-              title="Mediterranean Bowl"
+              title={t("recipe1Title")}
               kcal="520 kcal"
-              tags={["high-protein", "meal-prep"]}
+              tags={[t("tagHighProtein"), t("tagMealPrep")]}
               img={assets.recipe2}
             />
+
             <RecipeCard
               i={1}
-              title="Berry Overnight Oats"
+              title={t("recipe2Title")}
               kcal="410 kcal"
-              tags={["breakfast", "quick"]}
+              tags={[t("tagBreakfast"), t("tagQuick")]}
               img={assets.recipe3}
             />
+
             <RecipeCard
               i={2}
-              title="Green Power Smoothie"
+              title={t("recipe3Title")}
               kcal="260 kcal"
-              tags={["snack", "vegan"]}
+              tags={[t("tagSnack"), t("tagVegan")]}
               img={assets.recipe1}
               className="sm:col-span-2"
             />
@@ -198,20 +207,23 @@ function RecipeCard({
           loading="lazy"
         />
       </div>
+
       <div className="space-y-2 p-4">
         <div className="flex items-center justify-between">
           <h3 className="truncate font-semibold text-neutral-900">{title}</h3>
+
           <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 ring-1 ring-inset ring-neutral-200">
             {kcal}
           </span>
         </div>
+
         <div className="flex flex-wrap gap-2">
-          {tags.map((t) => (
+          {tags.map((tag) => (
             <span
-              key={t}
+              key={tag}
               className="rounded-md bg-neutral-50 px-2 py-0.5 text-xs text-neutral-700 ring-1 ring-inset ring-neutral-200"
             >
-              {t}
+              {tag}
             </span>
           ))}
         </div>
@@ -234,6 +246,7 @@ function FeatureLine({
       <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-100 text-neutral-800">
         {icon}
       </div>
+
       <div>
         <div className="font-medium text-neutral-900">{title}</div>
         <p className="text-neutral-600">{desc}</p>

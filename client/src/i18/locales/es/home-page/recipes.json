@@ -1,0 +1,29 @@
+{
+  "badge": "Recetas",
+  "titlePrefix": "Crea recetas deliciosas,",
+  "titleHighlight": "con los macros calculados por ti",
+  "subtitle": "Crea una vez y reutiliza siempre. Ingredientes por 100g, cálculo automático de macros y etiquetas para mantener todo ordenado, así puedes enfocarte en el sabor y alcanzar tus objetivos.",
+
+  "ingredientTitle": "Ingredientes primero",
+  "ingredientDesc": "Añade ingredientes con cantidad + unidad, nosotros calculamos los macros.",
+
+  "categoriesTitle": "Categorías y etiquetas",
+  "categoriesDesc": "Filtra por tipo de cocina, objetivo o tus propias etiquetas.",
+
+  "servingTitle": "Macros por porción",
+  "servingDesc": "Nutrición por porciones con un solo clic.",
+
+  "createRecipe": "Crear una receta",
+  "browseRecipes": "Explorar recetas",
+
+  "recipe1Title": "Bowl mediterráneo",
+  "recipe2Title": "Avena nocturna con frutos rojos",
+  "recipe3Title": "Batido verde energético",
+
+  "tagHighProtein": "alto en proteína",
+  "tagMealPrep": "meal prep",
+  "tagBreakfast": "desayuno",
+  "tagQuick": "rápido",
+  "tagSnack": "snack",
+  "tagVegan": "vegano"
+}
