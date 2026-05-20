@@ -1,5 +1,22 @@
 import axiosInstance from "@/api/axiosConfig";
 
+export type SubscriptionPlan = "free" | "pro" | "elite";
+
+export type SubscriptionStatus =
+  | "active"
+  | "inactive"
+  | "trialing"
+  | "past_due"
+  | "canceled";
+
+export interface UserSubscription {
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  stripeCustomerId?: string | null;
+  stripeSubscriptionId?: string | null;
+  currentPeriodEnd?: string | null;
+}
+
 export interface IUser {
   _id: string;
   email: string;
@@ -7,7 +24,7 @@ export interface IUser {
   isAdmin: boolean;
   active: boolean;
   avatar?: string;
-
+  subscription?: UserSubscription;
   preferences?: {
     language: "en" | "de" | "es";
     theme: "system" | "light" | "dark";

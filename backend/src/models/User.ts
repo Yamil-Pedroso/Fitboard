@@ -2,6 +2,15 @@ import { Schema, model, HydratedDocument, Model, Types } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
 
+export type SubscriptionPlan = "free" | "pro" | "elite";
+
+export type SubscriptionStatus =
+  | "active"
+  | "inactive"
+  | "trialing"
+  | "past_due"
+  | "canceled";
+
 export interface IUser {
   _id: Types.ObjectId;
   email: string;
@@ -27,6 +36,14 @@ export interface IUser {
     meals: boolean;
     weekly: boolean;
     product: boolean;
+  };
+
+  subscription: {
+    plan: SubscriptionPlan;
+    status: SubscriptionStatus;
+    stripeCustomerId?: string | null;
+    stripeSubscriptionId?: string | null;
+    currentPeriodEnd?: Date | null;
   };
 
   isAdmin: boolean;
@@ -120,6 +137,33 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
       product: {
         type: Boolean,
         default: false,
+      },
+    },
+
+    subscription: {
+      plan: {
+        type: String,
+        enum: ["free", "pro", "elite"],
+        default: "free",
+      },
+      status: {
+        type: String,
+        enum: ["active", "inactive", "trialing", "past_due", "canceled"],
+        default: "active",
+      },
+      stripeCustomerId: {
+        type: String,
+        default: null,
+        index: true,
+      },
+      stripeSubscriptionId: {
+        type: String,
+        default: null,
+        index: true,
+      },
+      currentPeriodEnd: {
+        type: Date,
+        default: null,
       },
     },
 

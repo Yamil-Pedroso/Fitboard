@@ -13,6 +13,8 @@ import routineRoutes from "../routes/routine";
 import progressRoutes from "../routes/progress";
 import devRoutes from "../routes/dev";
 import adminRoutes from "../routes/admin";
+import billingRoutes from "../routes/billing";
+import stripeWebhookRoutes from "../routes/stripeWebhook";
 import { v2 as cloudinary } from "cloudinary";
 import connectDB from "../config/db";
 import { errorHandler } from "../middlewares/error";
@@ -37,6 +39,8 @@ cloudinary.config({
 });
 
 const app = express();
+
+app.use("/api/v1", stripeWebhookRoutes);
 
 const allowedOrigins = [
   "https://fitboard-six.vercel.app",
@@ -99,7 +103,7 @@ app.use("/api/v1", mealsRoutes);
 app.use("/api/v1", recipeRoutes);
 app.use("/api/v1", routineRoutes);
 app.use("/api/v1", progressRoutes);
-
+app.use("/api/v1", billingRoutes);
 app.use(multerErrorHandler);
 app.use(errorHandler);
 

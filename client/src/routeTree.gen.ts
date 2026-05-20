@@ -21,6 +21,8 @@ import { Route as SettingsSecurityRouteImport } from './routes/settings/security
 import { Route as RoutinesCreateRouteImport } from './routes/routines/create'
 import { Route as RecipesCreateRouteImport } from './routes/recipes/create'
 import { Route as MealsCreateRouteImport } from './routes/meals/create'
+import { Route as BillingSuccessRouteImport } from './routes/billing/success'
+import { Route as BillingCancelRouteImport } from './routes/billing/cancel'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
@@ -92,6 +94,16 @@ const MealsCreateRoute = MealsCreateRouteImport.update({
   path: '/meals/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BillingSuccessRoute = BillingSuccessRouteImport.update({
+  id: '/billing/success',
+  path: '/billing/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillingCancelRoute = BillingCancelRouteImport.update({
+  id: '/billing/cancel',
+  path: '/billing/cancel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/auth/reset-password',
   path: '/auth/reset-password',
@@ -152,6 +164,8 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/billing/cancel': typeof BillingCancelRoute
+  '/billing/success': typeof BillingSuccessRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
   '/routines/create': typeof RoutinesCreateRoute
@@ -176,6 +190,8 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/billing/cancel': typeof BillingCancelRoute
+  '/billing/success': typeof BillingSuccessRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
   '/routines/create': typeof RoutinesCreateRoute
@@ -201,6 +217,8 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/billing/cancel': typeof BillingCancelRoute
+  '/billing/success': typeof BillingSuccessRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
   '/routines/create': typeof RoutinesCreateRoute
@@ -227,6 +245,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/billing/cancel'
+    | '/billing/success'
     | '/meals/create'
     | '/recipes/create'
     | '/routines/create'
@@ -251,6 +271,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/billing/cancel'
+    | '/billing/success'
     | '/meals/create'
     | '/recipes/create'
     | '/routines/create'
@@ -275,6 +297,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/billing/cancel'
+    | '/billing/success'
     | '/meals/create'
     | '/recipes/create'
     | '/routines/create'
@@ -300,6 +324,8 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  BillingCancelRoute: typeof BillingCancelRoute
+  BillingSuccessRoute: typeof BillingSuccessRoute
   MealsCreateRoute: typeof MealsCreateRoute
   RecipesCreateRoute: typeof RecipesCreateRoute
   RoutinesCreateRoute: typeof RoutinesCreateRoute
@@ -403,6 +429,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MealsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/billing/success': {
+      id: '/billing/success'
+      path: '/billing/success'
+      fullPath: '/billing/success'
+      preLoaderRoute: typeof BillingSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/billing/cancel': {
+      id: '/billing/cancel'
+      path: '/billing/cancel'
+      fullPath: '/billing/cancel'
+      preLoaderRoute: typeof BillingCancelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/reset-password': {
       id: '/auth/reset-password'
       path: '/auth/reset-password'
@@ -484,6 +524,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
+  BillingCancelRoute: BillingCancelRoute,
+  BillingSuccessRoute: BillingSuccessRoute,
   MealsCreateRoute: MealsCreateRoute,
   RecipesCreateRoute: RecipesCreateRoute,
   RoutinesCreateRoute: RoutinesCreateRoute,
