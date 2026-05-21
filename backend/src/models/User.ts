@@ -9,7 +9,8 @@ export type SubscriptionStatus =
   | "inactive"
   | "trialing"
   | "past_due"
-  | "canceled";
+  | "canceled"
+  | "incomplete";
 
 export interface IUser {
   _id: Types.ObjectId;
@@ -148,7 +149,14 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
       },
       status: {
         type: String,
-        enum: ["active", "inactive", "trialing", "past_due", "canceled"],
+        enum: [
+          "active",
+          "inactive",
+          "trialing",
+          "past_due",
+          "canceled",
+          "incomplete",
+        ],
         default: "active",
       },
       stripeCustomerId: {

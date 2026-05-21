@@ -22,6 +22,7 @@ import { Route as RoutinesCreateRouteImport } from './routes/routines/create'
 import { Route as RecipesCreateRouteImport } from './routes/recipes/create'
 import { Route as MealsCreateRouteImport } from './routes/meals/create'
 import { Route as BillingSuccessRouteImport } from './routes/billing/success'
+import { Route as BillingCustomCheckoutRouteImport } from './routes/billing/custom-checkout'
 import { Route as BillingCancelRouteImport } from './routes/billing/cancel'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
@@ -99,6 +100,11 @@ const BillingSuccessRoute = BillingSuccessRouteImport.update({
   path: '/billing/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BillingCustomCheckoutRoute = BillingCustomCheckoutRouteImport.update({
+  id: '/billing/custom-checkout',
+  path: '/billing/custom-checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BillingCancelRoute = BillingCancelRouteImport.update({
   id: '/billing/cancel',
   path: '/billing/cancel',
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/billing/cancel': typeof BillingCancelRoute
+  '/billing/custom-checkout': typeof BillingCustomCheckoutRoute
   '/billing/success': typeof BillingSuccessRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/billing/cancel': typeof BillingCancelRoute
+  '/billing/custom-checkout': typeof BillingCustomCheckoutRoute
   '/billing/success': typeof BillingSuccessRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/billing/cancel': typeof BillingCancelRoute
+  '/billing/custom-checkout': typeof BillingCustomCheckoutRoute
   '/billing/success': typeof BillingSuccessRoute
   '/meals/create': typeof MealsCreateRoute
   '/recipes/create': typeof RecipesCreateRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/reset-password'
     | '/billing/cancel'
+    | '/billing/custom-checkout'
     | '/billing/success'
     | '/meals/create'
     | '/recipes/create'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/reset-password'
     | '/billing/cancel'
+    | '/billing/custom-checkout'
     | '/billing/success'
     | '/meals/create'
     | '/recipes/create'
@@ -298,6 +309,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/reset-password'
     | '/billing/cancel'
+    | '/billing/custom-checkout'
     | '/billing/success'
     | '/meals/create'
     | '/recipes/create'
@@ -325,6 +337,7 @@ export interface RootRouteChildren {
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   BillingCancelRoute: typeof BillingCancelRoute
+  BillingCustomCheckoutRoute: typeof BillingCustomCheckoutRoute
   BillingSuccessRoute: typeof BillingSuccessRoute
   MealsCreateRoute: typeof MealsCreateRoute
   RecipesCreateRoute: typeof RecipesCreateRoute
@@ -436,6 +449,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BillingSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/billing/custom-checkout': {
+      id: '/billing/custom-checkout'
+      path: '/billing/custom-checkout'
+      fullPath: '/billing/custom-checkout'
+      preLoaderRoute: typeof BillingCustomCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/billing/cancel': {
       id: '/billing/cancel'
       path: '/billing/cancel'
@@ -525,6 +545,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   BillingCancelRoute: BillingCancelRoute,
+  BillingCustomCheckoutRoute: BillingCustomCheckoutRoute,
   BillingSuccessRoute: BillingSuccessRoute,
   MealsCreateRoute: MealsCreateRoute,
   RecipesCreateRoute: RecipesCreateRoute,

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Check, Crown, Star, Rocket } from "lucide-react";
@@ -6,7 +7,7 @@ import { toast } from "sonner";
 
 import { useAuth } from "../../context/UserContext";
 import {
-  useCreateCheckoutSession,
+  // useCreateCheckoutSession, // Old hosted Stripe checkout
   useSelectFreePlan,
 } from "../../lib/hooks/useBilling";
 
@@ -33,14 +34,18 @@ const formatCurrency = (n: number) =>
 const PlansSection: React.FC = () => {
   const { t } = useTranslation("plans");
   const { user, refreshMe } = useAuth();
+  const navigate = useNavigate();
 
-  const currentPlan = user?.subscription?.plan ?? "free";
+  const pendingPlan = localStorage.getItem("pendingPlan") as Plan["id"] | null;
+  const currentPlan = pendingPlan || user?.subscription?.plan || "free";
 
   const [period, setPeriod] = React.useState<BillingPeriod>("monthly");
   const [selectedPlan, setSelectedPlan] =
     React.useState<Plan["id"]>(currentPlan);
 
-  const checkoutMutation = useCreateCheckoutSession();
+  // Old hosted Stripe checkout mutation
+  // const checkoutMutation = useCreateCheckoutSession();
+
   const freePlanMutation = useSelectFreePlan();
 
   useEffect(() => {
@@ -106,12 +111,32 @@ const PlansSection: React.FC = () => {
 
     try {
       if (planId === "free") {
+        localStorage.removeItem("pendingPlan");
+        localStorage.removeItem("pendingPeriod");
         await freePlanMutation.mutateAsync();
         await refreshMe();
 
-        toast.success("You successfully selected the Free plan.");
+        toast.success("🚀 FREE PLAN ACTIVATED — LET'S BUILD 💪");
         return;
       }
+
+      toast.success(
+        `🚀 Opening custom checkout for the ${planId.toUpperCase()} plan 💳`,
+      );
+
+      localStorage.setItem("pendingPlan", planId);
+      localStorage.setItem("pendingPeriod", period);
+
+      navigate({
+        to: "/billing/custom-checkout",
+        search: {
+          plan: planId,
+          period,
+        },
+      });
+
+      /*
+      // OLD HOSTED STRIPE CHECKOUT FLOW
 
       toast.success(
         `Redirecting to Stripe Checkout for the ${planId.toUpperCase()} plan...`,
@@ -123,9 +148,11 @@ const PlansSection: React.FC = () => {
       });
 
       window.location.href = url;
+      */
     } catch (error) {
       console.error("Billing error:", error);
-      toast.error("Something went wrong while processing your subscription.");
+
+      toast.error("💀 The billing goblin ate the subscription.");
     }
   };
 
@@ -188,10 +215,7 @@ const PlansSection: React.FC = () => {
             const isCurrentPlan = currentPlan === plan.id;
 
             const isLoading =
-              plan.id === "free"
-                ? freePlanMutation.isPending
-                : checkoutMutation.isPending &&
-                  checkoutMutation.variables?.plan === plan.id;
+              plan.id === "free" ? freePlanMutation.isPending : false;
 
             const shouldDisableButton = isLoading || isCurrentPlan;
 
@@ -219,7 +243,7 @@ const PlansSection: React.FC = () => {
                     handleSelectPlan(plan.id);
                   }
                 }}
-                className={`relative flex h-full min-h-[560px] cursor-pointer flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md ${
+                className={`relative flex h-full min-h-[450px] cursor-pointer flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md ${
                   isSelected
                     ? "border-lime-500 ring-4 ring-lime-400/30"
                     : plan.highlight

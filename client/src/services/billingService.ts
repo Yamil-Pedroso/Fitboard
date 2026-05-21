@@ -1,3 +1,4 @@
+import axiosInstance from "../api/axiosConfig";
 import api from "../api/axiosConfig";
 
 export type BillingPlan = "pro" | "elite";
@@ -42,3 +43,15 @@ export const selectFreePlan = async (): Promise<SelectFreePlanResponse> => {
 
   return data;
 };
+
+export async function createSubscriptionPayment(data: {
+  plan: "pro" | "elite";
+  period: "monthly" | "yearly";
+}) {
+  const response = await axiosInstance.post(
+    "/billing/create-subscription-payment",
+    data,
+  );
+
+  return response.data;
+}

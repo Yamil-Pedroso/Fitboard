@@ -5,6 +5,9 @@ import fn4 from "./images/fn_04.webp";
 
 import fitnut from "./images/bg/fit_nut.webp";
 
+// Demo user
+import demoUser from "./images/demo-avatar/excersice.png";
+
 // Logo
 import logo from "./images/logo/logo.png";
 
@@ -60,6 +63,7 @@ interface IAssets {
 }
 
 const assets: IAssets = {
+  demoUser,
   logo,
   fn1,
   fn2,

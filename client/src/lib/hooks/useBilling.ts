@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import {
   createCheckoutSession,
+  createSubscriptionPayment,
   selectFreePlan,
 } from "../../services/billingService";
 
@@ -13,5 +14,11 @@ export const useCreateCheckoutSession = () => {
 export const useSelectFreePlan = () => {
   return useMutation({
     mutationFn: selectFreePlan,
+  });
+};
+
+export const useCreateSubscriptionPayment = () => {
+  return useMutation({
+    mutationFn: createSubscriptionPayment,
   });
 };

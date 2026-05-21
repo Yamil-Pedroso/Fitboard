@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
+//import { IoIosNotificationsOff, IoIosNotifications } from "react-icons/io";
 import { FiMenu, FiX } from "react-icons/fi";
 //import TranslateComp from "../common/translate/TranslateComp";
 import assets from "@/assets";
+import { toast } from "sonner";
 
 const UserMenu = () => {
   const { user, logout } = useAuth();
@@ -135,8 +136,22 @@ const UserMenu = () => {
 };
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleDemoLogin = async () => {
+    try {
+      await login("demo@example.com", "12345678");
+
+      toast.success(
+        "🚀 DEMO MODE ACTIVATED —> WELCOME ATHLETE 💪".toUpperCase(),
+      );
+    } catch (error) {
+      console.error("Demo login failed:", error);
+
+      toast.error("💀 OOPS... THE DEMO GOBLIN BROKE SOMETHING 👹");
+    }
+  };
 
   return (
     <nav className="top-0 left-0 w-full z-50 bg-black md:bg-transparent md:backdrop-blur-md">
@@ -162,11 +177,19 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex items-center gap-5 text-neutral-400">
-          {user ? (
+          {!user ? (
+            <div
+              onClick={handleDemoLogin}
+              className="bg-[#EAEBE9] text-black px-4 py-2 rounded-full font-semibold hover:scale-105 transition cursor-pointer"
+            >
+              Demo
+            </div>
+          ) : null}
+          {/*{user ? (
             <IoIosNotifications className="size-6 hover:scale-110 transition cursor-pointer" />
           ) : (
             <IoIosNotificationsOff className="size-6 opacity-60 text-neutral-500" />
-          )}
+          )} */}
 
           {/*<TranslateComp />*/}
 
@@ -174,7 +197,10 @@ const Navbar = () => {
             <UserMenu />
           ) : (
             <div className="flex items-center gap-3 text-neutral-900">
-              <Link to="/auth/login" className="hover:opacity-80 transition">
+              <Link
+                to="/auth/login"
+                className="bg-black text-lime-400 px-4 py-2 rounded-full font-semibold hover:scale-105 transition"
+              >
                 Login
               </Link>
               <Link
@@ -186,6 +212,15 @@ const Navbar = () => {
             </div>
           )}
         </div>
+
+        {!user ? (
+          <div
+            onClick={handleDemoLogin}
+            className="md:hidden bg-[#EAEBE9] text-black px-4 py-2 rounded-full font-semibold hover:scale-105 transition cursor-pointer"
+          >
+            Demo
+          </div>
+        ) : null}
 
         <button
           className="md:hidden p-2 text-white"
@@ -206,12 +241,14 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center justify-between text-neutral-900">
                 <UserMenu />
-                <IoIosNotifications className="size-6 text-neutral-400" />
+                {/*<IoIosNotifications className="size-6 text-neutral-400" />*/}
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 <Link to="/auth/login" onClick={() => setMenuOpen(false)}>
-                  <p className="text-neutral-900">Login</p>
+                  <p className="bg-lime-400 text-black px-4 py-2 rounded-full text-center font-semibold">
+                    Login
+                  </p>
                 </Link>
                 <Link
                   to="/auth/register"

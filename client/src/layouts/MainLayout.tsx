@@ -56,7 +56,15 @@ flex flex-col min-h-screen relative
         setIsModalOpen={setIsModalOpen}
       />
 
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          classNames: {
+            success: "!border-lime-400 !bg-[#393a3c] !text-white",
+            icon: "!bg-lime-400 !text-black rounded-full",
+          },
+        }}
+      />
 
       <Navbar />
 
