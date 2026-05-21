@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  cancelSubscription,
   createCheckoutSession,
   createSubscriptionPaymentIntent,
   selectFreePlan,
@@ -23,3 +24,5 @@ router.post(
 );
 
 export default router;
+
+router.post("/billing/cancel-subscription", requireAuth, cancelSubscription);

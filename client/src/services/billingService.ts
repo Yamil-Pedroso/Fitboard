@@ -55,3 +55,9 @@ export async function createSubscriptionPayment(data: {
 
   return response.data;
 }
+
+export async function cancelSubscription() {
+  const { data } = await axiosInstance.post("/billing/cancel-subscription");
+
+  return data;
+}

@@ -362,3 +362,46 @@ export const selectFreePlan = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+export const cancelSubscription = async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.auth?.userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const user = await User.findById(req.auth.userId);
+
+    if (!user?.subscription?.stripeSubscriptionId) {
+      return res.status(400).json({
+        error: "No active subscription found",
+      });
+    }
+
+    const canceledSubscription = await stripe.subscriptions.cancel(
+      user.subscription.stripeSubscriptionId,
+    );
+
+    user.subscription = {
+      ...user.subscription,
+      plan: "free",
+      status: "canceled",
+      stripeCustomerId: user.subscription.stripeCustomerId,
+      stripeSubscriptionId: null,
+      currentPeriodEnd: null,
+    };
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Subscription canceled successfully",
+      subscription: user.subscription,
+      stripeSubscription: canceledSubscription,
+    });
+  } catch (error) {
+    console.error("❌ Cancel subscription error:", error);
+
+    return res.status(500).json({
+      error: "Failed to cancel subscription",
+    });
+  }
+};

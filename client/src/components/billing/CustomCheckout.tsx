@@ -7,6 +7,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { useAuth } from "@/context/UserContext";
 
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -108,6 +109,8 @@ export default function CustomCheckout({ plan, period }: Props) {
 function CheckoutForm() {
   const stripe = useStripe();
 
+  const { refreshMe } = useAuth();
+
   const elements = useElements();
 
   const [loading, setLoading] = useState(false);
@@ -126,7 +129,7 @@ function CheckoutForm() {
         elements,
 
         confirmParams: {
-          return_url: `${window.location.origin}/payment-success`,
+          return_url: `${window.location.origin}/billing/success`,
         },
 
         redirect: "if_required",
@@ -138,6 +141,11 @@ function CheckoutForm() {
       }
 
       toast.success("🚀 PAYMENT COMPLETED — BEAST MODE ACTIVATED 💪");
+
+      localStorage.removeItem("pendingPlan");
+      localStorage.removeItem("pendingPeriod");
+
+      await refreshMe();
 
       navigate({
         to: "/billing/success",
@@ -163,8 +171,6 @@ function CheckoutForm() {
       <div className="mt-2 rounded-xl border border-lime-300 bg-lime-50 text-black p-3 font-mono text-sm">
         4242 4242 4242 4242
       </div>
-
-      {/* STRIPE PAYMENT ELEMENT */}
       <div className="mt-5 rounded-2xl border border-neutral-200 p-4">
         <PaymentElement />
       </div>

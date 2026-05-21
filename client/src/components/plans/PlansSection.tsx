@@ -49,6 +49,15 @@ const PlansSection: React.FC = () => {
   const freePlanMutation = useSelectFreePlan();
 
   useEffect(() => {
+    const pendingPlan = localStorage.getItem("pendingPlan") as
+      | Plan["id"]
+      | null;
+
+    if (pendingPlan) {
+      setSelectedPlan(pendingPlan);
+      return;
+    }
+
     setSelectedPlan(currentPlan);
   }, [currentPlan]);
 

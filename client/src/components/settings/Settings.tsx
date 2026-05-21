@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18/i18";
+import BillingSettingsCard from "./BillingSettingCard";
 
 import { useAuth } from "@/context/UserContext";
 import { updateAvatar, updateMe } from "@/services/usersService";
@@ -298,6 +299,7 @@ const Settings = () => {
           </div>
 
           <div className="lg:col-span-2 space-y-6">
+            <BillingSettingsCard />
             <GlassCard>
               <h2 className="text-lg font-semibold">{t("preferences")}</h2>
 

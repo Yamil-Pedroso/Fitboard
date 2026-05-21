@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import { ArrowLeft, XCircle } from "lucide-react";
 
 export const Route = createFileRoute("/billing/cancel")({
@@ -7,22 +8,55 @@ export const Route = createFileRoute("/billing/cancel")({
 
 function BillingCancelPage() {
   return (
-    <main className="min-h-screen bg-[#fff8f4] px-4 py-16 text-neutral-900">
-      <section className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 border-neutral-900 bg-white p-8 text-center shadow-[8px_8px_0_#111]">
-        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 ring-2 ring-red-200">
+    <main className="min-h-screen bg-[#fafff4] px-4 py-16 text-neutral-900">
+      <motion.section
+        initial={{ opacity: 0, y: 28, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{
+          duration: 0.55,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 border-neutral-900 bg-white p-8 text-center"
+      >
+        <motion.div
+          initial={{ scale: 0, rotate: 18 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{
+            delay: 0.2,
+            type: "spring",
+            stiffness: 260,
+            damping: 16,
+          }}
+          className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 ring-2 ring-red-200"
+        >
           <XCircle className="h-9 w-9 text-red-600" />
-        </div>
+        </motion.div>
 
-        <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
+        <motion.h1
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.35 }}
+          className="text-3xl font-black tracking-tight sm:text-4xl"
+        >
           Payment canceled
-        </h1>
+        </motion.h1>
 
-        <p className="mt-4 max-w-xl text-neutral-600">
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.35 }}
+          className="mt-4 max-w-xl text-neutral-600"
+        >
           No worries — your subscription was not completed and you have not been
           charged. You can choose a plan again whenever you are ready.
-        </p>
+        </motion.p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.35 }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
           <Link
             to="/"
             hash="pricing"
@@ -38,8 +72,8 @@ function BillingCancelPage() {
           >
             Back to home
           </Link>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import {
+  cancelSubscription,
   createCheckoutSession,
   createSubscriptionPayment,
   selectFreePlan,
@@ -20,5 +21,11 @@ export const useSelectFreePlan = () => {
 export const useCreateSubscriptionPayment = () => {
   return useMutation({
     mutationFn: createSubscriptionPayment,
+  });
+};
+
+export const useCancelSubscription = () => {
+  return useMutation({
+    mutationFn: cancelSubscription,
   });
 };
