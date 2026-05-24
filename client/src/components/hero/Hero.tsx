@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-
+import { Link } from "@tanstack/react-router";
 import assets from "@/assets";
 
 const Hero = () => {
@@ -9,14 +9,12 @@ const Hero = () => {
   return (
     <section className="relative w-full">
       <div className="relative w-full h-[36rem] sm:h-[40rem] lg:h-[44rem] overflow-hidden bg-black">
-        {/* Background */}
         <img
           src={assets.fitnut}
           alt="Fitboard"
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         />
 
-        {/* Gradient overlay */}
         <div
           className="absolute inset-0 bg-gradient-to-r
                         from-black/80
@@ -25,7 +23,6 @@ const Hero = () => {
                         sm:from-black/70 sm:via-black/30"
         />
 
-        {/* Content */}
         <div className="relative z-10 h-full flex items-center">
           <div className="flex flex-col gap-5 sm:gap-6 max-w-xl px-4 sm:px-8 lg:px-16">
             {/* Title */}
@@ -42,7 +39,6 @@ const Hero = () => {
               {t("titleLine3")}
             </motion.h1>
 
-            {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -52,25 +48,26 @@ const Hero = () => {
               {t("subtitle")}
             </motion.p>
 
-            {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2 }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto"
             >
-              <button className="bg-lime-400 text-black px-5 py-3 rounded-full font-semibold text-sm sm:text-base hover:scale-105 transition w-full sm:w-auto">
-                {t("startFree")}
-              </button>
-
-              <button className="bg-white/10 backdrop-blur px-5 py-3 rounded-full text-white text-sm sm:text-base hover:bg-white/20 transition w-full sm:w-auto">
-                {t("learnMore")}
-              </button>
+              <Link to="/auth/register">
+                <button className="bg-lime-400 text-black px-5 py-3 rounded-full font-semibold text-sm sm:text-base hover:scale-105 transition w-full sm:w-auto">
+                  {t("startFree")}
+                </button>
+              </Link>
+              <Link to="/auth/login">
+                <button className="bg-white/10 backdrop-blur px-5 py-3 rounded-full text-white text-sm sm:text-base hover:bg-white/20 transition w-full sm:w-auto">
+                  {t("learnMore")}
+                </button>
+              </Link>
             </motion.div>
           </div>
         </div>
 
-        {/* Floating Card LEFT */}
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,7 +81,6 @@ const Hero = () => {
           <p className="text-xs text-gray-400 mt-1">{t("balancedNutrition")}</p>
         </motion.div>
 
-        {/* Floating Card RIGHT */}
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
