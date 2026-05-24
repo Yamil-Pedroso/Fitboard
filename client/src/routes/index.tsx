@@ -7,6 +7,7 @@ import MealSection from "@/components/meals/MealSection";
 import RoutineSection from "@/components/routines/RoutineSection";
 import RecipesSection from "@/components/recipes/RecipesSection";
 import PlansSection from "@/components/plans/PlansSection";
+import AboutSection from "@/components/about/AboutSection";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -16,6 +17,8 @@ function Home() {
   return (
     <div className="">
       <Hero />
+
+      <AboutSection />
 
       <MealSection />
 

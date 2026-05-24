@@ -136,7 +136,7 @@ const MealSection: React.FC = () => {
           <motion.div variants={up} className="space-y-6">
             <motion.p
               variants={up}
-              className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700 ring-1 ring-inset ring-neutral-200"
+              className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-neutral-900 ring-1 ring-inset ring-neutral-200"
             >
               <ChefHat className="h-4 w-4" />
               {t("badge")}

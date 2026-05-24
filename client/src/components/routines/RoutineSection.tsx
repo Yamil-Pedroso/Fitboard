@@ -68,7 +68,7 @@ const RoutineSection: React.FC = () => {
           <motion.div variants={upV} className="space-y-6">
             <motion.p
               variants={upV}
-              className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700 ring-1 ring-inset ring-neutral-200"
+              className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-neutral-900 ring-1 ring-inset ring-neutral-200"
             >
               <Dumbbell className="h-4 w-4" />
               {t("badge")}
