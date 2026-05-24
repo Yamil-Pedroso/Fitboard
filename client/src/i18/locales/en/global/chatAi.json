@@ -1,0 +1,15 @@
+{
+  "buttonTitle": "Fitboard Coach",
+  "buttonSubtitle": "AI fitness assistant",
+  "headerTitle": "Fitboard Coach",
+  "headerSubtitle": "AI Fitness Assistant",
+  "assistantLabel": "AI Coach",
+  "initialMessage": "Hi! I’m your Fitboard AI Coach. Ask me about meals, routines or progress.",
+  "placeholder": "Ask about meals or routines...",
+
+  "responseMacroBalance": "You are doing great today. Your macro balance looks solid.",
+  "responseProtein": "Consider increasing protein intake after your next workout.",
+  "responseConsistency": "Your weekly consistency is improving. Keep going!",
+  "responseLegSession": "You may benefit from adding another leg session this week.",
+  "responseRecovery": "Recovery matters too remember to rest properly."
+}

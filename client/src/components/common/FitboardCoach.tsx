@@ -1,48 +1,92 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, Sparkles, SendHorizonal, X, Dumbbell } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import {
+  Bot,
+  Sparkles,
+  SendHorizonal,
+  X,
+  Dumbbell,
+  Moon,
+  Flame,
+  Salad,
+  Beef,
+} from "lucide-react";
 
-const hardcodedResponses = [
-  "💪 You are doing great today. Your macro balance looks solid.",
-  "🥗 Consider increasing protein intake after your next workout.",
-  "🔥 Your weekly consistency is improving. Keep going!",
-  "🏋️ You may benefit from adding another leg session this week.",
-  "😴 Recovery matters too — remember to rest properly.",
-];
+type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+  icon: ReactNode | null;
+};
 
 export default function FitboardCoach() {
+  const { t } = useTranslation("chatAi");
+
   const [open, setOpen] = useState(false);
 
   const coachRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
 
-  const [messages, setMessages] = useState([
+  const hardcodedResponses = [
+    {
+      icon: <Beef className="h-4 w-4" />,
+      text: t("responseMacroBalance"),
+    },
+    {
+      icon: <Salad className="h-4 w-4" />,
+      text: t("responseProtein"),
+    },
+    {
+      icon: <Flame className="h-4 w-4" />,
+      text: t("responseConsistency"),
+    },
+    {
+      icon: <Dumbbell className="h-4 w-4" />,
+      text: t("responseLegSession"),
+    },
+    {
+      icon: <Moon className="h-4 w-4" />,
+      text: t("responseRecovery"),
+    },
+  ];
+
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      content:
-        "✨ Hi! I’m your Fitboard AI Coach. Ask me about meals, routines or progress.",
+      content: t("initialMessage"),
+      icon: <Sparkles className="h-3.5 w-3.5" />,
     },
   ]);
 
   const [input, setInput] = useState("");
 
   useEffect(() => {
+    setMessages((prev) =>
+      prev.length === 1
+        ? [
+            {
+              role: "assistant",
+              content: t("initialMessage"),
+              icon: <Sparkles className="h-3.5 w-3.5" />,
+            },
+          ]
+        : prev,
+    );
+  }, [t]);
+
+  useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node;
 
-      if (buttonRef.current?.contains(target)) {
-        return;
-      }
+      if (buttonRef.current?.contains(target)) return;
 
       if (coachRef.current && !coachRef.current.contains(target)) {
         setOpen(false);
       }
     }
 
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    if (open) document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -61,21 +105,22 @@ export default function FitboardCoach() {
   function handleSendMessage() {
     if (!input.trim()) return;
 
-    const userMessage = {
+    const userMessage: ChatMessage = {
       role: "user",
       content: input,
+      icon: null,
     };
 
     const randomResponse =
       hardcodedResponses[Math.floor(Math.random() * hardcodedResponses.length)];
 
-    const aiMessage = {
+    const aiMessage: ChatMessage = {
       role: "assistant",
-      content: randomResponse,
+      content: randomResponse.text,
+      icon: randomResponse.icon,
     };
 
     setMessages((prev) => [...prev, userMessage, aiMessage]);
-
     setInput("");
   }
 
@@ -99,11 +144,11 @@ export default function FitboardCoach() {
           <Bot className="h-5 w-5" />
         </div>
 
-        <div className="hidden text-left sm:block">
-          <p className="text-sm font-black leading-none">Fitboard Coach</p>
+        <div className="hidden cursor-pointer text-left sm:block">
+          <p className="text-sm font-black leading-none">{t("buttonTitle")}</p>
 
           <p className="mt-1 text-xs font-medium opacity-70">
-            AI fitness assistant ✨
+            {t("buttonSubtitle")}
           </p>
         </div>
       </motion.button>
@@ -136,12 +181,10 @@ export default function FitboardCoach() {
                 </div>
 
                 <div>
-                  <h2 className="font-black text-black">
-                    Fitboard Coach (Hardcoded)
-                  </h2>
+                  <h2 className="font-black text-black">{t("headerTitle")}</h2>
 
                   <p className="text-xs font-medium text-black/70">
-                    AI Fitness Assistant
+                    {t("headerSubtitle")}
                   </p>
                 </div>
               </div>
@@ -179,8 +222,8 @@ export default function FitboardCoach() {
                   >
                     {message.role === "assistant" && (
                       <div className="mb-2 flex items-center gap-2 text-xs font-bold text-lime-700">
-                        <Sparkles className="h-3.5 w-3.5" />
-                        AI Coach
+                        {message.icon ?? <Sparkles className="h-3.5 w-3.5" />}
+                        {t("assistantLabel")}
                       </div>
                     )}
 
@@ -196,11 +239,9 @@ export default function FitboardCoach() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      handleSendMessage();
-                    }
+                    if (event.key === "Enter") handleSendMessage();
                   }}
-                  placeholder="Ask about meals or routines..."
+                  placeholder={t("placeholder")}
                   className="flex-1 rounded-2xl border-2 border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-black outline-none transition focus:border-lime-400"
                 />
 

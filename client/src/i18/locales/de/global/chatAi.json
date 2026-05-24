@@ -1,0 +1,15 @@
+{
+  "buttonTitle": "Fitboard Coach",
+  "buttonSubtitle": "KI-Fitnessassistent",
+  "headerTitle": "Fitboard Coach",
+  "headerSubtitle": "KI-Fitnessassistent",
+  "assistantLabel": "KI Coach",
+  "initialMessage": "Hallo! Ich bin dein Fitboard KI Coach. Frag mich zu Mahlzeiten, Routinen oder Fortschritt.",
+  "placeholder": "Frag zu Mahlzeiten oder Routinen...",
+
+  "responseMacroBalance": "Du machst heute einen tollen Job. Deine Makro-Balance sieht gut aus.",
+  "responseProtein": "Überlege, nach deinem nächsten Training etwas mehr Protein zu essen.",
+  "responseConsistency": "Deine wöchentliche Konstanz verbessert sich. Weiter so!",
+  "responseLegSession": "Eine zusätzliche Bein-Einheit diese Woche könnte dir guttun.",
+  "responseRecovery": "Regeneration ist auch wichtig — denk daran, dich gut zu erholen."
+}

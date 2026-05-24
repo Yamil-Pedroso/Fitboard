@@ -1,0 +1,15 @@
+{
+  "buttonTitle": "Coach Fitboard",
+  "buttonSubtitle": "Asistente fitness IA",
+  "headerTitle": "Coach Fitboard",
+  "headerSubtitle": "Asistente Fitness IA",
+  "assistantLabel": "Coach IA",
+  "initialMessage": "¡Hola! Soy tu Coach IA de Fitboard. Pregúntame sobre comidas, rutinas o progreso.",
+  "placeholder": "Pregunta sobre comidas o rutinas...",
+
+  "responseMacroBalance": "Lo estás haciendo muy bien hoy. Tu balance de macros se ve sólido.",
+  "responseProtein": "Considera aumentar tu ingesta de proteína después de tu próximo entrenamiento.",
+  "responseConsistency": "Tu consistencia semanal está mejorando. ¡Sigue así!",
+  "responseLegSession": "Podrías beneficiarte de añadir otra sesión de piernas esta semana.",
+  "responseRecovery": "La recuperación también importa — recuerda descansar correctamente."
+}

@@ -2,6 +2,11 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
+// Global
+import enGlobal from "./locales/en/global/chatAi.json";
+import deGlobal from "./locales/de/global/chatAi.json";
+import esGlobal from "./locales/es/global/chatAi.json";
+
 // Hero
 import enHero from "./locales/en/home-page/hero.json";
 import deHero from "./locales/de/home-page/hero.json";
@@ -43,6 +48,7 @@ i18n
   .init({
     resources: {
       en: {
+        chatAi: enGlobal,
         hero: enHero,
         about: enAbout,
         meals: enMeals,
@@ -53,6 +59,7 @@ i18n
       },
 
       es: {
+        chatAi: esGlobal,
         hero: esHero,
         about: esAbout,
         meals: esMeals,
@@ -63,6 +70,7 @@ i18n
       },
 
       de: {
+        chatAi: deGlobal,
         hero: deHero,
         about: deAbout,
         meals: deMeals,
@@ -72,7 +80,16 @@ i18n
         settings: deSettings,
       },
     },
-    ns: ["hero", "about", "meals", "routines", "recipes", "plans", "settings"],
+    ns: [
+      "chatAi",
+      "hero",
+      "about",
+      "meals",
+      "routines",
+      "recipes",
+      "plans",
+      "settings",
+    ],
     defaultNS: "hero",
     fallbackLng: "en",
 
