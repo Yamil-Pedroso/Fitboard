@@ -1,29 +1,35 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Activity, Apple, Dumbbell, Sparkles } from "lucide-react";
 
-const features = [
-  {
-    icon: <Apple className="h-5 w-5" />,
-    title: "Nutrition-first",
-    text: "Track meals, recipes and macros with a clean and simple workflow.",
-  },
-  {
-    icon: <Dumbbell className="h-5 w-5" />,
-    title: "Built for training",
-    text: "Organize routines, progress and goals in one connected fitness system.",
-  },
-  {
-    icon: <Activity className="h-5 w-5" />,
-    title: "Progress focused",
-    text: "Keep your health journey visible with useful data and daily habits.",
-  },
-];
-
 export default function AboutSection() {
+  const { t } = useTranslation("about");
+
+  const features = [
+    {
+      icon: <Apple className="h-5 w-5" />,
+      title: t("feature1Title"),
+      text: t("feature1Text"),
+    },
+
+    {
+      icon: <Dumbbell className="h-5 w-5" />,
+      title: t("feature2Title"),
+      text: t("feature2Text"),
+    },
+
+    {
+      icon: <Activity className="h-5 w-5" />,
+      title: t("feature3Title"),
+      text: t("feature3Text"),
+    },
+  ];
+
   return (
     <section id="about" className="relative overflow-hidden py-20 md:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-10 top-10 h-72 w-72 rounded-full bg-lime-300/20 blur-3xl" />
+
         <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-orange-300/20 blur-3xl" />
       </div>
 
@@ -37,25 +43,17 @@ export default function AboutSection() {
         >
           <div className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-neutral-900 ring-1 ring-lime-300">
             <Sparkles className="h-3.5 w-3.5" />
-            About Fitboard
+
+            {t("badge")}
           </div>
 
           <h2 className="mt-5 text-3xl font-black tracking-tight text-neutral-900 sm:text-4xl">
-            Your fitness, meals, progress and more in one playful dashboard.
+            {t("title")}
           </h2>
 
-          <p className="mt-4 text-neutral-600">
-            Fitboard is designed to help people organize their nutrition,
-            training routines, progress and more without feeling overwhelmed. It
-            combines simple tracking, clean visuals and useful fitness tools in
-            one modern workspace.
-          </p>
+          <p className="mt-4 text-neutral-600">{t("description1")}</p>
 
-          <p className="mt-4 text-neutral-600">
-            The goal is to make fitness planning feel clear, motivating and
-            enjoyable whether you are logging meals, creating recipes, saving
-            routines or reviewing your progress.
-          </p>
+          <p className="mt-4 text-neutral-600">{t("description2")}</p>
         </motion.div>
 
         <motion.div

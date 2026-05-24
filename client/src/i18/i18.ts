@@ -7,6 +7,11 @@ import enHero from "./locales/en/home-page/hero.json";
 import deHero from "./locales/de/home-page/hero.json";
 import esHero from "./locales/es/home-page/hero.json";
 
+// About
+import enAbout from "./locales/en/home-page/about.json";
+import deAbout from "./locales/de/home-page/about.json";
+import esAbout from "./locales/es/home-page/about.json";
+
 // Meals
 import enMeals from "./locales/en/home-page/meals.json";
 import deMeals from "./locales/de/home-page/meals.json";
@@ -39,6 +44,7 @@ i18n
     resources: {
       en: {
         hero: enHero,
+        about: enAbout,
         meals: enMeals,
         routines: enRoutines,
         recipes: enRecipes,
@@ -48,6 +54,7 @@ i18n
 
       es: {
         hero: esHero,
+        about: esAbout,
         meals: esMeals,
         routines: esRoutines,
         recipes: esRecipes,
@@ -57,6 +64,7 @@ i18n
 
       de: {
         hero: deHero,
+        about: deAbout,
         meals: deMeals,
         routines: deRoutines,
         recipes: deRecipes,
@@ -64,7 +72,7 @@ i18n
         settings: deSettings,
       },
     },
-    ns: ["hero", "meals", "routines", "recipes", "plans", "settings"],
+    ns: ["hero", "about", "meals", "routines", "recipes", "plans", "settings"],
     defaultNS: "hero",
     fallbackLng: "en",
 
