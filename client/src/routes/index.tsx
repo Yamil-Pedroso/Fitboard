@@ -8,6 +8,7 @@ import RoutineSection from "@/components/routines/RoutineSection";
 import RecipesSection from "@/components/recipes/RecipesSection";
 import PlansSection from "@/components/plans/PlansSection";
 import AboutSection from "@/components/about/AboutSection";
+import FitboardCoach from "@/components/common/FitboardCoach";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -27,6 +28,8 @@ function Home() {
       <RecipesSection />
 
       <PlansSection />
+
+      <FitboardCoach />
     </div>
   );
 }
