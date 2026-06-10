@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { useAuth } from "@/context/UserContext";
 import { Link } from "@tanstack/react-router";
+import { Input } from "./Input";
+import { PasswordInput } from "./PasswordInput";
 
 const RegisterForm = () => {
   const { register, isLoading, error } = useAuth();
@@ -175,51 +177,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-
-function Input({ label, value, onChange, placeholder, className = "" }: any) {
-  return (
-    <div className={`space-y-1 ${className}`}>
-      <label className="text-sm font-medium">{label}</label>
-      <input
-        className="w-full rounded-xl border border-neutral-200
-                   bg-white/80 backdrop-blur
-                   px-3 py-2.5 text-sm outline-none transition
-                   focus:ring-2 focus:ring-lime-400/30"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required
-        placeholder={placeholder}
-      />
-    </div>
-  );
-}
-
-function PasswordInput({ label, value, onChange, show, setShow }: any) {
-  return (
-    <div className="mt-4 space-y-1">
-      <label className="text-sm font-medium">{label}</label>
-
-      <div className="relative">
-        <input
-          className="w-full rounded-xl border border-neutral-200
-                     bg-white/80 backdrop-blur
-                     px-3 py-2.5 pr-12 text-sm outline-none transition
-                     focus:ring-2 focus:ring-lime-400/30"
-          type={show ? "text" : "password"}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          required
-          placeholder="••••••••"
-        />
-
-        <button
-          type="button"
-          onClick={() => setShow((s: boolean) => !s)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-500 hover:text-black"
-        >
-          {show ? "Hide" : "Show"}
-        </button>
-      </div>
-    </div>
-  );
-}

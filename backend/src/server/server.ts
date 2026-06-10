@@ -17,6 +17,7 @@ import devRoutes from "../routes/dev";
 import adminRoutes from "../routes/admin";
 import billingRoutes from "../routes/billing";
 import stripeWebhookRoutes from "../routes/stripeWebhook";
+import coachRoutes from "../routes/coach";
 
 import connectDB from "../config/db";
 import { errorHandler } from "../middlewares/error";
@@ -99,6 +100,7 @@ app.use("/api/v1", recipeRoutes);
 app.use("/api/v1", routineRoutes);
 app.use("/api/v1", progressRoutes);
 app.use("/api/v1", billingRoutes);
+app.use("/api/v1", coachRoutes);
 
 app.use(multerErrorHandler);
 app.use(errorHandler);

@@ -27,8 +27,8 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1733781971/userAvatart/Avatars/yf13f4uoy32msk195epl.jpg";
   let avatarPublicId: string | undefined = undefined;
 
-  if ((req as any).file?.buffer) {
-    const upload = await uploadBufferToCloudinary((req as any).file.buffer, {
+  if (req.file?.buffer) {
+    const upload = await uploadBufferToCloudinary(req?.file.buffer, {
       folder: "userAvatars/Avatars",
       resource_type: "image",
     });

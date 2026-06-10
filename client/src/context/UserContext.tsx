@@ -16,6 +16,7 @@ import {
   logoutUser as apiLogout,
 } from "@/services/usersService";
 import axiosInstance from "@/api/axiosConfig";
+import { AxiosError } from "axios";
 
 type RegisterInput = {
   email: string;
@@ -72,15 +73,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const me = await getMe();
         if (mounted) setUser(me);
-      } catch (e: any) {
-        // si expira/401, limpiar sesión
-        localStorage.removeItem("token");
-        if (mounted) {
-          setToken(null);
-          setUser(null);
+      } catch (error) {
+        const status =
+          error instanceof AxiosError ? error.response?.status : undefined;
+
+        if (status === 401 || status === 403) {
+          localStorage.removeItem("token");
+          if (mounted) {
+            setToken(null);
+            setUser(null);
+          }
+        } else if (mounted) {
+          setError(
+            error instanceof Error ? error.message : "Could not load user",
+          );
         }
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     })();
     return () => {
@@ -92,8 +103,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setError(null);
       setLoading(true);
-      await registerUser(input); // crea la cuenta
-      const { token, user } = await loginUser(input.email, input.password); // login
+      await registerUser(input);
+      const { token, user } = await loginUser(input.email, input.password);
       localStorage.setItem("token", token);
       setToken(token);
       setUser(user);

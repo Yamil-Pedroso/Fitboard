@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { AxiosError } from "axios";
 import {
   Bot,
   Sparkles,
   SendHorizonal,
   X,
   Dumbbell,
-  Moon,
-  Flame,
-  Salad,
-  Beef,
 } from "lucide-react";
+import { useSendCoachMessage } from "@/lib/hooks/useCoach";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -19,37 +23,94 @@ type ChatMessage = {
   icon: ReactNode | null;
 };
 
+type CoachApiError = {
+  error?: string;
+};
+
+function renderInlineText(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={index} className="font-black text-neutral-950">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+}
+
+function CoachResponse({ content }: { content: string }) {
+  const lines = content
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) return null;
+
+  return (
+    <div className="space-y-2.5 font-medium leading-relaxed text-neutral-800">
+      {lines.map((line, index) => {
+        const bullet = line.match(/^[-*•]\s+(.+)/);
+        const numbered = line.match(/^\d+[.)]\s+(.+)/);
+        const heading = line.match(/^#{1,4}\s+(.+)/);
+
+        if (heading) {
+          return (
+            <p
+              key={`${line}-${index}`}
+              className="pt-1 text-[13px] font-black uppercase text-neutral-950"
+            >
+              {renderInlineText(heading[1])}
+            </p>
+          );
+        }
+
+        if (bullet || numbered) {
+          return (
+            <div key={`${line}-${index}`} className="flex gap-2">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-lime-400 ring-2 ring-lime-100" />
+              <p className="min-w-0 flex-1">
+                {renderInlineText((bullet ?? numbered)?.[1] ?? line)}
+              </p>
+            </div>
+          );
+        }
+
+        return <p key={`${line}-${index}`}>{renderInlineText(line)}</p>;
+      })}
+    </div>
+  );
+}
+
+const QUICK_PROMPTS = [
+  "Analyze my progress this week",
+  "What should I eat for dinner today?",
+  "Help me hit my macros",
+  "Give me a quick workout",
+  "How can I improve my sleep?",
+  "Which habit should I prioritize?",
+];
+
+const DEFAULT_CHAT_WIDTH = 360;
+const MIN_CHAT_WIDTH = 320;
+const EDGE_GAP = 12;
+
 export default function FitboardCoach() {
   const { t } = useTranslation("chatAi");
 
   const [open, setOpen] = useState(false);
+  const [conversationId, setConversationId] = useState<string | undefined>();
+  const [chatWidth, setChatWidth] = useState(DEFAULT_CHAT_WIDTH);
+  const [isResizing, setIsResizing] = useState(false);
+  const sendCoachMessage = useSendCoachMessage();
 
   const coachRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
-
-  const hardcodedResponses = [
-    {
-      icon: <Beef className="h-4 w-4" />,
-      text: t("responseMacroBalance"),
-    },
-    {
-      icon: <Salad className="h-4 w-4" />,
-      text: t("responseProtein"),
-    },
-    {
-      icon: <Flame className="h-4 w-4" />,
-      text: t("responseConsistency"),
-    },
-    {
-      icon: <Dumbbell className="h-4 w-4" />,
-      text: t("responseLegSession"),
-    },
-    {
-      icon: <Moon className="h-4 w-4" />,
-      text: t("responseRecovery"),
-    },
-  ];
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -102,26 +163,99 @@ export default function FitboardCoach() {
     });
   }, [messages, open]);
 
-  function handleSendMessage() {
-    if (!input.trim()) return;
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const previousCursor = document.body.style.cursor;
+    const previousUserSelect = document.body.style.userSelect;
+
+    document.body.style.cursor = "ew-resize";
+    document.body.style.userSelect = "none";
+
+    function handleMouseMove(event: MouseEvent) {
+      const left = coachRef.current?.getBoundingClientRect().left ?? 0;
+      const maxWidth = Math.max(
+        MIN_CHAT_WIDTH,
+        window.innerWidth - left - EDGE_GAP,
+      );
+      const nextWidth = Math.min(
+        Math.max(event.clientX - left, MIN_CHAT_WIDTH),
+        maxWidth,
+      );
+
+      setChatWidth(nextWidth);
+    }
+
+    function handleMouseUp() {
+      setIsResizing(false);
+    }
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.body.style.cursor = previousCursor;
+      document.body.style.userSelect = previousUserSelect;
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isResizing]);
+
+  const showQuickPrompts =
+    messages.length === 1 && messages[0]?.role === "assistant";
+
+  const coachStyle = {
+    "--fitboard-coach-width": `${chatWidth}px`,
+  } as CSSProperties;
+
+  async function handleSendMessage(messageOverride?: string) {
+    const nextInput = (messageOverride ?? input).trim();
+    if (!nextInput || sendCoachMessage.isPending) return;
 
     const userMessage: ChatMessage = {
       role: "user",
-      content: input,
+      content: nextInput,
       icon: null,
     };
 
-    const randomResponse =
-      hardcodedResponses[Math.floor(Math.random() * hardcodedResponses.length)];
+    setMessages((prev) => [...prev, userMessage]);
+    if (!messageOverride) setInput("");
 
-    const aiMessage: ChatMessage = {
-      role: "assistant",
-      content: randomResponse.text,
-      icon: randomResponse.icon,
-    };
+    try {
+      const response = await sendCoachMessage.mutateAsync({
+        message: nextInput,
+        conversationId,
+      });
 
-    setMessages((prev) => [...prev, userMessage, aiMessage]);
-    setInput("");
+      setConversationId(response.conversationId);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: response.message.content,
+          icon: <Sparkles className="h-3.5 w-3.5" />,
+        },
+      ]);
+    } catch (error) {
+      const apiError =
+        error instanceof AxiosError
+          ? (error as AxiosError<CoachApiError>)
+          : null;
+      const fallback =
+        apiError?.response?.data?.error ??
+        (apiError?.response?.status === 401
+          ? "Please log in to talk with Fitboard Coach."
+          : "I could not connect with Fitboard Coach right now.");
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: fallback,
+          icon: <Sparkles className="h-3.5 w-3.5" />,
+        },
+      ]);
+    }
   }
 
   return (
@@ -157,6 +291,7 @@ export default function FitboardCoach() {
         {open && (
           <motion.div
             ref={coachRef}
+            style={coachStyle}
             initial={{ opacity: 0, x: -40, y: 20 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -30, y: 10 }}
@@ -169,11 +304,25 @@ export default function FitboardCoach() {
               rounded-[2rem] border-6 border-gray-800 shadow-sm bg-[#fffef8]
               bottom-20 left-3 right-3 h-[78vh]
               sm:bottom-24 sm:left-5 sm:right-auto
-              sm:h-[560px] sm:w-[360px]
+              sm:h-[560px] sm:w-[var(--fitboard-coach-width)]
             "
             onWheel={(event) => event.stopPropagation()}
             onTouchMove={(event) => event.stopPropagation()}
           >
+            <div
+              aria-hidden="true"
+              onMouseDown={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setIsResizing(true);
+              }}
+              className={`absolute bottom-6 right-0 top-6 z-10 hidden w-3 cursor-ew-resize rounded-r-[2rem] transition sm:block ${
+                isResizing
+                  ? "bg-lime-400/30"
+                  : "bg-transparent hover:bg-lime-400/20"
+              }`}
+            />
+
             <div className="flex items-center justify-between border-b-2 border-neutral-900 bg-lime-400 px-5 py-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-black text-lime-400">
@@ -217,20 +366,73 @@ export default function FitboardCoach() {
                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
                       message.role === "user"
                         ? "bg-black text-white"
-                        : "border border-neutral-200 bg-white text-neutral-800"
+                        : "border border-lime-200/80 bg-white shadow-sm ring-1 ring-lime-100/70"
                     }`}
                   >
                     {message.role === "assistant" && (
-                      <div className="mb-2 flex items-center gap-2 text-xs font-bold text-lime-700">
-                        {message.icon ?? <Sparkles className="h-3.5 w-3.5" />}
-                        {t("assistantLabel")}
+                      <div className="mb-3 flex items-center gap-2 border-b border-lime-100 pb-2 text-xs font-black uppercase text-lime-700">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-lime-100 text-lime-700">
+                          {message.icon ?? (
+                            <Sparkles className="h-3.5 w-3.5" />
+                          )}
+                        </span>
+                        <span>{t("assistantLabel")}</span>
                       </div>
                     )}
 
-                    {message.content}
+                    {message.role === "assistant" ? (
+                      <CoachResponse content={message.content} />
+                    ) : (
+                      message.content
+                    )}
                   </div>
                 </motion.div>
               ))}
+
+              {showQuickPrompts && (
+                <motion.div
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, delay: 0.05 }}
+                  className="flex flex-wrap gap-2"
+                >
+                  {QUICK_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => handleSendMessage(prompt)}
+                      disabled={sendCoachMessage.isPending}
+                      className="rounded-full border border-lime-300 bg-lime-50 px-3 py-2 text-left text-xs font-bold text-neutral-800 transition hover:border-lime-500 hover:bg-lime-100 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+
+              {sendCoachMessage.isPending && (
+                <motion.div
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex justify-start"
+                >
+                  <div className="max-w-[85%] rounded-2xl border border-lime-200/80 bg-white px-4 py-3 text-sm text-neutral-800 shadow-sm ring-1 ring-lime-100/70">
+                    <div className="mb-3 flex items-center gap-2 border-b border-lime-100 pb-2 text-xs font-black uppercase text-lime-700">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-lime-100 text-lime-700">
+                        <Sparkles className="h-3.5 w-3.5" />
+                      </span>
+                      <span>{t("assistantLabel")}</span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 py-1">
+                      <span className="h-2 w-2 animate-pulse rounded-full bg-lime-500" />
+                      <span className="h-2 w-2 animate-pulse rounded-full bg-lime-500 [animation-delay:120ms]" />
+                      <span className="h-2 w-2 animate-pulse rounded-full bg-lime-500 [animation-delay:240ms]" />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
             <div className="border-t border-neutral-200 bg-white p-4">
@@ -242,11 +444,13 @@ export default function FitboardCoach() {
                     if (event.key === "Enter") handleSendMessage();
                   }}
                   placeholder={t("placeholder")}
+                  disabled={sendCoachMessage.isPending}
                   className="flex-1 rounded-2xl border-2 border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-black outline-none transition focus:border-lime-400"
                 />
 
                 <button
-                  onClick={handleSendMessage}
+                  onClick={() => handleSendMessage()}
+                  disabled={sendCoachMessage.isPending || !input.trim()}
                   className="flex h-12 w-12 items-center justify-center rounded-2xl bg-lime-400 text-black transition hover:scale-105"
                 >
                   <SendHorizonal className="h-5 w-5" />
