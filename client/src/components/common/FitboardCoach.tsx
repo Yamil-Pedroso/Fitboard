@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { AxiosError } from "axios";
 import {
   Bot,
+  ChevronDown,
+  Download,
   Sparkles,
   SendHorizonal,
   X,
@@ -26,6 +28,221 @@ type ChatMessage = {
 type CoachApiError = {
   error?: string;
 };
+
+type DownloadFormat = "pdf" | "csv" | "md" | "txt" | "json" | "html";
+
+const DOWNLOAD_FORMATS: { label: string; value: DownloadFormat }[] = [
+  { label: "PDF", value: "pdf" },
+  { label: "CSV", value: "csv" },
+  { label: "Markdown", value: "md" },
+  { label: "Text", value: "txt" },
+  { label: "JSON", value: "json" },
+  { label: "HTML", value: "html" },
+];
+
+function sanitizeFileName(value: string) {
+  const clean = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 42);
+
+  return clean || "fitboard-coach-response";
+}
+
+function quoteCsv(value: string) {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function wrapPdfLine(line: string, maxLength = 88) {
+  const words = line.replace(/\s+/g, " ").trim().split(" ");
+  const wrapped: string[] = [];
+  let current = "";
+
+  words.forEach((word) => {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length > maxLength && current) {
+      wrapped.push(current);
+      current = word;
+    } else {
+      current = next;
+    }
+  });
+
+  if (current) wrapped.push(current);
+  return wrapped.length ? wrapped : [""];
+}
+
+function toPdfHexText(value: string) {
+  const bytes = [0xfe, 0xff];
+
+  for (let i = 0; i < value.length; i += 1) {
+    const code = value.charCodeAt(i);
+    bytes.push((code >> 8) & 0xff, code & 0xff);
+  }
+
+  return `<${bytes.map((byte) => byte.toString(16).padStart(2, "0")).join("")}>`;
+}
+
+function makePdfBlob(content: string) {
+  const lines = content
+    .split("\n")
+    .flatMap((line) => wrapPdfLine(line))
+    .slice(0, 360);
+  const pages: string[][] = [];
+  const linesPerPage = 46;
+
+  for (let i = 0; i < lines.length; i += linesPerPage) {
+    pages.push(lines.slice(i, i + linesPerPage));
+  }
+
+  if (pages.length === 0) pages.push([""]);
+
+  const objects: string[] = [];
+  objects.push("<< /Type /Catalog /Pages 2 0 R >>");
+
+  const pageObjectIds = pages.map((_page, index) => 3 + index * 2);
+  objects.push(
+    `<< /Type /Pages /Kids [${pageObjectIds
+      .map((id) => `${id} 0 R`)
+      .join(" ")}] /Count ${pages.length} >>`,
+  );
+
+  pages.forEach((page, index) => {
+    const pageId = 3 + index * 2;
+    const contentId = pageId + 1;
+    const stream = [
+      "BT",
+      "/F1 11 Tf",
+      "50 790 Td",
+      "14 TL",
+      ...page.map((line) => `${toPdfHexText(line)} Tj T*`),
+      "ET",
+    ].join("\n");
+
+    objects.push(
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents ${contentId} 0 R >>`,
+    );
+    objects.push(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+  });
+
+  let pdf = "%PDF-1.4\n";
+  const offsets = [0];
+
+  objects.forEach((object, index) => {
+    offsets.push(pdf.length);
+    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+  });
+
+  const xrefOffset = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n`;
+  pdf += "0000000000 65535 f \n";
+  offsets.slice(1).forEach((offset) => {
+    pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+  });
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\n`;
+  pdf += `startxref\n${xrefOffset}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
+}
+
+function makeDownloadBlob(content: string, format: DownloadFormat) {
+  switch (format) {
+    case "pdf":
+      return makePdfBlob(content);
+    case "csv": {
+      const rows = content
+        .split("\n")
+        .map((line, index) => `${index + 1},${quoteCsv(line)}`)
+        .join("\n");
+      return new Blob([`line,response\n${rows}`], {
+        type: "text/csv;charset=utf-8",
+      });
+    }
+    case "json":
+      return new Blob(
+        [
+          JSON.stringify(
+            {
+              source: "Fitboard Coach",
+              exportedAt: new Date().toISOString(),
+              response: content,
+            },
+            null,
+            2,
+          ),
+        ],
+        { type: "application/json;charset=utf-8" },
+      );
+    case "html":
+      return new Blob(
+        [
+          `<!doctype html><html><head><meta charset="utf-8"><title>Fitboard Coach Response</title><style>body{font-family:Arial,sans-serif;line-height:1.6;max-width:760px;margin:40px auto;padding:0 20px;color:#111}pre{white-space:pre-wrap}</style></head><body><h1>Fitboard Coach Response</h1><pre>${escapeHtml(
+            content,
+          )}</pre></body></html>`,
+        ],
+        { type: "text/html;charset=utf-8" },
+      );
+    case "md":
+      return new Blob([`# Fitboard Coach Response\n\n${content}\n`], {
+        type: "text/markdown;charset=utf-8",
+      });
+    case "txt":
+    default:
+      return new Blob([content], { type: "text/plain;charset=utf-8" });
+  }
+}
+
+function downloadResponse(content: string, format: DownloadFormat) {
+  const blob = makeDownloadBlob(content, format);
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `${sanitizeFileName(content)}.${format}`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
+function ResponseDownloadMenu({ content }: { content: string }) {
+  return (
+    <details className="group relative">
+      <summary
+        className="flex cursor-pointer list-none items-center gap-1 rounded-full border border-lime-200 bg-lime-50 px-2 py-1 text-[10px] font-black text-lime-800 transition hover:border-lime-400 hover:bg-lime-100 [&::-webkit-details-marker]:hidden"
+        aria-label="Download response"
+      >
+        <Download className="h-3 w-3" />
+        <span>Export</span>
+        <ChevronDown className="h-3 w-3 transition group-open:rotate-180" />
+      </summary>
+
+      <div className="absolute right-0 top-8 z-20 w-36 overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 text-xs shadow-xl">
+        {DOWNLOAD_FORMATS.map((format) => (
+          <button
+            key={format.value}
+            type="button"
+            onClick={(event) => {
+              event.preventDefault();
+              downloadResponse(content, format.value);
+            }}
+            className="flex w-full items-center justify-between px-3 py-2 text-left font-bold text-neutral-700 transition hover:bg-lime-50 hover:text-neutral-950"
+          >
+            {format.label}
+          </button>
+        ))}
+      </div>
+    </details>
+  );
+}
 
 function renderInlineText(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -370,13 +587,17 @@ export default function FitboardCoach() {
                     }`}
                   >
                     {message.role === "assistant" && (
-                      <div className="mb-3 flex items-center gap-2 border-b border-lime-100 pb-2 text-xs font-black uppercase text-lime-700">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-lime-100 text-lime-700">
-                          {message.icon ?? (
-                            <Sparkles className="h-3.5 w-3.5" />
-                          )}
-                        </span>
-                        <span>{t("assistantLabel")}</span>
+                      <div className="mb-3 flex items-center justify-between gap-2 border-b border-lime-100 pb-2 text-xs font-black uppercase text-lime-700">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime-100 text-lime-700">
+                            {message.icon ?? (
+                              <Sparkles className="h-3.5 w-3.5" />
+                            )}
+                          </span>
+                          <span className="truncate">{t("assistantLabel")}</span>
+                        </div>
+
+                        <ResponseDownloadMenu content={message.content} />
                       </div>
                     )}
 
