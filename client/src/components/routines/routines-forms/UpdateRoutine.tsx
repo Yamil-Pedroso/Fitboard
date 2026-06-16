@@ -259,23 +259,23 @@ export default function UpdateRoutine() {
   const blocksCount = useMemo(() => form.blocks.length, [form.blocks]);
 
   if (isLoadingRoutine)
-    return <div className="p-6 text-black">Loading routine…</div>;
+    return <div className="p-6 app-text">Loading routine…</div>;
   if (loadError)
     return <div className="p-6 text-red-600">Failed to load routine.</div>;
   if (!routine)
     return <div className="p-6 text-red-600">Routine not found.</div>;
 
   return (
-    <div className="mx-auto w-full max-w-4xl p-6 text-black">
+    <div className="mx-auto w-full max-w-4xl p-6 app-text">
       <form
         onSubmit={onSubmit}
-        className="space-y-6 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+        className="space-y-6 rounded-2xl border app-surface backdrop-blur p-6 shadow-sm"
       >
         <h2 className="text-2xl font-semibold">Edit routine</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label="Name" className="sm:col-span-2">
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none  focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.name}
               onChange={(e) => setTop("name", e.currentTarget.value)}
               required
@@ -285,7 +285,7 @@ export default function UpdateRoutine() {
           <Field label="Estimated duration">
             <input
               type="number"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.estimatedDurationMin ?? ""}
               onChange={(e) =>
                 setTop(
@@ -300,7 +300,7 @@ export default function UpdateRoutine() {
 
           <Field label="Tags" className="sm:col-span-2">
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.tagsStr}
               onChange={(e) => setTop("tagsStr", e.currentTarget.value)}
             />
@@ -332,7 +332,7 @@ export default function UpdateRoutine() {
             {form.blocks.map((b, bi) => (
               <section
                 key={bi}
-                className="rounded-xl border border-neutral-200 bg-white p-4"
+                className="rounded-xl border app-surface p-4"
               >
                 <div className="flex justify-between mb-3">
                   <span className="font-medium">Block {bi + 1}</span>
@@ -348,7 +348,7 @@ export default function UpdateRoutine() {
                 <div className="grid gap-3 sm:grid-cols-3">
                   <Field label="Title" className="sm:col-span-2">
                     <input
-                      className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="w-full rounded-xl border px-3 py-2 app-control"
                       value={b.title ?? ""}
                       onChange={(e) =>
                         setBlock(bi, "title", e.currentTarget.value)
@@ -358,7 +358,7 @@ export default function UpdateRoutine() {
 
                   <Field label="Type">
                     <select
-                      className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="w-full rounded-xl border px-3 py-2 app-control"
                       value={b.exerciseType ?? ""}
                       onChange={(e) =>
                         setBlock(
@@ -382,7 +382,7 @@ export default function UpdateRoutine() {
                   {b.exercises.map((ex, ei) => (
                     <div
                       key={ei}
-                      className="rounded-xl border border-neutral-200 p-3"
+                      className="rounded-xl border app-surface-muted p-3"
                     >
                       <div className="flex justify-between mb-2">
                         <span className="text-sm font-medium">#{ei + 1}</span>
@@ -397,7 +397,7 @@ export default function UpdateRoutine() {
 
                       <div className="grid gap-3 sm:grid-cols-3">
                         <input
-                          className="sm:col-span-2 rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                          className="sm:col-span-2 rounded-xl border px-3 py-2 app-control"
                           value={ex.name}
                           onChange={(e) =>
                             setEx(bi, ei, "name", e.currentTarget.value)
@@ -406,7 +406,7 @@ export default function UpdateRoutine() {
 
                         <input
                           type="number"
-                          className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                          className="rounded-xl border px-3 py-2 app-control"
                           value={ex.sets}
                           onChange={(e) =>
                             setEx(
@@ -442,7 +442,7 @@ export default function UpdateRoutine() {
 
         <Link
           to="/routines"
-          className="block text-center text-sm text-neutral-600 hover:underline mt-3"
+          className="block text-center text-sm app-muted hover:underline mt-3"
         >
           Back to routines
         </Link>
@@ -458,7 +458,7 @@ function Field({
 }: React.PropsWithChildren<{ label: string; className?: string }>) {
   return (
     <label className={`block text-sm ${className}`}>
-      <span className="mb-1 block text-neutral-600">{label}</span>
+      <span className="mb-1 block app-muted">{label}</span>
       {children}
     </label>
   );

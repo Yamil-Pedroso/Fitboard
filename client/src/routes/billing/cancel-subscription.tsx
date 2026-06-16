@@ -43,7 +43,7 @@ function CancelSubscriptionPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff8f4] px-4 py-16 text-neutral-900">
+    <main className="min-h-screen px-4 py-16 app-text">
       <motion.section
         initial={{ opacity: 0, y: 28, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -51,7 +51,7 @@ function CancelSubscriptionPage() {
           duration: 0.55,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 border-neutral-900 bg-white p-8 text-center"
+        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 app-surface p-8 text-center"
       >
         <motion.div
           initial={{ scale: 0, rotate: 18 }}
@@ -80,7 +80,7 @@ function CancelSubscriptionPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.35 }}
-          className="mt-4 max-w-xl text-neutral-600"
+          className="mt-4 max-w-xl app-muted"
         >
           You are currently on the{" "}
           <strong className="capitalize">{currentPlan}</strong> plan with status{" "}

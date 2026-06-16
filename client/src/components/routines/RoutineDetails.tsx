@@ -65,15 +65,15 @@ const RoutineDetails: React.FC = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
-  if (isLoading) return <div className="p-6">Loading…</div>;
+  if (isLoading) return <div className="p-6 app-text">Loading…</div>;
   if (error) return <div className="p-6 text-red-600">Error</div>;
-  if (!routine) return <div className="p-6">Not found</div>;
+  if (!routine) return <div className="p-6 app-text">Not found</div>;
 
   return (
-    <div className="mx-auto w-full max-w-5xl p-4 md:p-6 lg:pt-20">
+    <div className="mx-auto w-full max-w-5xl p-4 app-text md:p-6 lg:pt-20">
       <div className="mb-6 flex flex-col items-center sm:flex-row justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-neutral-900">
+          <h1 className="text-2xl font-semibold">
             {routine.name}
           </h1>
           <div className="flex flex-wrap gap-2 mt-2">
@@ -97,8 +97,7 @@ const RoutineDetails: React.FC = () => {
                 })
               }
             >
-              <Edit size={16} className="text-neutral-900" />{" "}
-              <p className="text-neutral-900">Edit</p>
+              <Edit size={16} /> <p>Edit</p>
             </button>
           </div>
 
@@ -112,8 +111,7 @@ const RoutineDetails: React.FC = () => {
                 })
               }
             >
-              <Play size={16} className="text-neutral-900" />{" "}
-              <p className="text-neutral-900">Start</p>
+              <Play size={16} /> <p>Start</p>
             </button>
           </div>
 
@@ -122,7 +120,7 @@ const RoutineDetails: React.FC = () => {
               className={`${btn.base} ${btn.outline}`}
               onClick={() => setOpenMenu((v) => !v)}
             >
-              <MoreVertical size={16} className="text-neutral-900" />
+              <MoreVertical size={16} />
             </button>
           </div>
 
@@ -151,7 +149,7 @@ const RoutineDetails: React.FC = () => {
                 </div>
               </div>
 
-              <div className="divide-y">
+              <div className="divide-y divide-[var(--app-border)]">
                 {block.exercises.map((ex) => (
                   <div
                     key={ex.name}

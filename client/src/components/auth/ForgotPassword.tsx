@@ -44,10 +44,9 @@ const ForgotPasswordForm = () => {
       <form
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl
-                   border border-neutral-200
-                   bg-white/80 backdrop-blur-xl
+                   border app-surface backdrop-blur-xl
                    shadow-[0_20px_80px_rgba(0,0,0,0.08)]
-                   p-6 sm:p-8 text-black"
+                   p-6 sm:p-8"
       >
         <div className="mb-6 flex items-center gap-3">
           <div
@@ -60,7 +59,7 @@ const ForgotPasswordForm = () => {
 
           <div>
             <h1 className="text-xl font-semibold">Forgot password</h1>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm app-muted">
               We'll send you a reset link if the email exists.
             </p>
           </div>
@@ -70,10 +69,7 @@ const ForgotPasswordForm = () => {
           <label className="text-sm font-medium">Email</label>
 
           <input
-            className="w-full rounded-xl border border-neutral-200
-                       bg-white/80 backdrop-blur
-                       px-3 py-2.5 text-sm outline-none transition
-                       focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-xl border px-3 py-2.5 text-sm app-control"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
@@ -109,8 +105,7 @@ const ForgotPasswordForm = () => {
 
         {import.meta.env.MODE !== "production" && (devResetLink || preview) && (
           <div
-            className="mt-5 rounded-2xl border border-neutral-200
-                          bg-white/70 p-4 text-sm text-neutral-800"
+            className="mt-5 rounded-2xl border app-surface-muted p-4 text-sm"
           >
             <p className="mb-2 font-medium">Dev helpers</p>
 

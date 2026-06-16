@@ -84,33 +84,33 @@ const CreateMeal = () => {
   }
 
   return (
-    <div className="p-6 flex justify-center text-black">
+    <div className="p-6 flex justify-center app-text">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-xl space-y-5 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+        className="w-full max-w-xl space-y-5 rounded-2xl border app-surface backdrop-blur p-6 shadow-sm"
       >
         <div>
           <h2 className="text-xl font-semibold">Create meal</h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm app-muted">
             Add a custom item or select a recipe.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className="text-sm">
-            <span className="mb-1 block text-neutral-600">Date</span>
+            <span className="mb-1 block app-muted">Date</span>
             <input
               type="date"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.date}
               onChange={(e) => set("date", e.currentTarget.value)}
             />
           </label>
 
           <label className="text-sm">
-            <span className="mb-1 block text-neutral-600">Slot</span>
+            <span className="mb-1 block app-muted">Slot</span>
             <select
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.slot}
               onChange={(e) => set("slot", e.currentTarget.value as MealSlot)}
             >
@@ -144,19 +144,19 @@ const CreateMeal = () => {
         {form.mode === "recipe" && (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label className="text-sm">
-              <span className="mb-1 block text-neutral-600">Recipe ID</span>
+              <span className="mb-1 block app-muted">Recipe ID</span>
               <input
-                className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                className="w-full rounded-xl border px-3 py-2 app-control"
                 value={form.recipeId}
                 onChange={(e) => set("recipeId", e.currentTarget.value)}
               />
             </label>
 
             <label className="text-sm">
-              <span className="mb-1 block text-neutral-600">Servings</span>
+              <span className="mb-1 block app-muted">Servings</span>
               <input
                 type="number"
-                className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+                className="w-full rounded-xl border px-3 py-2 app-control"
                 value={form.servings}
                 onChange={(e) => set("servings", Number(e.currentTarget.value))}
               />
@@ -168,19 +168,19 @@ const CreateMeal = () => {
           <div className="space-y-5">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <label className="text-sm sm:col-span-2">
-                <span className="mb-1 block text-neutral-600">Name</span>
+                <span className="mb-1 block app-muted">Name</span>
                 <input
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                  className="w-full rounded-xl border px-3 py-2 app-control"
                   value={form.customItem.name}
                   onChange={(e) => setCI("name", e.currentTarget.value)}
                 />
               </label>
 
               <label className="text-sm">
-                <span className="mb-1 block text-neutral-600">Amount</span>
+                <span className="mb-1 block app-muted">Amount</span>
                 <input
                   type="number"
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                  className="w-full rounded-xl border px-3 py-2 app-control"
                   value={form.customItem.amount}
                   onChange={(e) =>
                     setCI("amount", Number(e.currentTarget.value))
@@ -189,9 +189,9 @@ const CreateMeal = () => {
               </label>
 
               <label className="text-sm">
-                <span className="mb-1 block text-neutral-600">Unit</span>
+                <span className="mb-1 block app-muted">Unit</span>
                 <select
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                  className="w-full rounded-xl border px-3 py-2 app-control"
                   value={form.customItem.unit}
                   onChange={(e) =>
                     setCI("unit", e.currentTarget.value as QtyUnit)
@@ -206,10 +206,10 @@ const CreateMeal = () => {
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <label className="text-sm">
-                <span className="mb-1 block text-neutral-600">Basis</span>
+                <span className="mb-1 block app-muted">Basis</span>
                 <input
                   type="number"
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                  className="w-full rounded-xl border px-3 py-2 app-control"
                   value={form.customItem.nutritionBasis.amount}
                   onChange={(e) =>
                     setCINB("amount", Number(e.currentTarget.value))
@@ -218,9 +218,9 @@ const CreateMeal = () => {
               </label>
 
               <label className="text-sm">
-                <span className="mb-1 block text-neutral-600">Unit</span>
+                <span className="mb-1 block app-muted">Unit</span>
                 <select
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                  className="w-full rounded-xl border px-3 py-2 app-control"
                   value={form.customItem.nutritionBasis.unit}
                   onChange={(e) =>
                     setCINB("unit", e.currentTarget.value as QtyUnit)
@@ -238,7 +238,7 @@ const CreateMeal = () => {
                 <input
                   key={key}
                   type="number"
-                  className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                  className="w-full rounded-xl border px-3 py-2 app-control"
                   value={
                     form.customItem.macrosPerBasis[
                       key as keyof typeof form.customItem.macrosPerBasis
@@ -257,7 +257,7 @@ const CreateMeal = () => {
             <input
               type="number"
               placeholder="grams per unit"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.customItem.gramsPerUnit ?? ""}
               onChange={(e) =>
                 setCI(
@@ -272,7 +272,7 @@ const CreateMeal = () => {
             <input
               type="number"
               placeholder="density (g/ml)"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.customItem.densityGPerMl ?? ""}
               onChange={(e) =>
                 setCI(
@@ -298,7 +298,7 @@ const CreateMeal = () => {
 
         <Link
           to="/meals"
-          className="block text-center text-sm text-neutral-600 hover:underline"
+          className="block text-center text-sm app-muted hover:underline"
         >
           Back to meals
         </Link>

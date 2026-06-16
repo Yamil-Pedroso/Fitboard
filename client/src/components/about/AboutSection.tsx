@@ -39,21 +39,21 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-[2rem] border-6 border-gray-800 bg-white p-6"
+          className="rounded-[2rem] border app-surface p-6"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-neutral-900 ring-1 ring-lime-300">
+          <div className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-black ring-1 ring-lime-300">
             <Sparkles className="h-3.5 w-3.5" />
 
             {t("badge")}
           </div>
 
-          <h2 className="mt-5 text-3xl font-black tracking-tight text-neutral-900 sm:text-4xl">
+          <h2 className="mt-5 text-3xl font-black tracking-tight app-text sm:text-4xl">
             {t("title")}
           </h2>
 
-          <p className="mt-4 text-neutral-600">{t("description1")}</p>
+          <p className="mt-4 app-muted">{t("description1")}</p>
 
-          <p className="mt-4 text-neutral-600">{t("description2")}</p>
+          <p className="mt-4 app-muted">{t("description2")}</p>
         </motion.div>
 
         <motion.div
@@ -70,19 +70,19 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.45, delay: index * 0.1 }}
-              className="rounded-2xl border border-gray-200 shadow-sm bg-white p-5"
+              className="rounded-2xl border app-surface shadow-sm p-5"
             >
               <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-lime-400 text-neutral-900">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-lime-400 text-black">
                   {feature.icon}
                 </div>
 
                 <div>
-                  <h3 className="font-bold text-neutral-900">
+                  <h3 className="font-bold app-text">
                     {feature.title}
                   </h3>
 
-                  <p className="mt-1 text-sm text-neutral-600">
+                  <p className="mt-1 text-sm app-muted">
                     {feature.text}
                   </p>
                 </div>

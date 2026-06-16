@@ -19,10 +19,7 @@ export function PasswordInput({
 
       <div className="relative">
         <input
-          className="w-full rounded-xl border border-neutral-200
-                       bg-white/80 backdrop-blur
-                       px-3 py-2.5 pr-12 text-sm outline-none transition
-                       focus:ring-2 focus:ring-lime-400/30"
+          className="w-full rounded-xl border px-3 py-2.5 pr-12 text-sm app-control"
           type={show ? "text" : "password"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -33,7 +30,7 @@ export function PasswordInput({
         <button
           type="button"
           onClick={() => setShow(!show)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-500 hover:text-black"
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-xs app-muted hover:text-[var(--app-text)]"
         >
           {show ? "Hide" : "Show"}
         </button>

@@ -5,8 +5,8 @@ const Badge: React.FC<
   <span
     className={
       variant === "outline"
-        ? "inline-flex items-center rounded border border-black/20 px-1.5 py-0.5 text-[10px]"
-        : "inline-flex items-center rounded bg-black/10 px-1.5 py-0.5 text-[10px]"
+        ? "inline-flex items-center rounded border app-border px-1.5 py-0.5 text-[10px]"
+        : "inline-flex items-center rounded bg-[var(--app-surface-muted)] px-1.5 py-0.5 text-[10px]"
     }
   >
     {children}

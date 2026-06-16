@@ -8,7 +8,7 @@ export const Route = createFileRoute("/billing/cancel")({
 
 function BillingCancelPage() {
   return (
-    <main className="min-h-screen bg-[#fafff4] px-4 py-16 text-neutral-900">
+    <main className="min-h-screen px-4 py-16 app-text">
       <motion.section
         initial={{ opacity: 0, y: 28, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -16,7 +16,7 @@ function BillingCancelPage() {
           duration: 0.55,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 border-neutral-900 bg-white p-8 text-center"
+        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 app-surface p-8 text-center"
       >
         <motion.div
           initial={{ scale: 0, rotate: 18 }}
@@ -45,7 +45,7 @@ function BillingCancelPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.35 }}
-          className="mt-4 max-w-xl text-neutral-600"
+          className="mt-4 max-w-xl app-muted"
         >
           No worries — your subscription was not completed and you have not been
           charged. You can choose a plan again whenever you are ready.
@@ -68,7 +68,7 @@ function BillingCancelPage() {
 
           <Link
             to="/"
-            className="rounded-xl border border-neutral-300 px-5 py-2.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-50"
+            className="rounded-xl border px-5 py-2.5 text-sm font-semibold app-secondary-action transition"
           >
             Back to home
           </Link>

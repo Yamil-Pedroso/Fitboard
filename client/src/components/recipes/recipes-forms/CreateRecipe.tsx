@@ -131,22 +131,22 @@ const CreateRecipe = () => {
   }
 
   return (
-    <div className="p-6 flex justify-center text-black">
+    <div className="p-6 flex justify-center app-text">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-xl space-y-5 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+        className="w-full max-w-xl space-y-5 rounded-2xl border app-surface backdrop-blur p-6 shadow-sm"
       >
         <div>
           <h2 className="text-xl font-semibold">Create recipe</h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm app-muted">
             Add a custom item or select a recipe.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
           <label className="text-sm sm:col-span-2">
-            <span className="mb-1 block text-neutral-600">Name</span>
+            <span className="mb-1 block app-muted">Name</span>
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.name}
               onChange={(e) => setField("name", e.currentTarget.value)}
               required
@@ -154,10 +154,10 @@ const CreateRecipe = () => {
           </label>
 
           <label className="text-sm">
-            <span className="mb-1 block text-neutral-600">Servings</span>
+            <span className="mb-1 block app-muted">Servings</span>
             <input
               type="number"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.servings}
               onChange={(e) =>
                 setField("servings", Number(e.currentTarget.value))
@@ -167,10 +167,10 @@ const CreateRecipe = () => {
           </label>
 
           <label className="text-sm">
-            <span className="mb-1 block text-neutral-600">Date</span>
+            <span className="mb-1 block app-muted">Date</span>
             <input
               type="date"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.date}
               onChange={(e) => setField("date", e.currentTarget.value)}
             />
@@ -190,13 +190,13 @@ const CreateRecipe = () => {
           </div>
 
           {form.ingredients.length === 0 ? (
-            <p className="text-sm text-neutral-500">No ingredients yet.</p>
+            <p className="text-sm app-muted">No ingredients yet.</p>
           ) : (
             <div className="space-y-5">
               {form.ingredients.map((ing, i) => (
                 <div
                   key={i}
-                  className="rounded-xl border border-neutral-200 bg-white/70 p-4 space-y-4"
+                  className="rounded-xl border app-surface-muted p-4 space-y-4"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-sm">#{i + 1}</span>
@@ -211,7 +211,7 @@ const CreateRecipe = () => {
 
                   <div className="grid gap-3 sm:grid-cols-3">
                     <input
-                      className="sm:col-span-2 w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="sm:col-span-2 w-full rounded-xl border px-3 py-2 app-control"
                       placeholder="Ingredient name"
                       value={ing.name}
                       onChange={(e) => setIng(i, "name", e.currentTarget.value)}
@@ -219,7 +219,7 @@ const CreateRecipe = () => {
 
                     <input
                       type="number"
-                      className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="rounded-xl border px-3 py-2 app-control"
                       placeholder="Amount"
                       value={ing.amount}
                       onChange={(e) =>
@@ -232,7 +232,7 @@ const CreateRecipe = () => {
                     />
 
                     <select
-                      className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="w-full rounded-xl border px-3 py-2 app-control"
                       value={ing.unit}
                       onChange={(e) =>
                         setIng(i, "unit", e.currentTarget.value as QtyUnit)
@@ -247,7 +247,7 @@ const CreateRecipe = () => {
                   <div className="grid gap-3 sm:grid-cols-3">
                     <input
                       type="number"
-                      className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="rounded-xl border px-3 py-2 app-control"
                       placeholder="Basis amount"
                       value={ing.nutritionBasis.amount}
                       onChange={(e) =>
@@ -260,7 +260,7 @@ const CreateRecipe = () => {
                     />
 
                     <select
-                      className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                      className="w-full rounded-xl border px-3 py-2 app-control"
                       value={ing.nutritionBasis.unit}
                       onChange={(e) =>
                         setIngNB(i, "unit", e.currentTarget.value as QtyUnit)
@@ -277,7 +277,7 @@ const CreateRecipe = () => {
                       <input
                         key={k}
                         type="number"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={
                           ing.macrosPerBasis[
                             k as keyof typeof ing.macrosPerBasis
@@ -315,7 +315,7 @@ const CreateRecipe = () => {
 
         <Link
           to="/recipes"
-          className="block text-center text-sm text-neutral-600 hover:underline mt-3"
+          className="block text-center text-sm app-muted hover:underline mt-3"
         >
           Back to recipes
         </Link>

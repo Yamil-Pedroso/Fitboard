@@ -66,16 +66,16 @@ const UserMenu = () => {
               w-56
               md:right-0
               max-w-[calc(100vw-2rem)]
-              backdrop-blur-xl bg-white border border-white/30 shadow-xl rounded-xl overflow-hidden z-30
+              backdrop-blur-xl app-surface-strong shadow-xl rounded-xl overflow-hidden z-30
             "
           >
-            <div className="px-4 py-3 text-sm truncate text-black text-center">
+            <div className="px-4 py-3 text-sm truncate text-center app-text">
               {user.email}
             </div>
 
-            <div className="h-px bg-gray-200" />
+            <div className="h-px bg-[var(--app-border)]" />
 
-            <nav className="p-1 text-sm text-black text-right">
+            <nav className="p-1 text-sm text-right app-text">
               {[
                 { to: "/user-profile", label: "Profile" },
                 { to: "/meals", label: "Meals" },
@@ -89,7 +89,7 @@ const UserMenu = () => {
                   key={item.to}
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  className="block px-3 py-2 rounded-lg hover:bg-gray-100 transition"
+                  className="block px-3 py-2 rounded-lg hover:bg-[var(--app-surface-muted)] transition"
                 >
                   {item.label}
                 </Link>
@@ -97,11 +97,11 @@ const UserMenu = () => {
 
               {user.isAdmin && (
                 <>
-                  <div className="my-1 h-px bg-gray-200" />
+                  <div className="my-1 h-px bg-[var(--app-border)]" />
                   <Link
                     to="/admin/dashboard"
                     onClick={() => setOpen(false)}
-                    className="block px-3 py-2 rounded-lg font-medium hover:bg-gray-100"
+                    className="block px-3 py-2 rounded-lg font-medium hover:bg-[var(--app-surface-muted)]"
                   >
                     Admin Dashboard
                   </Link>
@@ -111,12 +111,12 @@ const UserMenu = () => {
               <Link
                 to="/faqs"
                 onClick={() => setOpen(false)}
-                className="block px-3 py-2 rounded-lg hover:bg-gray-100"
+                className="block px-3 py-2 rounded-lg hover:bg-[var(--app-surface-muted)]"
               >
                 FAQs
               </Link>
 
-              <div className="my-1 h-px bg-gray-200" />
+              <div className="my-1 h-px bg-[var(--app-border)]" />
 
               <button
                 onClick={() => {
@@ -176,7 +176,7 @@ const Navbar = () => {
           />
         </Link>
 
-        <div className="hidden md:flex items-center gap-5 text-neutral-400">
+        <div className="hidden md:flex items-center gap-5 app-muted">
           {!user ? (
             <div
               onClick={handleDemoLogin}
@@ -196,7 +196,7 @@ const Navbar = () => {
           {user ? (
             <UserMenu />
           ) : (
-            <div className="flex items-center gap-3 text-neutral-900">
+            <div className="flex items-center gap-3">
               <Link
                 to="/auth/login"
                 className="bg-black text-lime-400 px-4 py-2 rounded-full font-semibold hover:scale-105 transition"
@@ -239,7 +239,7 @@ const Navbar = () => {
             className="md:hidden px-4 pb-6 pt-2 flex flex-col gap-4 bg-black/80 backdrop-blur-xl"
           >
             {user ? (
-              <div className="flex items-center justify-between text-neutral-900">
+              <div className="flex items-center justify-between">
                 <UserMenu />
                 {/*<IoIosNotifications className="size-6 text-neutral-400" />*/}
               </div>

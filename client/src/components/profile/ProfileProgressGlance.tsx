@@ -21,7 +21,7 @@ const ProfileProgressGlance = () => {
       : "—";
 
   return (
-    <section className="rounded-2xl border bg-white p-5 shadow-sm">
+    <section className="rounded-2xl border app-surface p-5 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Progress glance</h2>
         <Link to="/progress" className="text-sm underline">
@@ -43,7 +43,7 @@ const ProfileProgressGlance = () => {
             <span className="text-xs opacity-70">Last update: {date}</span>
             <Link
               to="/"
-              className="rounded-lg border px-3 py-1.5 text-sm hover:bg-black/5"
+              className="rounded-lg border px-3 py-1.5 text-sm app-secondary-action"
             >
               + Add entry
             </Link>
@@ -56,7 +56,7 @@ const ProfileProgressGlance = () => {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border p-3 text-center">
+    <div className="rounded-xl border app-border p-3 text-center">
       <p className="text-[11px] uppercase tracking-wide opacity-60">{label}</p>
       <p className="mt-1 text-lg font-semibold">{value}</p>
     </div>

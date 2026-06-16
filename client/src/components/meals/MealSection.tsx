@@ -144,10 +144,10 @@ const MealSection: React.FC = () => {
 
             <motion.h2
               variants={up}
-              className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
+              className="text-3xl font-bold tracking-tight app-text sm:text-4xl"
             >
               {t("titleLine1")}
-              <span className="block text-[.9em] font-normal text-neutral-700">
+              <span className="block text-[.9em] font-normal settings-muted">
                 {t("titleLine2")}
               </span>
             </motion.h2>
@@ -200,7 +200,7 @@ const MealSection: React.FC = () => {
 
             <motion.dl
               variants={parent}
-              className="grid grid-cols-2 gap-4 text-sm text-neutral-600 sm:max-w-md"
+              className="grid grid-cols-2 gap-4 text-sm app-muted sm:max-w-md"
             >
               <motion.div variants={up}>
                 <Stat kpi="92%" label={t("dailyTargets")} />
@@ -243,14 +243,14 @@ function Feature({
   desc: string;
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm">
-      <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-100 text-neutral-800">
+    <div className="flex items-start gap-3 rounded-2xl border app-surface p-3 shadow-sm">
+      <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--app-surface-muted)]">
         {icon}
       </div>
 
       <div>
-        <div className="font-medium text-neutral-900">{title}</div>
-        <p className="text-neutral-600">{desc}</p>
+        <div className="font-medium">{title}</div>
+        <p className="app-muted">{desc}</p>
       </div>
     </div>
   );
@@ -258,9 +258,9 @@ function Feature({
 
 function Stat({ kpi, label }: { kpi: string; label: string }) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-3 text-center shadow-sm">
-      <div className="text-lg font-semibold text-neutral-900">{kpi}</div>
-      <div className="text-neutral-500">{label}</div>
+    <div className="rounded-2xl border app-surface p-3 text-center shadow-sm">
+      <div className="text-lg font-semibold">{kpi}</div>
+      <div className="app-muted">{label}</div>
     </div>
   );
 }

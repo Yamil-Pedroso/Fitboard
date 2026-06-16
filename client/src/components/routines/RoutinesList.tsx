@@ -73,11 +73,11 @@ const RoutinesList = () => {
   };
 
   return (
-    <div className="p-6 pt-24 space-y-6 text-black">
+    <div className="p-6 pt-24 space-y-6 app-text">
       <header className="flex flex-wrap items-end gap-4">
         <div className="mr-auto">
           <h1 className="text-2xl font-semibold">Routines</h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm app-muted">
             Plan and track your workouts.
           </p>
         </div>
@@ -87,13 +87,13 @@ const RoutinesList = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search routines…"
-            className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+            className="rounded-xl border px-3 py-2 app-control"
           />
 
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
-            className="rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+            className="rounded-xl border px-3 py-2 app-control"
           >
             {Object.entries(SORT_LABEL).map(([value, label]) => (
               <option key={value} value={value}>
@@ -133,7 +133,7 @@ const RoutinesList = () => {
       </header>
 
       {isLoading ? (
-        <div className="rounded-2xl border border-neutral-200 bg-white/80 p-6 backdrop-blur">
+        <div className="rounded-2xl border app-surface p-6 backdrop-blur">
           Loading…
         </div>
       ) : visible.length === 0 ? (
@@ -156,16 +156,16 @@ const RoutinesList = () => {
               return (
                 <li
                   key={r._id}
-                  className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm hover:shadow-md transition"
+                  className="rounded-2xl border app-surface backdrop-blur p-4 shadow-sm hover:shadow-md transition"
                 >
                   <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-start gap-2">
-                      <h3 className="truncate font-semibold text-neutral-900">
+                      <h3 className="truncate font-semibold">
                         {r.name}
                       </h3>
                     </div>
 
-                    <div className="text-sm text-neutral-500 flex flex-wrap gap-3">
+                    <div className="text-sm app-muted flex flex-wrap gap-3">
                       <span>{r.blocks?.length ?? 0} blocks</span>
                       <span>{exercisesCount} exercises</span>
                       {typeof r.estimatedDurationMin === "number" && (
@@ -211,7 +211,7 @@ const RoutinesList = () => {
 
                       <button
                         onClick={() => handleEditRoutine(r._id)}
-                        className="flex-1 rounded-xl border border-neutral-200 px-3 py-2 text-sm hover:bg-neutral-50"
+                        className="flex-1 rounded-xl border px-3 py-2 text-sm app-secondary-action"
                       >
                         Edit
                       </button>
@@ -224,7 +224,7 @@ const RoutinesList = () => {
 
           <div className="flex items-center gap-2 pt-3">
             <button
-              className="rounded-xl border border-neutral-200 px-3 py-2 hover:bg-neutral-50 disabled:opacity-50"
+              className="rounded-xl border px-3 py-2 app-secondary-action disabled:opacity-50"
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
             >
@@ -232,14 +232,14 @@ const RoutinesList = () => {
             </button>
 
             <button
-              className="rounded-xl border border-neutral-200 px-3 py-2 hover:bg-neutral-50 disabled:opacity-50"
+              className="rounded-xl border px-3 py-2 app-secondary-action disabled:opacity-50"
               disabled={!hasMore}
               onClick={() => setPage((p) => p + 1)}
             >
               Next
             </button>
 
-            <div className="ml-auto text-sm text-neutral-500">
+            <div className="ml-auto text-sm app-muted">
               Page {page} • {total}
               {isFetching && <span> • updating…</span>}
             </div>
@@ -280,14 +280,16 @@ function EmptyState({
   onClear: () => void;
 }) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-10 text-center text-neutral-500">
-      <div className="text-lg font-medium text-black">No routines found</div>
-      <div className="text-sm mt-1">Try adjusting your search or filters.</div>
+    <div className="rounded-2xl border app-surface backdrop-blur p-10 text-center">
+      <div className="text-lg font-medium">No routines found</div>
+      <div className="text-sm mt-1 app-muted">
+        Try adjusting your search or filters.
+      </div>
 
       {showClear && (
         <button
           onClick={onClear}
-          className="mt-4 rounded-xl border border-neutral-200 px-3 py-2 hover:bg-neutral-50"
+          className="mt-4 rounded-xl border px-3 py-2 app-secondary-action"
         >
           Clear filters
         </button>

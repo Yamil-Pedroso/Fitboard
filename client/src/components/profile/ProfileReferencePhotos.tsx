@@ -55,7 +55,7 @@ export default function ProfileReferencePhotos() {
   };
 
   return (
-    <section className="rounded-2xl border bg-white p-5 shadow-sm">
+    <section className="rounded-2xl border app-surface p-5 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Reference photos</h2>
         <span className="text-xs opacity-70">
@@ -105,14 +105,14 @@ function RefTile({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="group relative w-[160px] overflow-hidden rounded-xl border bg-white text-left shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-black/10"
+      className="group relative w-[160px] overflow-hidden rounded-xl border app-surface text-left shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-lime-400/30"
       style={{ cursor: disabled ? "not-allowed" : "pointer" }}
       title={label}
     >
-      <div className="aspect-[3/4] w-full overflow-hidden bg-gray-100">
+      <div className="aspect-[3/4] w-full overflow-hidden bg-[var(--app-surface-muted)]">
         <img src={src} alt={label} className="h-full w-full object-cover" />
       </div>
-      <div className="border-t p-2">
+      <div className="border-t app-border p-2">
         <span className="text-xs opacity-70">{label}</span>
       </div>
     </button>

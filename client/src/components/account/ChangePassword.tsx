@@ -41,7 +41,7 @@ const ChangePasswordForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto w-full  max-w-md rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-xl sm:p-8"
+      className="mx-auto w-full max-w-md rounded-2xl border app-surface backdrop-blur p-6 shadow-xl sm:p-8"
     >
       <div className="mb-6 flex items-center gap-3">
         <div
@@ -62,10 +62,10 @@ const ChangePasswordForm = () => {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold text-neutral-900">
+          <h2 className="text-xl font-semibold">
             Change password
           </h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm app-muted">
             Use a strong password (min. 8 characters).
           </p>
         </div>
@@ -85,15 +85,12 @@ const ChangePasswordForm = () => {
 
       <fieldset disabled={loading} className="space-y-4">
         <div className="space-y-1">
-          <label className="text-sm font-medium text-neutral-800">
+          <label className="text-sm font-medium">
             Current password
           </label>
           <input
             type="password"
-            className="w-full rounded-xl border border-neutral-200
-                       bg-white/80 backdrop-blur
-                       px-3 py-2 text-black outline-none transition
-                       focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-xl border px-3 py-2 app-control"
             value={current}
             onChange={(e) => setCurrent(e.target.value)}
             required
@@ -101,33 +98,27 @@ const ChangePasswordForm = () => {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium text-neutral-800">
+          <label className="text-sm font-medium">
             New password
           </label>
           <input
             type="password"
-            className="w-full rounded-xl border border-neutral-200
-                       bg-white/80 backdrop-blur
-                       px-3 py-2 text-black outline-none transition
-                       focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-xl border px-3 py-2 app-control"
             value={pw1}
             onChange={(e) => setPw1(e.target.value)}
             minLength={8}
             required
           />
-          <p className="text-xs text-neutral-500">Minimum 8 characters.</p>
+          <p className="text-xs app-muted">Minimum 8 characters.</p>
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium text-neutral-800">
+          <label className="text-sm font-medium">
             Repeat new password
           </label>
           <input
             type="password"
-            className="w-full rounded-xl border border-neutral-200
-                       bg-white/80 backdrop-blur
-                       px-3 py-2 text-black outline-none transition
-                       focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-xl border px-3 py-2 app-control"
             value={pw2}
             onChange={(e) => setPw2(e.target.value)}
             required

@@ -68,7 +68,7 @@ const RoutineSection: React.FC = () => {
           <motion.div variants={upV} className="space-y-6">
             <motion.p
               variants={upV}
-              className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-neutral-900 ring-1 ring-inset ring-neutral-200"
+              className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-black ring-1 ring-inset ring-neutral-200"
             >
               <Dumbbell className="h-4 w-4" />
               {t("badge")}
@@ -76,15 +76,15 @@ const RoutineSection: React.FC = () => {
 
             <motion.h2
               variants={upV}
-              className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
+              className="text-3xl font-bold tracking-tight app-text sm:text-4xl"
             >
               {t("titlePrefix")}{" "}
-              <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text app-text">
                 {t("titleHighlight")}
               </span>
             </motion.h2>
 
-            <motion.p variants={upV} className="max-w-xl text-neutral-600">
+            <motion.p variants={upV} className="max-w-xl settings-muted">
               {t("subtitle")}
             </motion.p>
 
@@ -131,14 +131,14 @@ const RoutineSection: React.FC = () => {
             >
               <Link
                 to="/routines"
-                className="inline-flex items-center justify-center rounded-2xl bg-lime-400 px-4 py-2 text-neutral-900 shadow-sm transition hover:opacity-90"
+                className="inline-flex items-center justify-center rounded-2xl bg-lime-400 px-4 py-2 text-black shadow-sm transition hover:opacity-90"
               >
                 {t("exploreRoutines")}
               </Link>
 
               <Link
                 to="/routines/create"
-                className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-neutral-900 shadow-sm transition hover:bg-neutral-50"
+                className="inline-flex items-center justify-center rounded-2xl border px-4 py-2 app-secondary-action shadow-sm transition"
               >
                 {t("createRoutine")}
               </Link>
@@ -146,7 +146,7 @@ const RoutineSection: React.FC = () => {
 
             <motion.dl
               variants={sectionV}
-              className="mt-4 grid grid-cols-2 gap-4 text-sm text-neutral-600 sm:max-w-lg"
+              className="mt-4 grid grid-cols-2 gap-4 text-sm app-muted sm:max-w-lg"
             >
               <motion.div variants={upV}>
                 <Stat kpi="2.3k+" label={t("routinesCreated")} />
@@ -215,14 +215,14 @@ function Feature({
   desc: string;
 }) {
   return (
-    <li className="flex items-start gap-3 rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm">
-      <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-100 text-neutral-800">
+    <li className="flex items-start gap-3 rounded-2xl border app-surface p-3 shadow-sm">
+      <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--app-surface-muted)]">
         {icon}
       </div>
 
       <div>
-        <div className="font-medium text-neutral-900">{title}</div>
-        <p className="text-neutral-600">{desc}</p>
+        <div className="font-medium">{title}</div>
+        <p className="app-muted">{desc}</p>
       </div>
     </li>
   );
@@ -230,9 +230,9 @@ function Feature({
 
 function Stat({ kpi, label }: { kpi: string; label: string }) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-3 text-center shadow-sm">
-      <div className="text-lg font-semibold text-neutral-900">{kpi}</div>
-      <div className="text-neutral-500">{label}</div>
+    <div className="rounded-2xl border app-surface p-3 text-center shadow-sm">
+      <div className="text-lg font-semibold">{kpi}</div>
+      <div className="app-muted">{label}</div>
     </div>
   );
 }

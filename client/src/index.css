@@ -7,10 +7,183 @@ body,
   width: 100%;
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background-color: var(--main-bg-provisional-color);
-  color: white;
+  background-color: var(--app-bg);
+  color: var(--app-text);
   overflow-x: hidden; /* solo bloquea el eje horizontal */
   overflow-y: auto;
+}
+
+:root {
+  color-scheme: light;
+  --app-bg: #f9f9f9;
+  --app-bg-soft: #ffffff66;
+  --app-text: #111827;
+  --app-text-muted: #4b5563;
+  --app-surface: rgba(255, 255, 255, 0.74);
+  --app-surface-strong: rgba(255, 255, 255, 0.9);
+  --app-surface-muted: rgba(255, 255, 255, 0.58);
+  --app-border: rgba(15, 23, 42, 0.12);
+  --app-input-bg: rgba(255, 255, 255, 0.68);
+  --app-input-disabled-bg: rgba(255, 255, 255, 0.42);
+  --app-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #080d12;
+  --app-bg-soft: rgba(8, 13, 18, 0.72);
+  --app-text: #f8fafc;
+  --app-text-muted: #aeb8c5;
+  --app-surface: rgba(17, 24, 39, 0.82);
+  --app-surface-strong: rgba(24, 33, 47, 0.95);
+  --app-surface-muted: rgba(31, 41, 55, 0.72);
+  --app-border: rgba(226, 232, 240, 0.14);
+  --app-input-bg: rgba(15, 23, 42, 0.78);
+  --app-input-disabled-bg: rgba(15, 23, 42, 0.48);
+  --app-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+}
+
+.settings-page {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(163, 255, 18, 0.12), transparent 28rem),
+    var(--app-bg);
+  color: var(--app-text);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.settings-backdrop {
+  background: var(--app-bg-soft);
+}
+
+.settings-card {
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+  color: var(--app-text);
+}
+
+.settings-subcard,
+.settings-control,
+.input {
+  border: 1px solid var(--app-border);
+  background: var(--app-input-bg);
+  color: var(--app-text);
+}
+
+.input {
+  width: 100%;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.settings-control:focus,
+.input:focus {
+  border-color: #a3ff12;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(163, 255, 18, 0.18);
+}
+
+.settings-control:disabled,
+.settings-control-muted {
+  border: 1px solid var(--app-border);
+  background: var(--app-input-disabled-bg);
+  color: var(--app-text-muted);
+}
+
+.settings-control::placeholder,
+.input::placeholder {
+  color: var(--app-text-muted);
+}
+
+.settings-muted {
+  color: var(--app-text-muted);
+}
+
+.settings-secondary-action {
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.settings-save-action {
+  background: #a3ff12;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.settings-save-action:hover:not(:disabled) {
+  background: #befb45;
+}
+
+.app-text {
+  color: var(--app-text);
+}
+
+.app-muted {
+  color: var(--app-text-muted);
+}
+
+.app-surface {
+  border-color: var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+
+.app-surface-strong {
+  border-color: var(--app-border);
+  background: var(--app-surface-strong);
+  color: var(--app-text);
+}
+
+.app-surface-muted {
+  border-color: var(--app-border);
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.app-border {
+  border-color: var(--app-border);
+}
+
+.app-control {
+  border-color: var(--app-border);
+  background: var(--app-input-bg);
+  color: var(--app-text);
+}
+
+.app-control:focus {
+  border-color: #a3ff12;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(163, 255, 18, 0.18);
+}
+
+.app-control:disabled {
+  background: var(--app-input-disabled-bg);
+  color: var(--app-text-muted);
+}
+
+.app-control::placeholder {
+  color: var(--app-text-muted);
+}
+
+.app-secondary-action {
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.app-secondary-action:hover {
+  background: var(--app-surface-strong);
+}
+
+.settings-toggle-track {
+  background: #d1d5db;
+}
+
+:root[data-theme="dark"] .settings-toggle-track {
+  background: #334155;
 }
 
 @theme {

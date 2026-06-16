@@ -8,7 +8,7 @@ export const Route = createFileRoute("/billing/success")({
 
 function BillingSuccessPage() {
   return (
-    <main className="min-h-screen bg-[#f8faf5] px-4 py-16 text-neutral-900">
+    <main className="min-h-screen px-4 py-16 app-text">
       <motion.section
         initial={{ opacity: 0, y: 28, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -16,7 +16,7 @@ function BillingSuccessPage() {
           duration: 0.55,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 border-neutral-900 bg-white p-8 text-center"
+        className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border-2 app-surface p-8 text-center"
       >
         <motion.div
           initial={{ scale: 0, rotate: -18 }}
@@ -46,7 +46,7 @@ function BillingSuccessPage() {
           Thanks for upgrading your Fitboard plan!
         </h1>
 
-        <p className="mt-4 max-w-xl text-neutral-600">
+        <p className="mt-4 max-w-xl app-muted">
           Your subscription was completed successfully. Your premium features
           will be available as soon as your account syncs with Stripe.
         </p>
@@ -61,7 +61,7 @@ function BillingSuccessPage() {
 
           <Link
             to="/settings"
-            className="rounded-xl border border-neutral-300 px-5 py-2.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-50"
+            className="rounded-xl border px-5 py-2.5 text-sm font-semibold app-secondary-action transition"
           >
             Go to settings
           </Link>

@@ -3,7 +3,7 @@ const Card: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
   children,
 }) => (
   <div
-    className={`rounded-2xl border border-black/10 bg-white/70 backdrop-blur-xl shadow-sm text-black ${className}`}
+    className={`rounded-2xl border app-surface backdrop-blur-xl shadow-sm ${className}`}
   >
     {children}
   </div>

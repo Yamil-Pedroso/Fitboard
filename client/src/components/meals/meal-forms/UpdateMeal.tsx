@@ -38,7 +38,7 @@ const UpdateMeal = () => {
   if (isLoading) {
     return (
       <div className="mx-auto w-full max-w-2xl p-6">
-        <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm">
+        <div className="rounded-2xl border app-surface backdrop-blur p-6 shadow-sm">
           <div className="mb-4 h-6 w-40 animate-pulse rounded bg-neutral-200" />
           <div className="space-y-3">
             <div className="h-10 animate-pulse rounded bg-neutral-100" />
@@ -53,7 +53,7 @@ const UpdateMeal = () => {
   if (!meal) {
     return (
       <div className="mx-auto w-full max-w-2xl p-6">
-        <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 text-red-500 shadow-sm">
+        <div className="rounded-2xl border app-surface backdrop-blur p-6 text-red-500 shadow-sm">
           Meal not found
         </div>
       </div>
@@ -63,9 +63,9 @@ const UpdateMeal = () => {
   if (!meal.customItem) {
     return (
       <div className="mx-auto w-full max-w-2xl p-6">
-        <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm">
-          <h1 className="mb-2 text-xl font-semibold text-black">Edit meal</h1>
-          <p className="text-sm text-neutral-500">
+        <div className="rounded-2xl border app-surface backdrop-blur p-6 shadow-sm">
+          <h1 className="mb-2 text-xl font-semibold app-text">Edit meal</h1>
+          <p className="text-sm app-muted">
             This meal was created from a recipe. Name is not editable.
           </p>
         </div>
@@ -109,14 +109,14 @@ const UpdateMeal = () => {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl p-6 text-black">
+    <div className="mx-auto w-full max-w-2xl p-6 app-text">
       <form
         onSubmit={onSubmit}
-        className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+        className="rounded-2xl border app-surface backdrop-blur p-6 shadow-sm"
       >
         <div className="mb-6">
           <h1 className="text-xl font-semibold">Update meal</h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm app-muted">
             Adjust date, slot and nutrition for this entry.
           </p>
         </div>
@@ -125,7 +125,7 @@ const UpdateMeal = () => {
           <Field label="Date">
             <input
               type="date"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={date}
               onChange={(e) => setDate(e.currentTarget.value)}
               required
@@ -134,7 +134,7 @@ const UpdateMeal = () => {
 
           <Field label="Meal">
             <select
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={slot}
               onChange={(e) => setSlot(e.currentTarget.value as MealSlot)}
             >
@@ -149,7 +149,7 @@ const UpdateMeal = () => {
         <div className="mt-4">
           <Field label="Name">
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               required
@@ -163,7 +163,7 @@ const UpdateMeal = () => {
               type="number"
               step="0.01"
               min="0"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={Number.isFinite(amount) ? amount : 0}
               onChange={(e) => setAmount(parseFloat(e.currentTarget.value))}
             />
@@ -171,7 +171,7 @@ const UpdateMeal = () => {
 
           <Field label="Unit">
             <select
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={unit}
               onChange={(e) => setUnit(e.currentTarget.value as QtyUnit)}
             >
@@ -183,7 +183,7 @@ const UpdateMeal = () => {
         </div>
 
         <div className="mt-6">
-          <div className="mb-2 text-sm font-medium text-neutral-600">
+          <div className="mb-2 text-sm font-medium app-muted">
             Macros per basis
           </div>
 
@@ -191,7 +191,7 @@ const UpdateMeal = () => {
             <Field label="Kcal">
               <input
                 type="number"
-                className="w-20 w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-20 w-full rounded-xl border px-3 py-2 app-control"
                 value={Number.isFinite(kcal) ? kcal : 0}
                 onChange={(e) => setKcal(parseFloat(e.currentTarget.value))}
               />
@@ -200,7 +200,7 @@ const UpdateMeal = () => {
             <Field label="Protein (g)">
               <input
                 type="number"
-                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-full rounded-xl border px-3 py-2 app-control"
                 value={Number.isFinite(protein) ? protein : 0}
                 onChange={(e) => setProtein(parseFloat(e.currentTarget.value))}
               />
@@ -209,7 +209,7 @@ const UpdateMeal = () => {
             <Field label="Carbs (g)">
               <input
                 type="number"
-                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-full rounded-xl border px-3 py-2 app-control"
                 value={Number.isFinite(carbohydrate) ? carbohydrate : 0}
                 onChange={(e) =>
                   setCarbohydrate(parseFloat(e.currentTarget.value))
@@ -220,7 +220,7 @@ const UpdateMeal = () => {
             <Field label="Fat (g)">
               <input
                 type="number"
-                className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                className="w-full rounded-xl border px-3 py-2 app-control"
                 value={Number.isFinite(fat) ? fat : 0}
                 onChange={(e) => setFat(parseFloat(e.currentTarget.value))}
               />
@@ -239,7 +239,7 @@ const UpdateMeal = () => {
 
           <Link
             to="/meals"
-            className="block text-center text-sm text-neutral-600 hover:underline mt-3"
+            className="block text-center text-sm app-muted hover:underline mt-3"
           >
             Back to meals
           </Link>
@@ -255,7 +255,7 @@ function Field({
 }: React.PropsWithChildren<{ label: string }>) {
   return (
     <label className="block text-sm">
-      <span className="mb-1 block text-neutral-600">{label}</span>
+      <span className="mb-1 block app-muted">{label}</span>
       {children}
     </label>
   );

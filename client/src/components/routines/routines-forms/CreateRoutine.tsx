@@ -205,7 +205,7 @@ const CreateRoutine = () => {
     <div className="w-full p-6">
       <form
         onSubmit={onSubmit}
-        className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm text-black"
+        className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border app-surface backdrop-blur p-6 shadow-sm app-text"
       >
         <h2 className="text-xl font-semibold">Create routine</h2>
 
@@ -213,7 +213,7 @@ const CreateRoutine = () => {
           <label className="block text-sm sm:col-span-2">
             <span className="mb-1 block">Name</span>
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.name}
               onChange={(e) => set("name", e.currentTarget.value)}
             />
@@ -224,7 +224,7 @@ const CreateRoutine = () => {
             <input
               type="number"
               min={1}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.estimatedDurationMin}
               onChange={(e) =>
                 set(
@@ -240,7 +240,7 @@ const CreateRoutine = () => {
           <label className="block text-sm sm:col-span-2">
             <span className="mb-1 block">Tags (comma-separated)</span>
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.tagsStr}
               onChange={(e) => set("tagsStr", e.currentTarget.value)}
             />
@@ -265,7 +265,7 @@ const CreateRoutine = () => {
             <button
               type="button"
               onClick={addBlock}
-              className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50"
+              className="rounded-xl border px-3 py-1.5 app-secondary-action"
             >
               + Add block
             </button>
@@ -274,7 +274,7 @@ const CreateRoutine = () => {
           {form.blocks.map((b, bi) => (
             <div
               key={bi}
-              className="rounded-xl border border-neutral-200 bg-white p-4 space-y-4"
+              className="rounded-xl border app-surface p-4 space-y-4"
             >
               <div className="flex items-center justify-between">
                 <span className="font-medium">Block {bi + 1}</span>
@@ -291,7 +291,7 @@ const CreateRoutine = () => {
                 <label className="block text-sm sm:col-span-2">
                   <span className="mb-1 block">Title</span>
                   <input
-                    className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                    className="w-full rounded-xl border px-3 py-2 app-control"
                     value={b.title ?? ""}
                     onChange={(e) =>
                       setBlock(bi, (prev) => ({
@@ -305,7 +305,7 @@ const CreateRoutine = () => {
                 <label className="block text-sm">
                   <span className="mb-1 block">Type</span>
                   <select
-                    className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                    className="w-full rounded-xl border px-3 py-2 app-control"
                     value={b.exerciseType ?? ""}
                     onChange={(e) =>
                       setBlock(bi, (prev) => ({
@@ -328,7 +328,7 @@ const CreateRoutine = () => {
                   <button
                     type="button"
                     onClick={() => addExercise(bi)}
-                    className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50"
+                    className="rounded-xl border px-3 py-1.5 app-secondary-action"
                   >
                     + Add exercise
                   </button>
@@ -337,13 +337,13 @@ const CreateRoutine = () => {
                 {b.exercises.map((ex, ei) => (
                   <div
                     key={ei}
-                    className="rounded-xl border border-neutral-200 p-3"
+                    className="rounded-xl border app-surface-muted p-3"
                   >
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                       <label className="block text-sm sm:col-span-2">
                         <span className="mb-1 block">Name</span>
                         <input
-                          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                          className="w-full rounded-xl border px-3 py-2 app-control"
                           value={ex.name}
                           onChange={(e) =>
                             setExercise(bi, ei, (p) => ({
@@ -359,7 +359,7 @@ const CreateRoutine = () => {
                         <input
                           type="number"
                           min={1}
-                          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                          className="w-full rounded-xl border px-3 py-2 app-control"
                           value={ex.sets}
                           onChange={(e) =>
                             setExercise(bi, ei, (p) => ({
@@ -403,7 +403,7 @@ const CreateRoutine = () => {
 
         <Link
           to="/routines"
-          className="block text-center text-sm text-neutral-600 hover:underline mt-3"
+          className="block text-center text-sm app-muted hover:underline mt-3"
         >
           Back to routines
         </Link>

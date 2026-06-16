@@ -10,6 +10,10 @@ import "@/i18/i18";
 
 import { routeTree } from "./routeTree.gen";
 
+const storedTheme = localStorage.getItem("fitboard-theme");
+document.documentElement.dataset.theme =
+  storedTheme === "dark" ? "dark" : "light";
+
 const router = createRouter({ routeTree });
 
 // Register the router instance for type safety

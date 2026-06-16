@@ -73,7 +73,7 @@ const RecipesList = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 text-black">
+    <div className="p-6 space-y-6 app-text">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold">Recipes</h1>
 
@@ -89,21 +89,21 @@ const RecipesList = () => {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <input
           type="text"
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+          className="w-full rounded-xl border px-3 py-2 app-control"
           placeholder="Search by name or ingredient…"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
 
         <select
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2"
+          className="w-full rounded-xl border px-3 py-2 app-control"
           disabled
         >
           <option>All categories</option>
         </select>
 
         <select
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+          className="w-full rounded-xl border px-3 py-2 app-control"
           value={params.sort}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setParams((p) => ({
@@ -120,13 +120,13 @@ const RecipesList = () => {
       </div>
 
       {isLoading ? (
-        <div className="text-neutral-500">Loading recipes…</div>
+        <div className="app-muted">Loading recipes…</div>
       ) : error ? (
         <div className="text-red-600">Failed to load recipes.</div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-8 text-center">
+        <div className="rounded-2xl border app-surface backdrop-blur p-8 text-center">
           <p className="mb-2 text-lg font-medium">No recipes yet</p>
-          <p className="mb-4 text-neutral-500">
+          <p className="mb-4 app-muted">
             Create your first recipe to get started.
           </p>
           <Link
@@ -152,9 +152,9 @@ const RecipesList = () => {
             return (
               <article
                 key={recipe._id}
-                className="group relative overflow-hidden rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm hover:shadow-lg transition"
+                className="group relative overflow-hidden rounded-2xl border app-surface backdrop-blur shadow-sm hover:shadow-lg transition"
               >
-                <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
+                <div className="relative aspect-[16/10] overflow-hidden bg-[var(--app-surface-muted)]">
                   <img
                     src={image}
                     alt={recipe.name}
@@ -167,22 +167,22 @@ const RecipesList = () => {
 
                 <div className="p-4 space-y-3">
                   <div className="flex justify-between gap-2">
-                    <h3 className="truncate font-semibold text-neutral-900">
+                    <h3 className="truncate font-semibold">
                       {recipe.name}
                     </h3>
 
-                    <span className="text-xs rounded-full bg-neutral-100 px-2 py-0.5">
+                    <span className="text-xs rounded-full bg-[var(--app-surface-muted)] px-2 py-0.5">
                       {servings} servings
                     </span>
                   </div>
 
-                  <p className="text-sm text-neutral-500">
+                  <p className="text-sm app-muted">
                     {ingCount} ingredient{ingCount === 1 ? "" : "s"}
                   </p>
 
                   <ul className="text-sm space-y-1">
                     {recipe.ingredients.map((ingredient, i) => (
-                      <li key={i} className="truncate text-neutral-700">
+                      <li key={i} className="truncate app-muted">
                         • {ingredient.name}
                       </li>
                     ))}
@@ -193,13 +193,13 @@ const RecipesList = () => {
                       {cats.slice(0, 3).map((c: string) => (
                         <span
                           key={c}
-                          className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs"
+                          className="rounded-full bg-[var(--app-surface-muted)] px-2 py-0.5 text-xs"
                         >
                           {c}
                         </span>
                       ))}
                       {cats.length > 3 && (
-                        <span className="text-xs text-neutral-500">
+                        <span className="text-xs app-muted">
                           +{cats.length - 3}
                         </span>
                       )}
@@ -209,7 +209,7 @@ const RecipesList = () => {
                   <div className="relative flex justify-between pt-2">
                     <button
                       onClick={() => handleUpdateRecipeClick(recipe._id)}
-                      className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-sm hover:bg-neutral-50"
+                      className="rounded-lg border px-2.5 py-1.5 text-sm app-secondary-action"
                     >
                       Edit
                     </button>
@@ -225,7 +225,7 @@ const RecipesList = () => {
                     {confirmId === recipe._id && (
                       <div
                         data-confirm-for={recipe._id}
-                        className="absolute right-0 top-[-3.5rem] w-44 rounded-2xl border border-neutral-200 bg-white/90 backdrop-blur p-4 shadow-xl z-10"
+                        className="absolute right-0 top-[-3.5rem] w-44 rounded-2xl border app-surface-strong backdrop-blur p-4 shadow-xl z-10"
                       >
                         <p className="mb-2 font-semibold">Delete recipe?</p>
 
@@ -261,13 +261,13 @@ const RecipesList = () => {
 
       {recipes.length > 0 && (
         <div className="flex items-center justify-between text-sm">
-          <span className="text-neutral-500">
+          <span className="app-muted">
             Page {page} of {totalPages}
           </span>
 
           <div className="flex gap-2">
             <button
-              className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
+              className="rounded-xl border px-3 py-1.5 app-secondary-action disabled:opacity-50"
               disabled={page <= 1}
               onClick={() =>
                 setParams((p) => ({
@@ -280,7 +280,7 @@ const RecipesList = () => {
             </button>
 
             <button
-              className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
+              className="rounded-xl border px-3 py-1.5 app-secondary-action disabled:opacity-50"
               disabled={page >= totalPages}
               onClick={() =>
                 setParams((p) => ({

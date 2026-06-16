@@ -46,10 +46,10 @@ export default function CustomCheckout({ plan, period }: Props) {
 
   if (!clientSecret) {
     return (
-      <div className="rounded-3xl border-2 border-neutral-900 bg-white p-6 shadow-sm">
+      <div className="rounded-3xl border-2 app-surface p-6 shadow-sm">
         <h2 className="text-2xl font-bold">Custom Checkout</h2>
 
-        <p className="mt-2 text-neutral-600">
+        <p className="mt-2 app-muted">
           Subscribe to the{" "}
           <span className="font-semibold capitalize">{plan}</span> plan.
         </p>
@@ -57,15 +57,15 @@ export default function CustomCheckout({ plan, period }: Props) {
         <div className="mt-5 rounded-2xl border-2 border-lime-400 bg-lime-50 p-4">
           <h3 className="font-bold">Demo payment mode 🧪</h3>
 
-          <p className="mt-2 text-sm text-neutral-700">
+          <p className="mt-2 text-sm app-muted">
             Use this Stripe test card:
           </p>
 
-          <div className="mt-3 rounded-xl border border-lime-300 bg-white text-black p-3 font-mono text-sm">
+          <div className="mt-3 rounded-xl border app-surface-strong p-3 font-mono text-sm">
             4242 4242 4242 4242
           </div>
 
-          <div className="mt-3 space-y-1 text-xs text-neutral-600">
+          <div className="mt-3 space-y-1 text-xs app-muted">
             <p>Expiry → Any future date</p>
             <p>CVC → Any 3 digits</p>
             <p>ZIP → Any ZIP code</p>
@@ -162,16 +162,16 @@ function CheckoutForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl border-2 border-neutral-900 bg-white p-6 shadow-sm"
+      className="rounded-3xl border-2 app-surface p-6 shadow-sm"
     >
       <h2 className="text-2xl font-bold">Payment Details</h2>
 
-      <p className="mt-2 text-sm text-neutral-600">Stripe test card:</p>
+      <p className="mt-2 text-sm app-muted">Stripe test card:</p>
 
-      <div className="mt-2 rounded-xl border border-lime-300 bg-lime-50 text-black p-3 font-mono text-sm">
+      <div className="mt-2 rounded-xl border app-surface-strong p-3 font-mono text-sm">
         4242 4242 4242 4242
       </div>
-      <div className="mt-5 rounded-2xl border border-neutral-200 p-4">
+      <div className="mt-5 rounded-2xl border app-border p-4">
         <PaymentElement />
       </div>
 

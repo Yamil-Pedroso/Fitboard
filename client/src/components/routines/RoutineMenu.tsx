@@ -33,12 +33,12 @@ const RoutineMenu = ({ open, onClose, items }: RoutineMenuProps) => {
   return (
     <div
       ref={ref}
-      className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-xl border border-black/10 bg-white/80 backdrop-blur-xl shadow-lg"
+      className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-xl border app-surface-strong backdrop-blur-xl shadow-lg"
     >
       {items.map((item: MenuItem, i: number) => (
         <button
           key={i}
-          className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-black/5 text-neutral-900 cursor-pointer`}
+          className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm app-secondary-action cursor-pointer"
           onClick={() => {
             item.onClick();
             onClose();
@@ -46,7 +46,7 @@ const RoutineMenu = ({ open, onClose, items }: RoutineMenuProps) => {
         >
           {item.icon}
           <span
-            className={`${item.danger ? "text-red-500" : "text-neutral-900"}`}
+            className={item.danger ? "text-red-500" : ""}
           >
             {item.label}
           </span>

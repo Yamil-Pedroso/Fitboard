@@ -51,12 +51,12 @@ const MealsList = () => {
   const totalPages = Math.max(1, Math.ceil(total / (params.limit ?? 20)));
 
   return (
-    <div className="p-6 space-y-6 text-black">
+    <div className="p-6 space-y-6 text-[var(--app-text)]">
       {/* HEADER */}
       <div className="flex items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Meals</h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[var(--app-text-muted)]">
             Log your meals and track your macros.
           </p>
         </div>
@@ -71,10 +71,10 @@ const MealsList = () => {
       </div>
 
       {/* TABLE DESKTOP */}
-      <div className="hidden rounded-2xl border border-neutral-200 bg-white/80 shadow-sm lg:block">
+      <div className="hidden rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] shadow-sm lg:block">
         <table className="min-w-[980px] w-full text-sm">
-          <thead className="bg-neutral-50/80 backdrop-blur">
-            <tr className="text-neutral-600">
+          <thead className="bg-[var(--app-surface-muted)] backdrop-blur">
+            <tr className="text-[var(--app-text-muted)]">
               <Th>Date</Th>
               <Th>Slot</Th>
               <Th>Item</Th>
@@ -92,7 +92,10 @@ const MealsList = () => {
               <LoadingRows />
             ) : meals.length === 0 ? (
               <tr>
-                <td colSpan={9} className="p-6 text-center text-neutral-500">
+                <td
+                  colSpan={9}
+                  className="p-6 text-center text-[var(--app-text-muted)]"
+                >
                   No meals found
                 </td>
               </tr>
@@ -100,9 +103,9 @@ const MealsList = () => {
               meals.map((m, idx) => (
                 <tr
                   key={m._id}
-                  className={`border-t ${
-                    idx % 2 ? "bg-neutral-50/50" : "bg-transparent"
-                  } hover:bg-neutral-50 transition`}
+                  className={`border-t border-[var(--app-border)] ${
+                    idx % 2 ? "bg-[var(--app-surface-muted)]" : "bg-transparent"
+                  } hover:bg-[var(--app-surface-strong)] transition`}
                 >
                   <Td>
                     <span className="font-medium">{m.date}</span>
@@ -136,7 +139,7 @@ const MealsList = () => {
                   <Td className="text-right">
                     <div className="relative inline-flex gap-2">
                       <button
-                        className="rounded-lg border border-neutral-200 px-2.5 py-1.5 hover:bg-neutral-50"
+                        className="rounded-lg border border-[var(--app-border)] px-2.5 py-1.5 hover:bg-[var(--app-surface-strong)]"
                         onClick={() => handleUpdateMealClick(m._id)}
                       >
                         Edit
@@ -176,18 +179,18 @@ const MealsList = () => {
       {/* MOBILE */}
       <div className="space-y-3 lg:hidden">
         {isLoading ? (
-          <div className="rounded-2xl border border-neutral-200 bg-white/80 p-4">
-            <div className="h-5 w-40 animate-pulse bg-neutral-200 rounded" />
+          <div className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] p-4">
+            <div className="h-5 w-40 animate-pulse rounded bg-[var(--app-surface-muted)]" />
           </div>
         ) : meals.length === 0 ? (
-          <div className="rounded-2xl border border-neutral-200 bg-white/80 p-6 text-center text-neutral-500">
+          <div className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] p-6 text-center text-[var(--app-text-muted)]">
             No meals found
           </div>
         ) : (
           meals.map((m) => (
             <div
               key={m._id}
-              className="rounded-2xl border border-neutral-200 bg-white/80 p-4 shadow-sm"
+              className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] p-4 shadow-sm"
             >
               <div className="flex justify-between gap-3">
                 <div className="min-w-0">
@@ -195,7 +198,7 @@ const MealsList = () => {
                     <span className="font-semibold">{m.date}</span>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${
-                        slotBadge[m.slot] ?? "bg-neutral-100"
+                        slotBadge[m.slot] ?? "bg-neutral-100 text-neutral-700"
                       }`}
                     >
                       {m.slot}
@@ -228,7 +231,7 @@ const MealsList = () => {
 
                 <div className="flex flex-col gap-2 relative">
                   <button
-                    className="rounded-lg border px-2 py-1 text-sm cursor-pointer"
+                    className="rounded-lg border border-[var(--app-border)] px-2 py-1 text-sm cursor-pointer hover:bg-[var(--app-surface-strong)]"
                     onClick={() => handleUpdateMealClick(m._id)}
                   >
                     Edit
@@ -262,13 +265,13 @@ const MealsList = () => {
 
       {/* PAGINATION */}
       <div className="flex flex-col items-center justify-between gap-3 sm:flex-row ">
-        <span className="text-sm text-neutral-600">
+        <span className="text-sm text-[var(--app-text-muted)]">
           Page {page} of {totalPages}
         </span>
 
         <div className="flex gap-2">
           <button
-            className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
+            className="rounded-xl border border-[var(--app-border)] px-3 py-1.5 hover:bg-[var(--app-surface-strong)] disabled:opacity-50"
             disabled={page <= 1}
             onClick={() =>
               setParams((p) => ({ ...p, page: (p.page ?? 1) - 1 }))
@@ -278,7 +281,7 @@ const MealsList = () => {
           </button>
 
           <button
-            className="rounded-xl border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 disabled:opacity-50"
+            className="rounded-xl border border-[var(--app-border)] px-3 py-1.5 hover:bg-[var(--app-surface-strong)] disabled:opacity-50"
             disabled={page >= totalPages}
             onClick={() =>
               setParams((p) => ({ ...p, page: (p.page ?? 1) + 1 }))
@@ -294,7 +297,7 @@ const MealsList = () => {
 
 function MacroPill({ label, value }: { label: string; value?: number }) {
   return (
-    <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-xs">
+    <span className="rounded-full border border-[var(--app-border)] px-2 py-0.5 text-xs">
       {label}: {value ?? "-"}
     </span>
   );
@@ -316,9 +319,9 @@ function LoadingRows() {
   return (
     <>
       {Array.from({ length: 6 }).map((_, i) => (
-        <tr key={i} className="border-t">
+        <tr key={i} className="border-t border-[var(--app-border)]">
           <td colSpan={9} className="p-3">
-            <div className="h-5 w-full animate-pulse rounded bg-neutral-100" />
+            <div className="h-5 w-full animate-pulse rounded bg-[var(--app-surface-muted)]" />
           </td>
         </tr>
       ))}
@@ -340,18 +343,18 @@ function ConfirmPopover({
   return (
     <div
       data-confirm-for={anchorId}
-      className="absolute right-0 top-full mt-2 w-50 rounded-2xl border border-neutral-200 bg-white/90 backdrop-blur p-4 shadow-xl z-50"
+      className="absolute right-0 top-full mt-2 w-50 rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-strong)] text-[var(--app-text)] backdrop-blur p-4 shadow-xl z-50"
     >
       <div className="flex flex-col items-center">
         <p className="mb-2 font-semibold">Delete meal?</p>
-        <p className="mb-3 text-sm text-center text-neutral-500">
+        <p className="mb-3 text-sm text-center text-[var(--app-text-muted)]">
           This action cannot be undone.
         </p>
       </div>
 
       <div className="flex justify-center gap-2">
         <button
-          className="rounded-xl border px-3 py-1.5 hover:bg-neutral-50"
+          className="rounded-xl border border-[var(--app-border)] px-3 py-1.5 hover:bg-[var(--app-surface-muted)]"
           onClick={onCancel}
         >
           Cancel

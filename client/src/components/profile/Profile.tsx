@@ -63,11 +63,11 @@ const Profile = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl p-6  text-black">
+    <div className="mx-auto w-full max-w-6xl p-6 text-[var(--app-text)]">
       {/* HEADER */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 overflow-hidden rounded-full border border-neutral-200 shadow-sm">
+          <div className="h-16 w-16 overflow-hidden rounded-full border border-[var(--app-border)] shadow-sm">
             <img
               src={user?.avatar}
               alt={user?.username}
@@ -77,8 +77,10 @@ const Profile = () => {
 
           <div>
             <h1 className="text-2xl font-semibold">{user?.username}</h1>
-            <p className="text-sm text-neutral-500">{user?.email}</p>
-            <p className="text-xs text-neutral-400">
+            <p className="text-sm text-[var(--app-text-muted)]">
+              {user?.email}
+            </p>
+            <p className="text-xs text-[var(--app-text-muted)]">
               Member since {MOCK_PROFILE.memberSince}
             </p>
           </div>
@@ -87,7 +89,7 @@ const Profile = () => {
         <div className="flex gap-2">
           <Link
             to="/settings"
-            className="rounded-xl border border-neutral-200 px-4 py-2 text-sm hover:bg-neutral-50"
+            className="rounded-xl border border-[var(--app-border)] px-4 py-2 text-sm text-[var(--app-text)] hover:bg-[var(--app-surface-strong)]"
           >
             Edit profile
           </Link>
@@ -102,14 +104,14 @@ const Profile = () => {
       </div>
 
       {/* BIO */}
-      <div className="mb-6 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-5 shadow-sm">
+      <div className="mb-6 rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur p-5 shadow-sm">
         <h2 className="mb-1 text-lg font-semibold">Bio</h2>
-        <p className="text-neutral-600">{MOCK_PROFILE.bio}</p>
+        <p className="text-[var(--app-text-muted)]">{MOCK_PROFILE.bio}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* WEEK */}
-        <section className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-5 shadow-sm lg:col-span-2">
+        <section className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur p-5 shadow-sm lg:col-span-2">
           <div className="mb-4 flex justify-between">
             <h2 className="text-lg font-semibold">This week</h2>
             <Link to="/" className="text-sm text-lime-600 hover:underline">
@@ -123,13 +125,15 @@ const Profile = () => {
             ))}
           </div>
 
-          <div className="mt-5 rounded-xl border border-neutral-200 p-4">
+          <div className="mt-5 rounded-xl border border-[var(--app-border)] p-4">
             <div className="mb-2 flex justify-between">
               <h3 className="font-medium">Macro goals</h3>
-              <span className="text-xs text-neutral-500">{diffLabel}</span>
+              <span className="text-xs text-[var(--app-text-muted)]">
+                {diffLabel}
+              </span>
             </div>
 
-            <div className="mb-3 h-2 w-full overflow-hidden rounded bg-neutral-200">
+            <div className="mb-3 h-2 w-full overflow-hidden rounded bg-[var(--app-surface-muted)]">
               <div
                 className="h-full bg-lime-400"
                 style={{ width: `${pct(MOCK_GOAL.p, 450)}%` }}
@@ -150,26 +154,28 @@ const Profile = () => {
         <ProfileReferencePhotos />
 
         {/* BADGES */}
-        <section className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-5 shadow-sm">
+        <section className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur p-5 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold">Badges</h2>
 
           <ul className="space-y-3">
             {MOCK_BADGES.map((b, i) => (
               <li
                 key={i}
-                className="flex justify-between rounded-xl border border-neutral-200 px-3 py-2"
+                className="flex justify-between rounded-xl border border-[var(--app-border)] px-3 py-2"
               >
                 <span>
                   {b.icon} {b.label}
                 </span>
-                <span className="text-xs text-neutral-400">View</span>
+                <span className="text-xs text-[var(--app-text-muted)]">
+                  View
+                </span>
               </li>
             ))}
           </ul>
         </section>
 
         {/* MEALS */}
-        <section className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-5 shadow-sm lg:col-span-2">
+        <section className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur p-5 shadow-sm lg:col-span-2">
           <div className="mb-4 flex justify-between">
             <h2 className="text-lg font-semibold">Recent meals</h2>
             <Link to="/meals" className="text-sm text-lime-600 hover:underline">
@@ -185,7 +191,7 @@ const Profile = () => {
             <table className="w-full text-sm">
               <tbody>
                 {meals.map((m) => (
-                  <tr key={m._id} className="border-t">
+                  <tr key={m._id} className="border-t border-[var(--app-border)]">
                     <td className="p-2">{m.date}</td>
                     <td className="p-2">{m.slot}</td>
                     <td className="p-2">{m.customItem?.name}</td>
@@ -210,8 +216,8 @@ const Profile = () => {
 
 function StatCard({ label, value, unit }: Stat) {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white/80 backdrop-blur p-4">
-      <p className="text-xs text-neutral-500">{label}</p>
+    <div className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur p-4">
+      <p className="text-xs text-[var(--app-text-muted)]">{label}</p>
       <p className="text-2xl font-semibold">
         {value} {unit}
       </p>
@@ -221,7 +227,7 @@ function StatCard({ label, value, unit }: Stat) {
 
 function EmptyState() {
   return (
-    <div className="rounded-xl border border-neutral-200 p-8 text-center">
+    <div className="rounded-xl border border-[var(--app-border)] p-8 text-center">
       <p className="mb-2 text-lg font-medium">No meals logged yet</p>
       <Link
         to="/meals/create"

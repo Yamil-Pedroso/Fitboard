@@ -94,13 +94,13 @@ export default function UsersAdminPage() {
   const totalPages = Math.max(1, Math.ceil(total / params.limit));
 
   return (
-    <div className="mx-auto w-full max-w-6xl p-6 text-black">
+    <div className="mx-auto w-full max-w-6xl p-6 app-text">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-neutral-900">
+          <h1 className="text-2xl font-semibold app-text">
             Admin Dashboard
           </h1>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm app-muted">
             Manage users, roles and status.
           </p>
         </div>
@@ -114,14 +114,14 @@ export default function UsersAdminPage() {
 
       <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <input
-          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
+          className="w-full rounded-xl border px-3 py-2 text-sm app-control shadow-sm"
           placeholder="Search users…"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
 
         <select
-          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
+          className="w-full rounded-xl border px-3 py-2 text-sm app-control shadow-sm"
           value={activeFilter}
           onChange={(e) =>
             setActiveFilter(e.currentTarget.value as FilterActive)
@@ -133,7 +133,7 @@ export default function UsersAdminPage() {
         </select>
 
         <select
-          className="w-full rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-lime-400/30 outline-none"
+          className="w-full rounded-xl border px-3 py-2 text-sm app-control shadow-sm"
           value={params.sort}
           onChange={(e) =>
             setParams((p) => ({
@@ -149,10 +149,10 @@ export default function UsersAdminPage() {
         </select>
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm">
+      <div className="overflow-x-auto rounded-2xl border app-surface backdrop-blur shadow-sm">
         <table className="min-w-[860px] w-full text-sm">
-          <thead className="bg-neutral-50">
-            <tr className="border-b">
+          <thead className="bg-[var(--app-surface-muted)]">
+            <tr className="border-b app-border">
               <Th>User</Th>
               <Th>Email</Th>
               <Th>Role</Th>
@@ -173,7 +173,7 @@ export default function UsersAdminPage() {
               </tr>
             ) : (
               users.map((u) => (
-                <tr key={String(u._id)} className="border-t">
+                <tr key={String(u._id)} className="border-t app-border">
                   <Td>
                     <div className="flex items-center gap-3">
                       <Avatar src={u.avatar} alt={u.username} />
@@ -203,14 +203,14 @@ export default function UsersAdminPage() {
                   <Td right>
                     <div className="flex gap-2 justify-end">
                       <button
-                        className="rounded-lg border px-2 py-1 text-sm hover:bg-neutral-100"
+                        className="rounded-lg border px-2 py-1 text-sm app-secondary-action"
                         onClick={() => promoteDemote.mutate(u)}
                       >
                         {u.isAdmin ? "Demote" : "Promote"}
                       </button>
 
                       <button
-                        className="rounded-lg border px-2 py-1 text-sm hover:bg-neutral-100"
+                        className="rounded-lg border px-2 py-1 text-sm app-secondary-action"
                         onClick={() => deactivate.mutate(u._id)}
                       >
                         Deactivate
@@ -231,20 +231,20 @@ export default function UsersAdminPage() {
         </table>
       </div>
 
-      <div className="mt-4 flex justify-between text-sm text-neutral-600">
+      <div className="mt-4 flex justify-between text-sm app-muted">
         <span>
           Page {params.page} / {totalPages}
         </span>
 
         <div className="space-x-2">
           <button
-            className="rounded-lg border px-3 py-1 hover:bg-neutral-100"
+            className="rounded-lg border px-3 py-1 app-secondary-action"
             onClick={() => setParams((p) => ({ ...p, page: p.page - 1 }))}
           >
             Prev
           </button>
           <button
-            className="rounded-lg border px-3 py-1 hover:bg-neutral-100"
+            className="rounded-lg border px-3 py-1 app-secondary-action"
             onClick={() => setParams((p) => ({ ...p, page: p.page + 1 }))}
           >
             Next
@@ -257,8 +257,8 @@ export default function UsersAdminPage() {
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm">
-      <p className="text-xs text-neutral-500">{label}</p>
+    <div className="rounded-xl border app-surface backdrop-blur p-4 shadow-sm">
+      <p className="text-xs app-muted">{label}</p>
       <p className="text-xl font-semibold">{value}</p>
     </div>
   );
@@ -282,7 +282,7 @@ function Badge({
   const styles = {
     lime: "bg-lime-100 text-black border-lime-300",
     red: "bg-red-100 text-red-700 border-red-200",
-    gray: "bg-neutral-100 text-neutral-700 border-neutral-200",
+    gray: "bg-neutral-100 app-muted border-neutral-200",
   };
   return (
     <span className={`px-2 py-0.5 text-xs rounded-full border ${styles[tone]}`}>

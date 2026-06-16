@@ -173,19 +173,19 @@ const PlansSection: React.FC = () => {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight app-text sm:text-4xl">
             {t("title")}
           </h2>
 
-          <p className="mt-2 text-neutral-600">{t("subtitle")}</p>
+          <p className="mt-2 settings-muted">{t("subtitle")}</p>
 
-          <div className="mt-5 inline-flex items-center rounded-2xl border border-neutral-200 bg-white p-1 text-sm shadow-sm">
+          <div className="mt-5 inline-flex items-center rounded-2xl border app-surface p-1 text-sm shadow-sm">
             <button
               type="button"
               className={`rounded-xl px-4 py-2 transition ${
                 period === "monthly"
                   ? "bg-neutral-900 text-white"
-                  : "text-neutral-700 hover:bg-neutral-100"
+                  : "app-muted hover:bg-[var(--app-surface-muted)]"
               }`}
               onClick={() => setPeriod("monthly")}
               aria-pressed={period === "monthly"}
@@ -198,7 +198,7 @@ const PlansSection: React.FC = () => {
               className={`rounded-xl px-4 py-2 transition ${
                 period === "yearly"
                   ? "bg-neutral-900 text-white"
-                  : "text-neutral-700 hover:bg-neutral-100"
+                  : "app-muted hover:bg-[var(--app-surface-muted)]"
               }`}
               onClick={() => setPeriod("yearly")}
               aria-pressed={period === "yearly"}
@@ -252,16 +252,16 @@ const PlansSection: React.FC = () => {
                     handleSelectPlan(plan.id);
                   }
                 }}
-                className={`relative flex h-full min-h-[450px] cursor-pointer flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md ${
+                className={`relative flex h-full min-h-[450px] cursor-pointer flex-col rounded-2xl border app-surface p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md ${
                   isSelected
                     ? "border-lime-500 ring-4 ring-lime-400/30"
                     : plan.highlight
-                      ? "border-transparent bg-gradient-to-b from-white to-white/90 ring-2 ring-lime-500/60"
-                      : "border-2 border-neutral-800"
+                      ? "ring-2 ring-lime-500/60"
+                      : ""
                 }`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3 right-4 inline-flex items-center gap-2 rounded-full bg-lime-400 px-3 py-1 text-xs font-medium text-neutral-900 shadow">
+                  <div className="absolute -top-3 right-4 inline-flex items-center gap-2 rounded-full bg-lime-400 px-3 py-1 text-xs font-medium text-black shadow">
                     <Star className="h-3.5 w-3.5" />
                     {t("mostPopular")}
                   </div>
@@ -274,33 +274,33 @@ const PlansSection: React.FC = () => {
                   </div>
                 )}
 
-                <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-xl bg-neutral-50 px-3 py-1 text-sm text-neutral-800 ring-1 ring-inset ring-neutral-200">
+                <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-xl bg-[var(--app-surface-muted)] px-3 py-1 text-sm ring-1 ring-inset ring-[var(--app-border)]">
                   {plan.icon}
                   <span className="font-medium">{plan.name}</span>
                 </div>
 
                 <div className="flex items-end gap-2">
-                  <div className="text-4xl font-bold text-neutral-900">
+                  <div className="text-4xl font-bold">
                     {formatCurrency(price)}
                   </div>
 
-                  <div className="pb-1 text-neutral-500">{unit}</div>
+                  <div className="pb-1 app-muted">{unit}</div>
                 </div>
 
                 {sub && (
-                  <div className="mt-1 text-sm text-neutral-600">{sub}</div>
+                  <div className="mt-1 text-sm app-muted">{sub}</div>
                 )}
 
-                <p className="mt-3 text-neutral-600">{plan.tagline}</p>
+                <p className="mt-3 app-muted">{plan.tagline}</p>
 
                 <ul className="mt-5 space-y-2 text-sm">
                   {plan.features.map((feature) => (
                     <li
                       key={feature}
-                      className="flex items-start gap-2 text-neutral-800"
+                      className="flex items-start gap-2"
                     >
                       <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-lime-50 text-lime-700 ring-1 ring-inset ring-lime-200">
-                        <Check className="h-3.5 w-3.5 text-neutral-900" />
+                        <Check className="h-3.5 w-3.5 text-black" />
                       </span>
 
                       <span>{feature}</span>
@@ -320,10 +320,10 @@ const PlansSection: React.FC = () => {
                       isCurrentPlan
                         ? "bg-lime-100 text-lime-800 ring-1 ring-lime-300"
                         : plan.id === "free"
-                          ? "border border-neutral-200 text-neutral-900 hover:bg-neutral-50"
+                          ? "border app-secondary-action"
                           : plan.highlight
                             ? "bg-neutral-900 text-white hover:opacity-90"
-                            : "border border-neutral-200 text-neutral-900 hover:bg-neutral-50"
+                            : "border app-secondary-action"
                     }`}
                   >
                     {isLoading
@@ -342,7 +342,7 @@ const PlansSection: React.FC = () => {
           })}
         </div>
 
-        <p className="mt-6 text-center text-xs text-neutral-500">
+        <p className="mt-6 text-center text-xs app-muted">
           {t("footnote")}
         </p>
       </div>

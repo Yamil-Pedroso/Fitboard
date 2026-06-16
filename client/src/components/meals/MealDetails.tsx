@@ -7,7 +7,7 @@ import type { IMeal, QtyUnit } from "@/services/mealService";
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-neutral-200 px-2 py-0.5 text-xs text-neutral-700 bg-white/80 backdrop-blur">
+    <span className="inline-flex items-center rounded-full border app-surface-muted px-2 py-0.5 text-xs app-muted backdrop-blur">
       {children}
     </span>
   );
@@ -21,8 +21,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-5 shadow-sm">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-700">
+    <section className="rounded-2xl border app-surface backdrop-blur p-5 shadow-sm">
+      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide app-muted">
         {title}
       </h3>
       {children}
@@ -149,7 +149,7 @@ const MealDetails = () => {
   const isCustom = !!meal.customItem;
 
   return (
-    <div className="mx-auto w-full max-w-4xl p-6 pt-24 text-black">
+    <div className="mx-auto w-full max-w-4xl p-6 pt-24 app-text">
       <div className="mb-8 flex flex-wrap justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">Meal details</h1>
@@ -157,7 +157,7 @@ const MealDetails = () => {
           <div className="mt-2 flex items-center gap-2 text-sm">
             <Badge>{meal.date}</Badge>
             <Badge>{meal.slot}</Badge>
-            <span className="text-neutral-500">
+            <span className="app-muted">
               {new Date(meal.createdAt).toLocaleString()}
             </span>
           </div>
@@ -167,7 +167,7 @@ const MealDetails = () => {
           <Link
             to="/meals/update/$mealId"
             params={{ mealId: meal._id }}
-            className="rounded-xl border border-neutral-200 px-3 py-2 text-sm hover:bg-neutral-50"
+            className="rounded-xl border px-3 py-2 text-sm app-secondary-action"
           >
             Edit
           </Link>
@@ -219,7 +219,7 @@ const MealDetails = () => {
               <Macro label="fat" value={`${computed.totals.fat}g`} />
             </div>
           ) : (
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm app-muted">
               Not enough data to calculate nutrition.
             </p>
           )}
@@ -232,18 +232,18 @@ const MealDetails = () => {
           onClick={() => setConfirmOpen(false)}
         >
           <div
-            className="w-full max-w-sm rounded-2xl border border-neutral-200 bg-white p-5 shadow-xl"
+            className="w-full max-w-sm rounded-2xl border app-surface p-5 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <h4 className="text-lg font-semibold mb-2">Delete meal</h4>
 
-            <p className="text-sm text-neutral-600 mb-4">
+            <p className="text-sm app-muted mb-4">
               This action cannot be undone.
             </p>
 
             <div className="flex justify-end gap-2">
               <button
-                className="rounded-xl border px-3 py-2 text-sm"
+                className="rounded-xl border px-3 py-2 text-sm app-secondary-action"
                 onClick={() => setConfirmOpen(false)}
               >
                 Cancel
@@ -270,7 +270,7 @@ const MealDetails = () => {
 function Row({ label, value }: { label: string; value: any }) {
   return (
     <div className="flex justify-between">
-      <span className="text-neutral-500">{label}</span>
+      <span className="app-muted">{label}</span>
       <strong>{value}</strong>
     </div>
   );
@@ -278,8 +278,8 @@ function Row({ label, value }: { label: string; value: any }) {
 
 function Macro({ label, value }: { label: string; value: any }) {
   return (
-    <div className="rounded-xl border border-neutral-200 p-3 bg-white/80 backdrop-blur">
-      <div className="text-xs text-neutral-500">{label}</div>
+    <div className="rounded-xl border app-surface-muted p-3 backdrop-blur">
+      <div className="text-xs app-muted">{label}</div>
       <div className="font-semibold">{value}</div>
     </div>
   );

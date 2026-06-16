@@ -29,10 +29,9 @@ const LoginForm = () => {
       <form
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl
-                   border border-neutral-200
-                   bg-white/80 backdrop-blur-xl
+                   border app-surface backdrop-blur-xl
                    shadow-[0_20px_80px_rgba(0,0,0,0.08)]
-                   p-6 sm:p-8 text-black"
+                   p-6 sm:p-8"
       >
         {/* HEADER */}
         <div className="mb-6 flex items-center gap-3">
@@ -63,7 +62,7 @@ const LoginForm = () => {
             <h2 className="text-xl font-semibold tracking-tight">
               Welcome back
             </h2>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm app-muted">
               Log in to continue your journey.
             </p>
           </div>
@@ -73,14 +72,11 @@ const LoginForm = () => {
         <div className="space-y-1">
           <label className="text-sm font-medium">Email</label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-3 grid place-items-center text-neutral-400">
+            <span className="absolute inset-y-0 left-3 grid place-items-center app-muted">
               ✉️
             </span>
             <input
-              className="w-full rounded-xl border border-neutral-200
-                         bg-white/80 backdrop-blur
-                         px-10 py-2.5 text-sm outline-none transition
-                         focus:ring-2 focus:ring-lime-400/30"
+              className="w-full rounded-xl border px-10 py-2.5 text-sm app-control"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
@@ -94,15 +90,12 @@ const LoginForm = () => {
         <div className="mt-4 space-y-1">
           <label className="text-sm font-medium">Password</label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-3 grid place-items-center text-neutral-400">
+            <span className="absolute inset-y-0 left-3 grid place-items-center app-muted">
               🔒
             </span>
 
             <input
-              className="w-full rounded-xl border border-neutral-200
-                         bg-white/80 backdrop-blur
-                         px-10 py-2.5 pr-12 text-sm outline-none transition
-                         focus:ring-2 focus:ring-lime-400/30"
+              className="w-full rounded-xl border px-10 py-2.5 pr-12 text-sm app-control"
               type={showPw ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -113,7 +106,7 @@ const LoginForm = () => {
             <button
               type="button"
               onClick={() => setShowPw((s) => !s)}
-              className="absolute inset-y-0 right-2 px-2 text-xs text-neutral-500 hover:text-black"
+              className="absolute inset-y-0 right-2 px-2 text-xs app-muted hover:text-[var(--app-text)]"
             >
               {showPw ? "Hide" : "Show"}
             </button>
@@ -149,7 +142,7 @@ const LoginForm = () => {
 
         {/* FOOTER */}
         <div className="mt-4 flex items-center justify-between text-sm">
-          <span className="text-neutral-500">Forgot password?</span>
+          <span className="app-muted">Forgot password?</span>
           <Link
             to="/auth/forgot-password"
             className="font-medium text-lime-600 hover:underline"

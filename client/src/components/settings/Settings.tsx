@@ -10,8 +10,26 @@ import { useAuth } from "@/context/UserContext";
 import { updateAvatar, updateMe } from "@/services/usersService";
 
 type UnitSystem = "metric" | "imperial";
-type Theme = "system" | "light" | "dark";
+type Theme = "light" | "dark";
 type Language = "en" | "de" | "es";
+
+const THEME_STORAGE_KEY = "fitboard-theme";
+
+function isTheme(value: string | null): value is Theme {
+  return value === "light" || value === "dark";
+}
+
+function getStoredTheme(): Theme | null {
+  if (typeof window === "undefined") return null;
+
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return isTheme(stored) ? stored : null;
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+}
 
 const Settings = () => {
   const { user, refreshMe } = useAuth();
@@ -32,7 +50,7 @@ const Settings = () => {
   const [isSavingNotifications, setIsSavingNotifications] = useState(false);
 
   const [unitSystem, setUnitSystem] = useState<UnitSystem>("metric");
-  const [theme, setTheme] = useState<Theme>("system");
+  const [theme, setTheme] = useState<Theme>(() => getStoredTheme() ?? "light");
   const [language, setLanguage] = useState<Language>("en");
 
   const [kcal, setKcal] = useState<number>(2200);
@@ -51,7 +69,8 @@ const Settings = () => {
       setAvatarPreview(user.avatar || "");
 
       setLanguage(user.preferences?.language || "en");
-      setTheme(user.preferences?.theme || "system");
+      const nextTheme = getStoredTheme() ?? user.preferences?.theme ?? null;
+      setTheme(isTheme(nextTheme) ? nextTheme : "light");
       setUnitSystem(user.preferences?.unitSystem || "metric");
 
       setKcal(user.macroGoals?.kcal ?? 2200);
@@ -66,6 +85,10 @@ const Settings = () => {
       i18n.changeLanguage(user.preferences?.language || "en");
     }
   }, [user]);
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   useEffect(() => {
     return () => {
@@ -136,6 +159,7 @@ const Settings = () => {
       });
 
       await i18n.changeLanguage(language);
+      applyTheme(theme);
 
       await refreshMe();
 
@@ -201,15 +225,15 @@ const Settings = () => {
   }
 
   return (
-    <div className="relative">
-      <div className="fixed inset-0 bg-white/40 backdrop-blur-[2px]" />
+    <div className="settings-page relative">
+      <div className="settings-backdrop fixed inset-0 backdrop-blur-[2px]" />
 
-      <div className="relative z-10 mx-auto max-w-6xl p-4 sm:p-6 md:p-8 text-black">
+      <div className="relative z-10 mx-auto max-w-6xl p-4 sm:p-6 md:p-8">
         <header className="mb-8 flex justify-between items-end">
           <div>
             <h1 className="text-2xl font-semibold">{t("title")}</h1>
 
-            <p className="text-sm opacity-70">{t("subtitle")}</p>
+            <p className="settings-muted text-sm">{t("subtitle")}</p>
           </div>
         </header>
 
@@ -219,7 +243,7 @@ const Settings = () => {
               <h2 className="text-lg font-semibold">{t("profile")}</h2>
 
               <div className="flex items-center gap-4 mt-4">
-                <div className="h-16 w-16 rounded-full overflow-hidden border bg-white">
+                <div className="settings-subcard h-16 w-16 rounded-full overflow-hidden bg-white">
                   <img
                     src={avatarPreview || user?.avatar}
                     alt="User avatar"
@@ -231,7 +255,7 @@ const Settings = () => {
                   <button
                     type="button"
                     onClick={() => fileRef.current?.click()}
-                    className="rounded-xl border px-3 py-1.5 bg-white/60 backdrop-blur"
+                    className="settings-secondary-action rounded-xl px-3 py-1.5 backdrop-blur"
                   >
                     {t("changePhoto")}
                   </button>
@@ -258,13 +282,13 @@ const Settings = () => {
                 <input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full rounded-xl border px-3 py-2 bg-white/60 backdrop-blur"
+                  className="settings-control w-full rounded-xl px-3 py-2 backdrop-blur"
                 />
 
                 <input
                   value={email}
                   disabled
-                  className="w-full rounded-xl border px-3 py-2 bg-white/40"
+                  className="settings-control-muted w-full rounded-xl px-3 py-2"
                 />
               </div>
 
@@ -272,7 +296,7 @@ const Settings = () => {
                 type="button"
                 onClick={handleSaveProfile}
                 disabled={isSavingAvatar}
-                className="mt-4 w-full bg-lime-400 py-2 rounded-xl hover:bg-lime-300 disabled:opacity-60"
+                className="settings-save-action mt-4 w-full py-2 rounded-xl disabled:opacity-60"
               >
                 {isSavingAvatar ? t("saving") : t("saveChanges")}
               </button>
@@ -281,16 +305,16 @@ const Settings = () => {
             <GlassCard>
               <h2 className="text-lg font-semibold">{t("security")}</h2>
 
-              <div className="flex justify-between items-center mt-4 border p-4 rounded-xl bg-white/60 backdrop-blur">
+              <div className="settings-subcard flex justify-between items-center mt-4 p-4 rounded-xl backdrop-blur">
                 <div>
                   <p>{t("password")}</p>
 
-                  <p className="text-sm opacity-70">{t("lastUpdated")}</p>
+                  <p className="settings-muted text-sm">{t("lastUpdated")}</p>
                 </div>
 
                 <Link
                   to="/settings/security"
-                  className="border px-4 py-2 rounded-xl bg-white/60"
+                  className="settings-secondary-action px-4 py-2 rounded-xl"
                 >
                   {t("change")}
                 </Link>
@@ -307,7 +331,7 @@ const Settings = () => {
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value as Language)}
-                  className="rounded-xl border px-3 py-2 bg-white/60"
+                  className="settings-control rounded-xl px-3 py-2"
                 >
                   <option value="en">{t("english")}</option>
 
@@ -319,9 +343,9 @@ const Settings = () => {
                 <select
                   value={theme}
                   onChange={(e) => setTheme(e.target.value as Theme)}
-                  className="rounded-xl border px-3 py-2 bg-white/60"
+                  className="settings-control rounded-xl px-3 py-2"
                 >
-                  <option value="system">{t("system")}</option>
+                  {/*<option value="system">{t("system")}</option>*/}
 
                   <option value="light">{t("light")}</option>
 
@@ -331,7 +355,7 @@ const Settings = () => {
                 <select
                   value={unitSystem}
                   onChange={(e) => setUnitSystem(e.target.value as UnitSystem)}
-                  className="rounded-xl border px-3 py-2 bg-white/60"
+                  className="settings-control rounded-xl px-3 py-2"
                 >
                   <option value="metric">{t("metric")}</option>
 
@@ -343,7 +367,7 @@ const Settings = () => {
                 type="button"
                 onClick={handleSavePreferences}
                 disabled={isSavingPreferences}
-                className="mt-4 w-full bg-lime-400 py-2 rounded-xl disabled:opacity-60"
+                className="settings-save-action mt-4 w-full py-2 rounded-xl disabled:opacity-60"
               >
                 {isSavingPreferences ? t("saving") : t("savePreferences")}
               </button>
@@ -388,7 +412,7 @@ const Settings = () => {
                 type="button"
                 onClick={handleSaveGoals}
                 disabled={isSavingGoals}
-                className="mt-4 w-full bg-lime-400 py-2 rounded-xl disabled:opacity-60"
+                className="settings-save-action mt-4 w-full py-2 rounded-xl disabled:opacity-60"
               >
                 {isSavingGoals ? t("saving") : t("saveGoals")}
               </button>
@@ -421,7 +445,7 @@ const Settings = () => {
                 type="button"
                 onClick={handleSaveNotifications}
                 disabled={isSavingNotifications}
-                className="mt-4 w-full bg-lime-400 py-2 rounded-xl disabled:opacity-60"
+                className="settings-save-action mt-4 w-full py-2 rounded-xl disabled:opacity-60"
               >
                 {isSavingNotifications ? t("saving") : t("saveNotifications")}
               </button>
@@ -435,7 +459,7 @@ const Settings = () => {
 
 function GlassCard({ children }: any) {
   return (
-    <div className="rounded-2xl border bg-white/70 backdrop-blur-xl p-5 shadow-sm">
+    <div className="settings-card rounded-2xl backdrop-blur-xl p-5">
       {children}
     </div>
   );
@@ -443,14 +467,14 @@ function GlassCard({ children }: any) {
 
 function ToggleRow({ label, checked, onChange }: any) {
   return (
-    <div className="flex justify-between items-center border rounded-xl p-3 bg-white/60">
+    <div className="settings-subcard flex justify-between items-center rounded-xl p-3">
       <span>{label}</span>
 
       <button
         type="button"
         onClick={() => onChange(!checked)}
-        className={`w-10 h-5 rounded-full ${
-          checked ? "bg-lime-400" : "bg-gray-300"
+        className={`h-5 w-10 rounded-full transition ${
+          checked ? "bg-lime-400" : "settings-toggle-track"
         }`}
       />
     </div>
@@ -461,7 +485,7 @@ function MacroPreview({ kcal, p, c, f }: any) {
   const total = p + c + f;
 
   return (
-    <div className="mt-4 text-sm">
+    <div className="settings-muted mt-4 text-sm">
       Total macros: {total}g • {kcal} kcal
     </div>
   );

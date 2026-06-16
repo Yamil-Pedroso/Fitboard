@@ -225,7 +225,7 @@ function ResponseDownloadMenu({ content }: { content: string }) {
         <ChevronDown className="h-3 w-3 transition group-open:rotate-180" />
       </summary>
 
-      <div className="absolute right-0 top-8 z-20 w-36 overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 text-xs shadow-xl">
+      <div className="absolute right-0 top-8 z-20 w-36 overflow-hidden rounded-xl border app-surface-strong py-1 text-xs shadow-xl">
         {DOWNLOAD_FORMATS.map((format) => (
           <button
             key={format.value}
@@ -234,7 +234,7 @@ function ResponseDownloadMenu({ content }: { content: string }) {
               event.preventDefault();
               downloadResponse(content, format.value);
             }}
-            className="flex w-full items-center justify-between px-3 py-2 text-left font-bold text-neutral-700 transition hover:bg-lime-50 hover:text-neutral-950"
+            className="flex w-full items-center justify-between px-3 py-2 text-left font-bold transition hover:bg-[var(--app-surface-muted)]"
           >
             {format.label}
           </button>
@@ -250,7 +250,7 @@ function renderInlineText(text: string) {
   return parts.map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={index} className="font-black text-neutral-950">
+        <strong key={index} className="font-black app-text">
           {part.slice(2, -2)}
         </strong>
       );
@@ -269,7 +269,7 @@ function CoachResponse({ content }: { content: string }) {
   if (lines.length === 0) return null;
 
   return (
-    <div className="space-y-2.5 font-medium leading-relaxed text-neutral-800">
+    <div className="space-y-2.5 font-medium leading-relaxed">
       {lines.map((line, index) => {
         const bullet = line.match(/^[-*•]\s+(.+)/);
         const numbered = line.match(/^\d+[.)]\s+(.+)/);
@@ -279,7 +279,7 @@ function CoachResponse({ content }: { content: string }) {
           return (
             <p
               key={`${line}-${index}`}
-              className="pt-1 text-[13px] font-black uppercase text-neutral-950"
+              className="pt-1 text-[13px] font-black uppercase"
             >
               {renderInlineText(heading[1])}
             </p>
@@ -518,7 +518,7 @@ export default function FitboardCoach() {
             }}
             className="
               fixed z-[999] flex flex-col overflow-hidden overscroll-contain
-              rounded-[2rem] border-6 border-gray-800 shadow-sm bg-[#fffef8]
+              rounded-[2rem] border-6 border-gray-800 shadow-sm app-surface-strong
               bottom-20 left-3 right-3 h-[78vh]
               sm:bottom-24 sm:left-5 sm:right-auto
               sm:h-[560px] sm:w-[var(--fitboard-coach-width)]
@@ -565,7 +565,7 @@ export default function FitboardCoach() {
 
             <div
               ref={chatScrollRef}
-              className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain bg-[#fffef8] p-4"
+              className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain bg-[var(--app-bg-soft)] p-4"
               onWheel={(event) => event.stopPropagation()}
               onTouchMove={(event) => event.stopPropagation()}
             >
@@ -583,7 +583,7 @@ export default function FitboardCoach() {
                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
                       message.role === "user"
                         ? "bg-black text-white"
-                        : "border border-lime-200/80 bg-white shadow-sm ring-1 ring-lime-100/70"
+                        : "border app-surface shadow-sm ring-1 ring-lime-100/70"
                     }`}
                   >
                     {message.role === "assistant" && (
@@ -623,7 +623,7 @@ export default function FitboardCoach() {
                       type="button"
                       onClick={() => handleSendMessage(prompt)}
                       disabled={sendCoachMessage.isPending}
-                      className="rounded-full border border-lime-300 bg-lime-50 px-3 py-2 text-left text-xs font-bold text-neutral-800 transition hover:border-lime-500 hover:bg-lime-100 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="rounded-full border border-lime-300 bg-lime-50 px-3 py-2 text-left text-xs font-bold text-black transition hover:border-lime-500 hover:bg-lime-100 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {prompt}
                     </button>
@@ -638,7 +638,7 @@ export default function FitboardCoach() {
                   transition={{ duration: 0.2 }}
                   className="flex justify-start"
                 >
-                  <div className="max-w-[85%] rounded-2xl border border-lime-200/80 bg-white px-4 py-3 text-sm text-neutral-800 shadow-sm ring-1 ring-lime-100/70">
+                  <div className="max-w-[85%] rounded-2xl border app-surface px-4 py-3 text-sm shadow-sm ring-1 ring-lime-100/70">
                     <div className="mb-3 flex items-center gap-2 border-b border-lime-100 pb-2 text-xs font-black uppercase text-lime-700">
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-lime-100 text-lime-700">
                         <Sparkles className="h-3.5 w-3.5" />
@@ -656,7 +656,7 @@ export default function FitboardCoach() {
               )}
             </div>
 
-            <div className="border-t border-neutral-200 bg-white p-4">
+            <div className="border-t app-border bg-[var(--app-surface-strong)] p-4">
               <div className="flex items-center gap-3">
                 <input
                   value={input}
@@ -666,7 +666,7 @@ export default function FitboardCoach() {
                   }}
                   placeholder={t("placeholder")}
                   disabled={sendCoachMessage.isPending}
-                  className="flex-1 rounded-2xl border-2 border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-black outline-none transition focus:border-lime-400"
+                  className="flex-1 rounded-2xl border-2 px-4 py-3 text-sm app-control"
                 />
 
                 <button

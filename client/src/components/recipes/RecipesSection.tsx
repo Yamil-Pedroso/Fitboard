@@ -69,22 +69,22 @@ const RecipesSection: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
           <motion.div variants={upV} className="space-y-6">
-            <p className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-neutral-900 ring-1 ring-inset ring-neutral-200">
+            <p className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-black ring-1 ring-inset ring-neutral-200">
               <BookOpen className="h-4 w-4" />
               {t("badge")}
             </p>
 
             <motion.h2
               variants={upV}
-              className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
+              className="text-3xl font-bold tracking-tight app-text sm:text-4xl"
             >
               {t("titlePrefix")}{" "}
-              <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text app-text">
                 {t("titleHighlight")}
               </span>
             </motion.h2>
 
-            <motion.p variants={upV} className="max-w-xl text-neutral-600">
+            <motion.p variants={upV} className="max-w-xl settings-muted">
               {t("subtitle")}
             </motion.p>
 
@@ -126,7 +126,7 @@ const RecipesSection: React.FC = () => {
             >
               <Link
                 to="/recipes/create"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-lime-400 px-4 py-2 text-neutral-900 shadow-sm transition hover:opacity-90"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-lime-400 px-4 py-2 text-black shadow-sm transition hover:opacity-90"
               >
                 <Plus className="h-4 w-4" />
                 {t("createRecipe")}
@@ -134,7 +134,7 @@ const RecipesSection: React.FC = () => {
 
               <Link
                 to="/recipes"
-                className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-neutral-900 shadow-sm transition hover:bg-neutral-50"
+                className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-black shadow-sm transition hover:bg-neutral-50"
               >
                 {t("browseRecipes")}
               </Link>
@@ -210,7 +210,7 @@ function RecipeCard({
 
       <div className="space-y-2 p-4">
         <div className="flex items-center justify-between">
-          <h3 className="truncate font-semibold text-neutral-900">{title}</h3>
+          <h3 className="truncate font-semibold text-black">{title}</h3>
 
           <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 ring-1 ring-inset ring-neutral-200">
             {kcal}
@@ -243,13 +243,13 @@ function FeatureLine({
 }) {
   return (
     <motion.div variants={upV} className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-100 text-neutral-800">
+      <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--app-surface-muted)]">
         {icon}
       </div>
 
       <div>
-        <div className="font-medium text-neutral-900">{title}</div>
-        <p className="text-neutral-600">{desc}</p>
+        <div className="font-medium app-text">{title}</div>
+        <p className="settings-muted">{desc}</p>
       </div>
     </motion.div>
   );

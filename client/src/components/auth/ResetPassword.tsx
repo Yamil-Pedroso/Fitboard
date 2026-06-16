@@ -59,7 +59,7 @@ const ResetPasswordForm = () => {
     <div className="w-full flex items-center justify-center p-4 sm:p-6">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-md rounded-3xl border border-neutral-200 bg-white/90 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.06)] p-6 sm:p-8 text-black"
+        className="w-full max-w-md rounded-3xl border app-surface-strong backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.06)] p-6 sm:p-8"
       >
         <div className="mb-6 flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-md">
@@ -85,13 +85,13 @@ const ResetPasswordForm = () => {
             <h1 className="text-xl font-semibold tracking-tight">
               Set a new password
             </h1>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm app-muted">
               Enter your new password and confirm it.
             </p>
           </div>
         </div>
 
-        <p className="mb-4 break-all rounded-xl border border-neutral-200 bg-white/70 px-3 py-2 text-xs text-neutral-700">
+        <p className="mb-4 break-all rounded-xl border app-surface-muted px-3 py-2 text-xs">
           Email: <span className="font-mono">{email || "—"}</span>
         </p>
 
@@ -105,7 +105,7 @@ const ResetPasswordForm = () => {
                 width="18"
                 height="18"
                 viewBox="0 0 24 24"
-                className="text-neutral-400"
+                className="app-muted"
               >
                 <path
                   d="M6 10V7a6 6 0 1 1 12 0v3"
@@ -117,7 +117,7 @@ const ResetPasswordForm = () => {
             </span>
             <input
               id="pw1"
-              className="w-full rounded-xl border border-neutral-300 bg-white px-10 py-2.5 text-sm outline-none transition focus:border-neutral-400 focus:ring-4 focus:ring-neutral-200"
+              className="w-full rounded-xl border px-10 py-2.5 text-sm app-control"
               type={show1 ? "text" : "password"}
               value={pw1}
               onChange={(e) => setPw1(e.currentTarget.value)}
@@ -129,7 +129,7 @@ const ResetPasswordForm = () => {
             <button
               type="button"
               onClick={() => setShow1((v) => !v)}
-              className="absolute inset-y-0 right-2 grid place-items-center rounded-lg px-2 text-neutral-500 hover:text-neutral-700"
+              className="absolute inset-y-0 right-2 grid place-items-center rounded-lg px-2 app-muted hover:text-[var(--app-text)]"
               aria-label={show1 ? "Hide password" : "Show password"}
             >
               {show1 ? (
@@ -170,8 +170,8 @@ const ResetPasswordForm = () => {
 
           <div className="mt-2">
             <div className="mb-1 flex items-center justify-between text-xs">
-              <span className="text-neutral-500">Password strength</span>
-              <span className="font-medium text-neutral-700">
+              <span className="app-muted">Password strength</span>
+              <span className="font-medium app-muted">
                 {strengthLabel}
               </span>
             </div>
@@ -186,7 +186,7 @@ const ResetPasswordForm = () => {
                         : score === 3
                           ? "bg-yellow-400"
                           : "bg-emerald-500"
-                      : "bg-neutral-200"
+                      : "bg-[var(--app-surface-muted)]"
                   }`}
                 />
               ))}
@@ -204,7 +204,7 @@ const ResetPasswordForm = () => {
                 width="18"
                 height="18"
                 viewBox="0 0 24 24"
-                className="text-neutral-400"
+                className="app-muted"
               >
                 <path
                   d="M6 10V7a6 6 0 1 1 12 0v3"
@@ -216,7 +216,7 @@ const ResetPasswordForm = () => {
             </span>
             <input
               id="pw2"
-              className="w-full rounded-xl border border-neutral-300 bg-white px-10 py-2.5 text-sm outline-none transition focus:border-neutral-400 focus:ring-4 focus:ring-neutral-200"
+              className="w-full rounded-xl border px-10 py-2.5 text-sm app-control"
               type={show2 ? "text" : "password"}
               value={pw2}
               onChange={(e) => setPw2(e.currentTarget.value)}
@@ -227,7 +227,7 @@ const ResetPasswordForm = () => {
             <button
               type="button"
               onClick={() => setShow2((v) => !v)}
-              className="absolute inset-y-0 right-2 grid place-items-center rounded-lg px-2 text-neutral-500 hover:text-neutral-700"
+              className="absolute inset-y-0 right-2 grid place-items-center rounded-lg px-2 app-muted hover:text-[var(--app-text)]"
               aria-label={show2 ? "Hide password" : "Show password"}
             >
               {show2 ? (

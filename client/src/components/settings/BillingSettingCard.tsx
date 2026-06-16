@@ -25,11 +25,11 @@ export default function BillingSettingsCard() {
   const isPaidPlan = plan === "pro" || plan === "elite";
 
   return (
-    <div className="rounded-2xl border bg-white/70 backdrop-blur-xl p-5 shadow-sm">
+    <div className="settings-card rounded-2xl backdrop-blur-xl p-5">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h2 className="text-lg font-semibold">Billing</h2>
-          <p className="text-sm opacity-70">
+          <p className="settings-muted text-sm">
             Manage your subscription and billing status.
           </p>
         </div>
@@ -40,23 +40,23 @@ export default function BillingSettingsCard() {
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border bg-white/60 p-3">
-          <p className="text-xs opacity-60">Current plan</p>
+        <div className="settings-subcard rounded-xl p-3">
+          <p className="settings-muted text-xs">Current plan</p>
           <div className="mt-1 flex items-center gap-2 font-semibold capitalize">
             <Crown className="h-4 w-4 text-lime-600" />
             {plan}
           </div>
         </div>
 
-        <div className="rounded-xl border bg-white/60 p-3">
-          <p className="text-xs opacity-60">Status</p>
+        <div className="settings-subcard rounded-xl p-3">
+          <p className="settings-muted text-xs">Status</p>
           <p className="mt-1 font-semibold capitalize">{status}</p>
         </div>
 
-        <div className="rounded-xl border bg-white/60 p-3">
-          <p className="text-xs opacity-60">Renewal date</p>
+        <div className="settings-subcard rounded-xl p-3">
+          <p className="settings-muted text-xs">Renewal date</p>
           <div className="mt-1 flex items-center gap-2 font-semibold">
-            <CalendarClock className="h-4 w-4 text-neutral-600" />
+            <CalendarClock className="h-4 w-4 text-lime-600" />
             {formatDate(renewalDate)}
           </div>
         </div>

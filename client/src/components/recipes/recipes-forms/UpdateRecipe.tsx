@@ -172,20 +172,20 @@ export default function UpdateRecipe() {
   }
 
   if (isLoadingRecipe)
-    return <div className="p-6 text-black">Loading recipe…</div>;
+    return <div className="p-6 app-text">Loading recipe…</div>;
   if (loadError)
     return <div className="p-6 text-red-600">Failed to load recipe.</div>;
   if (!recipe) return <div className="p-6 text-red-600">Recipe not found.</div>;
 
   return (
-    <div className="p-6 flex justify-center text-black">
+    <div className="p-6 flex justify-center app-text">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-3xl space-y-5 rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+        className="w-full max-w-3xl space-y-5 rounded-2xl border app-surface backdrop-blur p-6 shadow-sm"
       >
         <div>
           <h2 className="text-xl font-semibold">Edit recipe</h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm app-muted">
             Update the details of your recipe.
           </p>
         </div>
@@ -193,7 +193,7 @@ export default function UpdateRecipe() {
           <label className="block text-sm sm:col-span-2">
             <span className="mb-1 block">Name</span>
             <input
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.name}
               onChange={(e) => setField("name", e.currentTarget.value)}
               required
@@ -206,7 +206,7 @@ export default function UpdateRecipe() {
               type="number"
               min={1}
               step={1}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.servings}
               onChange={(e) =>
                 setField("servings", Number(e.currentTarget.value))
@@ -219,7 +219,7 @@ export default function UpdateRecipe() {
             <span className="mb-1 block">Date (optional)</span>
             <input
               type="date"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+              className="w-full rounded-xl border px-3 py-2 app-control"
               value={form.date}
               onChange={(e) => setField("date", e.currentTarget.value)}
             />
@@ -246,7 +246,7 @@ export default function UpdateRecipe() {
               {form.ingredients.map((ing, i) => (
                 <div
                   key={i}
-                  className="rounded-xl border border-neutral-200 bg-white/80 backdrop-blur p-4 shadow-sm"
+                  className="rounded-xl border app-surface backdrop-blur p-4 shadow-sm"
                 >
                   <div className="mb-3 flex items-center justify-between">
                     <span className="font-medium">#{i + 1}</span>
@@ -263,7 +263,7 @@ export default function UpdateRecipe() {
                     <label className="block text-sm sm:col-span-2">
                       <span className="mb-1 block">Name</span>
                       <input
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.name}
                         onChange={(e) =>
                           setIng(i, "name", e.currentTarget.value)
@@ -278,7 +278,7 @@ export default function UpdateRecipe() {
                         type="number"
                         min={0}
                         step="any"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.amount}
                         onChange={(e) =>
                           setIng(
@@ -294,7 +294,7 @@ export default function UpdateRecipe() {
                     <label className="block text-sm">
                       <span className="mb-1 block">Unit</span>
                       <select
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.unit}
                         onChange={(e) =>
                           setIng(i, "unit", e.currentTarget.value as QtyUnit)
@@ -315,7 +315,7 @@ export default function UpdateRecipe() {
                         type="number"
                         min={1}
                         step="any"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.nutritionBasis.amount}
                         onChange={(e) =>
                           setIngNB(
@@ -330,7 +330,7 @@ export default function UpdateRecipe() {
                     <label className="block text-sm">
                       <span className="mb-1 block">Basis unit</span>
                       <select
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.nutritionBasis.unit}
                         onChange={(e) =>
                           setIngNB(i, "unit", e.currentTarget.value as QtyUnit)
@@ -351,7 +351,7 @@ export default function UpdateRecipe() {
                         type="number"
                         min={0}
                         step="any"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.macrosPerBasis.kcal}
                         onChange={(e) =>
                           setIngMacros(
@@ -368,7 +368,7 @@ export default function UpdateRecipe() {
                         type="number"
                         min={0}
                         step="any"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.macrosPerBasis.protein}
                         onChange={(e) =>
                           setIngMacros(
@@ -385,7 +385,7 @@ export default function UpdateRecipe() {
                         type="number"
                         min={0}
                         step="any"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.macrosPerBasis.carbohydrate}
                         onChange={(e) =>
                           setIngMacros(
@@ -402,7 +402,7 @@ export default function UpdateRecipe() {
                         type="number"
                         min={0}
                         step="any"
-                        className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                        className="w-full rounded-xl border px-3 py-2 app-control"
                         value={ing.macrosPerBasis.fat}
                         onChange={(e) =>
                           setIngMacros(
@@ -426,7 +426,7 @@ export default function UpdateRecipe() {
                           type="number"
                           min={0}
                           step="any"
-                          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                          className="w-full rounded-xl border px-3 py-2 app-control"
                           value={ing.gramsPerUnit ?? ""}
                           onChange={(e) => {
                             const v = e.currentTarget.value;
@@ -449,7 +449,7 @@ export default function UpdateRecipe() {
                           type="number"
                           min={0}
                           step="any"
-                          className="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200"
+                          className="w-full rounded-xl border px-3 py-2 app-control"
                           value={ing.densityGPerMl ?? ""}
                           onChange={(e) => {
                             const v = e.currentTarget.value;
@@ -486,7 +486,7 @@ export default function UpdateRecipe() {
 
           <Link
             to="/recipes"
-            className="block text-center text-sm text-neutral-600 hover:underline mt-3"
+            className="block text-center text-sm app-muted hover:underline mt-3"
           >
             Back to recipes
           </Link>

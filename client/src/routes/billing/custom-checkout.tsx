@@ -23,7 +23,7 @@ function CustomCheckoutPage() {
   const search = Route.useSearch();
 
   return (
-    <main className="min-h-screen bg-neutral-50 px-4 py-20">
+    <main className="min-h-screen px-4 py-20 app-text">
       <div className="mx-auto max-w-xl">
         <CustomCheckout plan={search.plan} period={search.period} />
       </div>

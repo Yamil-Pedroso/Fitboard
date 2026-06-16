@@ -39,10 +39,9 @@ const RegisterForm = () => {
       <form
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-3xl
-                   border border-neutral-200
-                   bg-white/80 backdrop-blur-xl
+                   border app-surface backdrop-blur-xl
                    shadow-[0_20px_80px_rgba(0,0,0,0.08)]
-                   p-6 sm:p-8 text-black"
+                   p-6 sm:p-8"
       >
         <div className="mb-6 flex items-center gap-3">
           <div
@@ -75,7 +74,7 @@ const RegisterForm = () => {
             <h2 className="text-xl font-semibold tracking-tight">
               Create account
             </h2>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm app-muted">
               Start your fitness journey today.
             </p>
           </div>
@@ -117,9 +116,9 @@ const RegisterForm = () => {
 
           <label
             htmlFor="avatar"
-            className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white/80 backdrop-blur px-3 py-2 text-sm cursor-pointer hover:bg-neutral-50"
+            className="flex items-center justify-between rounded-xl border px-3 py-2 text-sm cursor-pointer app-secondary-action"
           >
-            <span className="text-neutral-600">
+            <span className="app-muted">
               {avatarFile ? avatarFile.name : "Upload image"}
             </span>
 
@@ -163,7 +162,7 @@ const RegisterForm = () => {
         </button>
 
         <div className="mt-4 text-center text-sm">
-          <span className="text-neutral-600">Already have an account? </span>
+          <span className="app-muted">Already have an account? </span>
           <Link
             to="/auth/login"
             className="font-medium text-lime-600 hover:underline"
